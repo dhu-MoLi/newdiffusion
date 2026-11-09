@@ -1,6 +1,6 @@
 # v07 使用说明
 
-v07 是基线之上的实验层：`src/cadiff/v06` 保持不变，所有新组件在 `src/cadiff/v07`。每个实验的输出写到 `runs/v07/<实验名>/<类别>/seed-<种子>/`，不影响现有 MVTec 基线。
+v07 是基线之上的实验层：`src/cadiff/v06` 保持不变，所有新组件在 `src/cadiff/v07`。每个实验的输出写到项目的 `runs/v07/<实验名>/<类别>/seed-<种子>/`（项目同级 `runs/`，不在 git 仓库内），不影响现有 MVTec 基线。
 
 ## 1. 一条命令跑完一个实验
 
@@ -10,11 +10,13 @@ export PYTHONPATH=src
 PY=/home/asus/anaconda3/envs/cad-v0/bin/python
 export CUBLAS_WORKSPACE_CONFIG=:4096:8
 
-# GPU1 空闲时优先用 GPU1
+# 先确认哪张卡空闲（MVTec 基线运行期间可能两张卡都在用）
+nvidia-smi --query-gpu=index,memory.used,utilization.gpu --format=csv
+
 "$PY" tools/v07/run_experiment.py \
   --config configs/experiments/v07/mini_baseline.yaml \
   --categories bottle carpet grid transistor \
-  --device cuda:1
+  --device cuda:0
 ```
 
 阶段可以单跑或续跑：
