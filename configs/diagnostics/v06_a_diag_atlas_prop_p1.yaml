@@ -1,0 +1,17 @@
+schema_version: v06_a_diag_atlas_prop_p1
+status: isolation_p1_recheck
+square_dilate_radius_px: 24
+inpaint_radius: 3
+dino_model: dinov2_vits14
+smooth_radius: 1
+# Frozen f4 match rules. Rows are built from pre-frozen P1 identities,
+# not listed here, so they cannot be hand-picked after seeing panels.
+source_match_dilate_px: 16
+wipe_on_collapse: false
+use_kept_splat: true
+splat_neighbor_radius: 1
+max_cycle_fail_ratio: 0.45
+min_valid_matches: 16
+max_median_displacement_px: 256
+hazelnut_experiment: configs/experiments/v06_a_hazelnut_rc1.yaml
+cable_experiment: configs/experiments/v06_a_cable_rc1.yaml

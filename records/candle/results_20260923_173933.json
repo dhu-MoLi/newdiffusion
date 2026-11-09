@@ -1,0 +1,41 @@
+{
+  "class_name": "candle",
+  "image_subdir": "composed",
+  "mask_subdir": "mask_defect",
+  "generated_root": "/home/dell/2T/lm/new_projects/category_anomaly_diffusion/runs/v06_c/visa/candle/eval/20260922-seas-500/generated_layout",
+  "mvtec_path": "/home/dell/2T/lm/new_projects/category_anomaly_diffusion/runs/v06_c/visa/candle/mvtec_layout_seas_20260922",
+  "img_size": 256,
+  "loc_bs": 16,
+  "loc_accum": 1,
+  "loc_effective_bs": 16,
+  "IS_per_anomaly": {
+    "chunk_of_wax_missing": 1.3706153579071836,
+    "combined": 1.3697999706445807,
+    "damaged_corner_of_packaging": 1.3558768638835155,
+    "different_colour_spot": 1.3359581035054835,
+    "extra_wax_in_candle": 1.3331270058678233,
+    "foreign_particals_on_candle": 1.3816998173909003,
+    "wax_melded_out_of_the_candle": 1.3456080455865727,
+    "weird_candle_wick": 1.3626078821152858
+  },
+  "IS": 1.3569116308626683,
+  "IC_LPIPS_per_anomaly": {
+    "chunk_of_wax_missing": 0.13590741157531738,
+    "combined": 0.1428086906671524,
+    "damaged_corner_of_packaging": 0.14267326891422272,
+    "different_colour_spot": 0.12951460480690002,
+    "extra_wax_in_candle": 0.16805720329284668,
+    "foreign_particals_on_candle": 0.14112865924835205,
+    "wax_melded_out_of_the_candle": 0.12613052129745483,
+    "weird_candle_wick": 0.1384529322385788
+  },
+  "IC_LPIPS": 0.1405841615051031,
+  "loc_auroc_image": 0.9650746268656717,
+  "loc_ap_image": 0.9582137647804335,
+  "loc_auroc_pixel": 0.9606292560071699,
+  "loc_ap_pixel": 0.36766647358756566,
+  "loc_f1_image": 0.9090909090909091,
+  "loc_f1_pixel": 0.3935723543910188,
+  "loc_pro_pixel": 0.9052695371865226,
+  "cls_accuracy": 0.417910447761194
+}

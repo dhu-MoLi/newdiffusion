@@ -1,0 +1,11 @@
+split_id: mvtec_lexicographic_floor_third_v1
+eval_mode: dev_aware
+categories:
+  - bottle
+  - grid
+  - transistor
+normal_prompt_template: "a photo of a normal {category}"
+dtype: float16
+scheduler: ddim
+guidance_scale: 1.0
+seed: 20260817

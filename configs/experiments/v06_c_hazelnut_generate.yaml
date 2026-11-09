@@ -1,0 +1,10 @@
+schema_version: v06_c_hazelnut_generate
+status: official_generate_hazelnut
+category: hazelnut
+# Identities come from the frozen Hazelnut P2 open-normal schedule.
+# Do not list rows here; that would allow post-hoc picking.
+# Official generate uses a2 A only; A0-V is a P2 control, not this interface.
+experiment: configs/experiments/v06_a_hazelnut_rc1.yaml
+paths: configs/paths/omen-home.yaml
+b_experiment: configs/experiments/v06_b_hazelnut_mask_first.yaml
+b_freeze: configs/checkpoints/v06_b_hazelnut_mask_first_causal_renderer.yaml

@@ -1,0 +1,18 @@
+{
+  "category": "chewinggum",
+  "collapsed_from": [],
+  "defect_types": [
+    "chunk of gum missing",
+    "combined",
+    "corner missing",
+    "scratches",
+    "similar colour spot"
+  ],
+  "fewshot_train": 32,
+  "manifest": "/home/dell/2T/lm/new_projects/category_anomaly_diffusion/runs/v06_b/visa/chewinggum/splits/20260922-seas/manifest.jsonl",
+  "normal_train": 453,
+  "open_dev_report": 68,
+  "schema_version": "v06_c_visa_split_v1",
+  "source_root": "/home/dell/2T/数据集/AD/VisA",
+  "split_id": "visa_seas_type_amazon1cls_v1"
+}

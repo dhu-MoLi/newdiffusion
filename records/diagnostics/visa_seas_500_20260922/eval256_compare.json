@@ -1,0 +1,184 @@
+{
+  "arms": {
+    "candle": {
+      "IC_LPIPS": 0.1405841615051031,
+      "IC_LPIPS_per_anomaly": {
+        "chunk_of_wax_missing": 0.13590741157531738,
+        "combined": 0.1428086906671524,
+        "damaged_corner_of_packaging": 0.14267326891422272,
+        "different_colour_spot": 0.12951460480690002,
+        "extra_wax_in_candle": 0.16805720329284668,
+        "foreign_particals_on_candle": 0.14112865924835205,
+        "wax_melded_out_of_the_candle": 0.12613052129745483,
+        "weird_candle_wick": 0.1384529322385788
+      },
+      "IS": 1.3569116308626683,
+      "IS_per_anomaly": {
+        "chunk_of_wax_missing": 1.3706153579071836,
+        "combined": 1.3697999706445807,
+        "damaged_corner_of_packaging": 1.3558768638835155,
+        "different_colour_spot": 1.3359581035054835,
+        "extra_wax_in_candle": 1.3331270058678233,
+        "foreign_particals_on_candle": 1.3816998173909003,
+        "wax_melded_out_of_the_candle": 1.3456080455865727,
+        "weird_candle_wick": 1.3626078821152858
+      },
+      "cls_accuracy": 0.417910447761194,
+      "loc_ap_image": 0.9582137647804335,
+      "loc_ap_pixel": 0.36766647358756566,
+      "loc_auroc_image": 0.9650746268656717,
+      "loc_auroc_pixel": 0.9606292560071699,
+      "loc_f1_image": 0.9090909090909091,
+      "loc_f1_pixel": 0.3935723543910188,
+      "loc_pro_pixel": 0.9052695371865226,
+      "results": "/home/dell/2T/lm/new_projects/category_anomaly_diffusion/runs/v06_c/visa/candle/eval/20260922-seas-500/candle/results_20260923_173933.json"
+    },
+    "capsules": {
+      "IC_LPIPS": 0.3697952926158905,
+      "IC_LPIPS_per_anomaly": {
+        "bubble": 0.3726550042629242,
+        "combined": 0.3669355809688568
+      },
+      "IS": 1.5266001053433467,
+      "IS_per_anomaly": {
+        "bubble": 1.5238733350531521,
+        "combined": 1.529326875633541
+      },
+      "cls_accuracy": 0.7014925373134329,
+      "loc_ap_image": 0.9941670155990537,
+      "loc_ap_pixel": 0.4865570458375065,
+      "loc_auroc_image": 0.9927860696517413,
+      "loc_auroc_pixel": 0.9424164863006097,
+      "loc_f1_image": 0.9618320610687023,
+      "loc_f1_pixel": 0.5122726736320892,
+      "loc_pro_pixel": 0.8805956224717401,
+      "results": "/home/dell/2T/lm/new_projects/category_anomaly_diffusion/runs/v06_c/visa/capsules/eval/20260922-seas-500/capsules/results_20260923_183902.json"
+    },
+    "cashew": {
+      "IC_LPIPS": 0.3118468655480279,
+      "IC_LPIPS_per_anomaly": {
+        "burnt": 0.3049639165401459,
+        "combined": 0.3121248185634613,
+        "corner_or_edge_breakage": 0.3066498339176178,
+        "different_colour_spot": 0.31102439761161804,
+        "middle_breakage": 0.3216954469680786,
+        "same_colour_spot": 0.30141299962997437,
+        "small_holes": 0.2998388707637787,
+        "small_scratches": 0.2943918704986572,
+        "stuck_together": 0.35451963543891907
+      },
+      "IS": 1.3866528410357564,
+      "IS_per_anomaly": {
+        "burnt": 1.3262116822697219,
+        "combined": 1.3613836908256063,
+        "corner_or_edge_breakage": 1.3519956483375424,
+        "different_colour_spot": 1.3363244891873296,
+        "middle_breakage": 1.3956411251694791,
+        "same_colour_spot": 1.3193823114124874,
+        "small_holes": 1.3176187124377416,
+        "small_scratches": 1.3057937047387984,
+        "stuck_together": 1.7655242049430995
+      },
+      "cls_accuracy": 0.4927536231884058,
+      "loc_ap_image": 0.9803635208921153,
+      "loc_ap_pixel": 0.36001989812300844,
+      "loc_auroc_image": 0.966086956521739,
+      "loc_auroc_pixel": 0.924162654544584,
+      "loc_f1_image": 0.9264705882352942,
+      "loc_f1_pixel": 0.3866238770862752,
+      "loc_pro_pixel": 0.8753544461249093,
+      "results": "/home/dell/2T/lm/new_projects/category_anomaly_diffusion/runs/v06_c/visa/cashew/eval/20260922-seas-500/cashew/results_20260923_191822.json"
+    },
+    "chewinggum": {
+      "IC_LPIPS": 0.2862041831016541,
+      "IC_LPIPS_per_anomaly": {
+        "chunk_of_gum_missing": 0.2973421514034271,
+        "combined": 0.28305721282958984,
+        "corner_missing": 0.2660500109195709,
+        "scratches": 0.2962459325790405,
+        "similar_colour_spot": 0.28832560777664185
+      },
+      "IS": 1.2692707108133583,
+      "IS_per_anomaly": {
+        "chunk_of_gum_missing": 1.2875651095772422,
+        "combined": 1.3117703728800947,
+        "corner_missing": 1.3067679765565983,
+        "scratches": 1.1949722959829248,
+        "similar_colour_spot": 1.2452777990699317
+      },
+      "cls_accuracy": 0.6323529411764706,
+      "loc_ap_image": 0.9922639236528634,
+      "loc_ap_pixel": 0.8307020054459944,
+      "loc_auroc_image": 0.9876470588235294,
+      "loc_auroc_pixel": 0.9915859575070062,
+      "loc_f1_image": 0.962962962962963,
+      "loc_f1_pixel": 0.7912553026841783,
+      "loc_pro_pixel": 0.9219688586329244,
+      "results": "/home/dell/2T/lm/new_projects/category_anomaly_diffusion/runs/v06_c/visa/chewinggum/eval/20260922-seas-500/chewinggum/results_20260923_202200.json"
+    }
+  },
+  "finished_at": "2026-09-23T21:11:43+08:00",
+  "generate": {
+    "candle": {
+      "failed": 86,
+      "floor": 0,
+      "identity_count": 4000,
+      "kept": 3914,
+      "per_type_kept": {
+        "chunk of wax missing": 500,
+        "combined": 500,
+        "damaged corner of packaging": 500,
+        "different colour spot": 414,
+        "extra wax in candle": 500,
+        "foreign particals on candle": 500,
+        "wax melded out of the candle": 500,
+        "weird candle wick": 500
+      }
+    },
+    "capsules": {
+      "failed": 0,
+      "floor": 0,
+      "identity_count": 1000,
+      "kept": 1000,
+      "per_type_kept": {
+        "bubble": 500,
+        "combined": 500
+      }
+    },
+    "cashew": {
+      "failed": 0,
+      "floor": 0,
+      "identity_count": 4500,
+      "kept": 4500,
+      "per_type_kept": {
+        "burnt": 500,
+        "combined": 500,
+        "corner or edge breakage": 500,
+        "different colour spot": 500,
+        "middle breakage": 500,
+        "same colour spot": 500,
+        "small holes": 500,
+        "small scratches": 500,
+        "stuck together": 500
+      }
+    },
+    "chewinggum": {
+      "failed": 0,
+      "floor": 0,
+      "identity_count": 2500,
+      "kept": 2500,
+      "per_type_kept": {
+        "chunk of gum missing": 500,
+        "combined": 500,
+        "corner missing": 500,
+        "scratches": 500,
+        "similar colour spot": 500
+      }
+    }
+  },
+  "not_module_c": true,
+  "not_official": true,
+  "protocol": "DualAnoDiff 256 + classification. SeaS types + Amazon 1cls. Informal, not official-500/1000.",
+  "schema_version": "v06_c_visa_seas500_eval256_compare_v1",
+  "split_id": "visa_seas_type_amazon1cls_v1"
+}

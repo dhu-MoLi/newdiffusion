@@ -1,0 +1,32 @@
+schema_version: p3_a0_hazelnut_spatial_response_v1
+category: hazelnut
+defect_types: [crack, cut, hole, print]
+normal_prompt: a photo of a normal hazelnut
+defect_prompts:
+  crack: a photo of a hazelnut with thin cracks in the shell and fractured edges
+  cut: a photo of a hazelnut with a sharp cut in the shell
+  hole: a photo of a hazelnut with a puncture hole in the shell
+  print: a photo of a hazelnut with dark printed characters and structured ink strokes on the shell surface
+image_size: 512
+dtype: float16
+timesteps: [100, 400, 700]
+seeds: [202608175, 202608176]
+normal_count: 8
+calibration_counts: {crack: 6, cut: 5, hole: 6, print: 5}
+auxiliary_counts: {crack: 12, cut: 12, hole: 12, print: 12}
+quantiles: [0.01, 0.99]
+normalization_epsilon: 1.0e-8
+roi_border_width: 16
+otsu_bins: 256
+roi_max_fraction: 0.90
+area_envelope: [0.50, 2.00, 0.50]
+random_baseline_count: 16
+max_fpr: 0.30
+gate:
+  minimum_passing_types: 3
+  area_envelope_fraction: 0.75
+  roi_precision: 0.80
+  roi_mass_advantage: 0.10
+  seed_l1: 0.001
+  seed_spearman: 0.20
+  auxiliary_margin: 0.01

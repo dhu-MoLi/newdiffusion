@@ -1,0 +1,18 @@
+{
+  "category": "macaroni2",
+  "collapsed_from": [],
+  "defect_types": [
+    "color spot similar to the object",
+    "different color spot",
+    "small chip around edge",
+    "small cracks",
+    "small scratches"
+  ],
+  "fewshot_train": 24,
+  "manifest": "/home/dell/2T/lm/new_projects/category_anomaly_diffusion/runs/v06_b/visa/macaroni2/splits/20260927-magic/manifest.jsonl",
+  "normal_train": 900,
+  "open_dev_report": 53,
+  "schema_version": "v06_c_visa_split_v1",
+  "source_root": "/home/dell/2T/数据集/AD/VisA",
+  "split_id": "visa_magic_single_anomaly_amazon1cls_v1"
+}

@@ -1,0 +1,15 @@
+{
+  "category": "capsules",
+  "collapsed_from": [],
+  "defect_types": [
+    "bubble",
+    "combined"
+  ],
+  "fewshot_train": 33,
+  "manifest": "/home/dell/2T/lm/new_projects/category_anomaly_diffusion/runs/v06_b/visa/capsules/splits/20260922-seas/manifest.jsonl",
+  "normal_train": 542,
+  "open_dev_report": 67,
+  "schema_version": "v06_c_visa_split_v1",
+  "source_root": "/home/dell/2T/数据集/AD/VisA",
+  "split_id": "visa_seas_type_amazon1cls_v1"
+}

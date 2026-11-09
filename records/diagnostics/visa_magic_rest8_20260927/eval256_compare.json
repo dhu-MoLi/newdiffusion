@@ -1,0 +1,146 @@
+{
+  "arms": {
+    "fryum": {
+      "cls_accuracy": 0.4166666666666667,
+      "loc_ap_image": 0.9077770789304586,
+      "loc_ap_pixel": 0.5588663885858027,
+      "loc_auroc_image": 0.87,
+      "loc_auroc_pixel": 0.9591456754102748,
+      "loc_f1_image": 0.819672131147541,
+      "loc_f1_pixel": 0.5484150892454169,
+      "loc_pro_pixel": 0.8760152083187212,
+      "results": "/home/dell/2T/lm/new_projects/category_anomaly_diffusion/runs/v06_c/visa/fryum/eval/20260927-magic-500/fryum/results_20260928_201919.json"
+    },
+    "macaroni1": {
+      "cls_accuracy": 0.6,
+      "loc_ap_image": 0.7268807853962468,
+      "loc_ap_pixel": 0.14970534426184642,
+      "loc_auroc_image": 0.8834545454545455,
+      "loc_auroc_pixel": 0.9766176035603341,
+      "loc_f1_image": 0.7894736842105264,
+      "loc_f1_pixel": 0.21646202337608558,
+      "loc_pro_pixel": 0.9300897432399312,
+      "results": "/home/dell/2T/lm/new_projects/category_anomaly_diffusion/runs/v06_c/visa/macaroni1/eval/20260927-magic-500/macaroni1/results_20260928_212030.json"
+    },
+    "macaroni2": {
+      "cls_accuracy": 0.425,
+      "loc_ap_image": 0.658141807231293,
+      "loc_ap_pixel": 0.04686851054449693,
+      "loc_auroc_image": 0.760925925925926,
+      "loc_auroc_pixel": 0.9772082065123612,
+      "loc_f1_image": 0.6415094339622641,
+      "loc_f1_pixel": 0.11764705483727246,
+      "loc_pro_pixel": 0.8871634729521102,
+      "results": "/home/dell/2T/lm/new_projects/category_anomaly_diffusion/runs/v06_c/visa/macaroni2/eval/20260927-magic-500/macaroni2/results_20260929_173855.json"
+    },
+    "pcb1": {
+      "cls_accuracy": 0.30158730158730157,
+      "loc_ap_image": 0.7853326098700347,
+      "loc_ap_pixel": 0.38606030543242503,
+      "loc_auroc_image": 0.8804761904761904,
+      "loc_auroc_pixel": 0.9465060404129748,
+      "loc_f1_image": 0.7974683544303798,
+      "loc_f1_pixel": 0.432148077677165,
+      "loc_pro_pixel": 0.6964823288434601,
+      "results": "/home/dell/2T/lm/new_projects/category_anomaly_diffusion/runs/v06_c/visa/pcb1/eval/20260927-magic-500/pcb1/results_20260929_183512.json"
+    },
+    "pcb2": {
+      "cls_accuracy": 0.41935483870967744,
+      "loc_ap_image": 0.8066621222307812,
+      "loc_ap_pixel": 0.18021160366323064,
+      "loc_auroc_image": 0.8620967741935484,
+      "loc_auroc_pixel": 0.9165902310225611,
+      "loc_f1_image": 0.7419354838709677,
+      "loc_f1_pixel": 0.26890535927505005,
+      "loc_pro_pixel": 0.7452371199887985,
+      "results": "/home/dell/2T/lm/new_projects/category_anomaly_diffusion/runs/v06_c/visa/pcb2/eval/20260927-magic-500/pcb2/results_20260929_193832.json"
+    },
+    "pcb3": {
+      "cls_accuracy": 0.53125,
+      "loc_ap_image": 0.9440897940214654,
+      "loc_ap_pixel": 0.3357691128648995,
+      "loc_auroc_image": 0.94322400990099,
+      "loc_auroc_pixel": 0.8103532558953583,
+      "loc_f1_image": 0.8983050847457628,
+      "loc_f1_pixel": 0.4108325267023647,
+      "loc_pro_pixel": 0.7232738298242268,
+      "results": "/home/dell/2T/lm/new_projects/category_anomaly_diffusion/runs/v06_c/visa/pcb3/eval/20260927-magic-500/pcb3/results_20260929_204136.json"
+    },
+    "pcb4": {
+      "cls_accuracy": 0.5384615384615384,
+      "loc_ap_image": 0.9156626561515224,
+      "loc_ap_pixel": 0.10075786133333076,
+      "loc_auroc_image": 0.9678217821782178,
+      "loc_auroc_pixel": 0.8932583632138128,
+      "loc_f1_image": 0.870967741935484,
+      "loc_f1_pixel": 0.2176799774454582,
+      "loc_pro_pixel": 0.8139387922998602,
+      "results": "/home/dell/2T/lm/new_projects/category_anomaly_diffusion/runs/v06_c/visa/pcb4/eval/20260927-magic-500/pcb4/results_20260929_214426.json"
+    },
+    "pipe_fryum": {
+      "cls_accuracy": 0.7666666666666667,
+      "loc_ap_image": 0.9616619557855447,
+      "loc_ap_pixel": 0.5808010692991206,
+      "loc_auroc_image": 0.9513333333333334,
+      "loc_auroc_pixel": 0.9677528449609977,
+      "loc_f1_image": 0.9218749999999999,
+      "loc_f1_pixel": 0.5542675695012976,
+      "loc_pro_pixel": 0.9333675230346772,
+      "results": "/home/dell/2T/lm/new_projects/category_anomaly_diffusion/runs/v06_c/visa/pipe_fryum/eval/20260927-magic-500/pipe_fryum/results_20260929_223927.json"
+    }
+  },
+  "generate": {
+    "fryum": {
+      "failed": 760,
+      "floor": 0,
+      "identity_count": 3500,
+      "kept": 2740
+    },
+    "macaroni1": {
+      "failed": 923,
+      "floor": 0,
+      "identity_count": 2500,
+      "kept": 1577
+    },
+    "macaroni2": {
+      "failed": 1335,
+      "floor": 0,
+      "identity_count": 2500,
+      "kept": 1165
+    },
+    "pcb1": {
+      "failed": 0,
+      "floor": 0,
+      "identity_count": 2000,
+      "kept": 2000
+    },
+    "pcb2": {
+      "failed": 0,
+      "floor": 0,
+      "identity_count": 2000,
+      "kept": 2000
+    },
+    "pcb3": {
+      "failed": 0,
+      "floor": 0,
+      "identity_count": 2000,
+      "kept": 2000
+    },
+    "pcb4": {
+      "failed": 0,
+      "floor": 0,
+      "identity_count": 1500,
+      "kept": 1500
+    },
+    "pipe_fryum": {
+      "failed": 204,
+      "floor": 0,
+      "identity_count": 3000,
+      "kept": 2796
+    }
+  },
+  "not_module_c": true,
+  "not_official": true,
+  "schema_version": "v06_c_visa_magic_rest8_eval256_compare_v1",
+  "split_id": "visa_magic_single_anomaly_amazon1cls_v1"
+}

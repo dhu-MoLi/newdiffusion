@@ -1,0 +1,31 @@
+schema_version: v06_a_diag_atlas_prop_f2
+status: isolation_diagnostic_only
+square_dilate_radius_px: 24
+inpaint_radius: 3
+dino_model: dinov2_vits14
+smooth_radius: 1
+# Frozen before looking at panels. Same cycle limits as f1; only the match domain changes.
+source_match_dilate_px: 16
+max_cycle_fail_ratio: 0.45
+min_valid_matches: 16
+max_median_displacement_px: 256
+hazelnut_experiment: configs/experiments/v06_a_hazelnut_rc1.yaml
+cable_experiment: configs/experiments/v06_a_cable_rc1.yaml
+# inner/outer rows are pressure samples, not pass/fail.
+rows:
+  - {category: hazelnut, defect_type: crack, source_id: "000", source_role: fewshot, target_id: "000", target_role: normal_dev, seed: 202609070100, review_role: primary}
+  - {category: hazelnut, defect_type: crack, source_id: "000", source_role: fewshot, target_id: "260", target_role: normal_dev, seed: 202609070100, review_role: primary}
+  - {category: hazelnut, defect_type: cut, source_id: "000", source_role: fewshot, target_id: "000", target_role: normal_dev, seed: 202609070110, review_role: primary}
+  - {category: hazelnut, defect_type: cut, source_id: "000", source_role: fewshot, target_id: "260", target_role: normal_dev, seed: 202609070110, review_role: primary}
+  - {category: hazelnut, defect_type: hole, source_id: "000", source_role: fewshot, target_id: "000", target_role: normal_dev, seed: 202609070120, review_role: primary}
+  - {category: hazelnut, defect_type: hole, source_id: "000", source_role: fewshot, target_id: "260", target_role: normal_dev, seed: 202609070120, review_role: primary}
+  - {category: hazelnut, defect_type: print, source_id: "000", source_role: fewshot, target_id: "000", target_role: normal_dev, seed: 202609070130, review_role: primary}
+  - {category: hazelnut, defect_type: print, source_id: "000", source_role: fewshot, target_id: "260", target_role: normal_dev, seed: 202609070130, review_role: primary}
+  - {category: cable, defect_type: bent_wire, source_id: "000", source_role: fewshot, target_id: "000", target_role: normal_dev, seed: 202609070200, review_role: primary}
+  - {category: cable, defect_type: bent_wire, source_id: "000", source_role: fewshot, target_id: "152", target_role: normal_dev, seed: 202609070200, review_role: primary}
+  - {category: cable, defect_type: poke_insulation, source_id: "000", source_role: fewshot, target_id: "000", target_role: normal_dev, seed: 202609070230, review_role: primary}
+  - {category: cable, defect_type: poke_insulation, source_id: "000", source_role: fewshot, target_id: "152", target_role: normal_dev, seed: 202609070230, review_role: primary}
+  - {category: cable, defect_type: cut_inner_insulation, source_id: "000", source_role: fewshot, target_id: "000", target_role: normal_dev, seed: 202609070210, review_role: pressure}
+  - {category: cable, defect_type: cut_inner_insulation, source_id: "000", source_role: fewshot, target_id: "152", target_role: normal_dev, seed: 202609070210, review_role: pressure}
+  - {category: cable, defect_type: cut_outer_insulation, source_id: "000", source_role: fewshot, target_id: "000", target_role: normal_dev, seed: 202609070220, review_role: pressure}
+  - {category: cable, defect_type: cut_outer_insulation, source_id: "000", source_role: fewshot, target_id: "152", target_role: normal_dev, seed: 202609070220, review_role: pressure}

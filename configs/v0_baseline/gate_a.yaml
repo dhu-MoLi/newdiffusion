@@ -1,0 +1,6 @@
+gate_revision: gate_a_v1
+sample_count_per_category: 12
+selection: lexicographic_even_spacing
+median_extra_l1_max: 0.02
+p95_extra_l1_max: 0.05
+allow_non_finite: false

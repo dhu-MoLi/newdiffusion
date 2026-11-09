@@ -1,0 +1,29 @@
+{
+  "class_name": "capsules",
+  "image_subdir": "composed",
+  "mask_subdir": "mask_defect",
+  "generated_root": "/home/dell/2T/lm/new_projects/category_anomaly_diffusion/runs/v06_c/visa/capsules/eval/20260922-seas-500/generated_layout",
+  "mvtec_path": "/home/dell/2T/lm/new_projects/category_anomaly_diffusion/runs/v06_c/visa/capsules/mvtec_layout_seas_20260922",
+  "img_size": 256,
+  "loc_bs": 16,
+  "loc_accum": 1,
+  "loc_effective_bs": 16,
+  "IS_per_anomaly": {
+    "bubble": 1.5238733350531521,
+    "combined": 1.529326875633541
+  },
+  "IS": 1.5266001053433467,
+  "IC_LPIPS_per_anomaly": {
+    "bubble": 0.3726550042629242,
+    "combined": 0.3669355809688568
+  },
+  "IC_LPIPS": 0.3697952926158905,
+  "loc_auroc_image": 0.9927860696517413,
+  "loc_ap_image": 0.9941670155990537,
+  "loc_auroc_pixel": 0.9424164863006097,
+  "loc_ap_pixel": 0.4865570458375065,
+  "loc_f1_image": 0.9618320610687023,
+  "loc_f1_pixel": 0.5122726736320892,
+  "loc_pro_pixel": 0.8805956224717401,
+  "cls_accuracy": 0.7014925373134329
+}

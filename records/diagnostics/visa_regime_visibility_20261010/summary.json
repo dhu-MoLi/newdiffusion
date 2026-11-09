@@ -1,0 +1,29 @@
+{
+  "schema_version": "v06_c_regime_visibility_v1",
+  "diagnostic_only": true,
+  "not_official_generate": true,
+  "not_new_inpaint": true,
+  "area_ratio_above_0_40": [
+    {"category": "cashew", "slug": "stuck_together", "ratio_mean": 0.705},
+    {"category": "pipe_fryum", "slug": "stuck_together", "ratio_mean": 0.558}
+  ],
+  "area_ratio_0_10_to_0_40": [
+    {"category": "pcb1", "slug": "missing", "ratio_mean": 0.225},
+    {"category": "fryum", "slug": "fryum_stuck_together", "ratio_mean": 0.178}
+  ],
+  "pixel_ap_0_100": {
+    "ours_official": {"candle": 42.32, "capsules": 87.24, "cashew": 30.82, "chewinggum": 85.22, "fryum": 55.89, "macaroni1": 14.97, "macaroni2": 4.69, "pcb1": 38.61, "pcb2": 18.02, "pcb3": 33.58, "pcb4": 10.08, "pipe_fryum": 58.08},
+    "magic": {"candle": 47.1, "capsules": 81.5, "cashew": 92.0, "chewinggum": 30.0, "fryum": 54.3, "macaroni1": 57.0, "macaroni2": 40.4, "pcb1": 78.7, "pcb2": 24.9, "pcb3": 35.4, "pcb4": 71.3, "pipe_fryum": 96.3}
+  },
+  "visibility_256": {
+    "rule": "cv2 bilinear to 256; mask nearest; mean absolute RGB difference inside the mask; fraction of mask pixels with L-infinity change at least 8",
+    "macaroni1": {
+      "small_cracks": {"mask256_median": 18, "mean_abs": 5.88, "frac_linf_ge_8": 0.30},
+      "small_scratches": {"mask256_median": 24, "mean_abs": 6.03, "frac_linf_ge_8": 0.40},
+      "different_colour_spot": {"mask256_median": 21, "mean_abs": 9.04, "frac_linf_ge_8": 0.56}
+    },
+    "macaroni2_failed_types_no_samples": ["different_color_spot", "small_cracks"],
+    "pcb4_missing": {"mask256_median": 172, "mean_abs": 51.61, "frac_linf_ge_8": 0.96}
+  },
+  "judgment": "Do not start per-category pretrained inpainting. Module A inpaint only fills the few-shot hole. Missing-part synthesis removes a part; a completion model fills it back. pcb4 pixels already change strongly, so a stronger inpainter does not fix that class. Macaroni changes are weak after the 256 resize."
+}

@@ -1,0 +1,37 @@
+schema_version: v06_b_mask_first_v1
+category: cable
+defect_types: [bent_wire, cut_inner_insulation, cut_outer_insulation, poke_insulation]
+source_renderer_manifest: configs/checkpoints/p2_b2_cable_renderer.yaml
+source_experiment_config: configs/experiments/v06_b_cable_type_prompts.yaml
+source_model_config: configs/experiments/p2_a1_cable_factorized.yaml
+image_size: 512
+proposal_radius: 24
+support_corner_width: 16
+planner_base_channels: 32
+planner_type_embedding_dim: 64
+planner_seed_noise_channels: 0
+planner_training_steps: 2000
+planner_learning_rate: 0.0002
+planner_gradient_clip: 1.0
+planner_dice_weight: 1.0
+planner_calibration_normal_count: 4
+planner_threshold_candidates: [0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70]
+renderer_training_steps: 1600
+renderer_learning_rates:
+  shared_renderer: 0.00005
+  type_condition: 0.0001
+renderer_gradient_clip: 1.0
+renderer_loss_weights:
+  epsilon_gt: 1.0
+  x0_gt: 0.5
+  rgb_gt: 1.0
+  edge_gt: 0.5
+  type_margin: 0.25
+appearance_min_snr: 0.1
+ranking_target_ratio: 0.95
+ddim_steps: 50
+seed: 20260911
+panel_normal_count: 4
+panel_seeds: [2026091101, 2026091102]
+blind_panel_seed: 2026091103
+output_relpath: v06_b/cable/mask-first-causal-renderer/seed-20260911-scheme2-a-to-h

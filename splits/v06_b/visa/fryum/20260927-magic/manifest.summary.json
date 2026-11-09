@@ -1,0 +1,20 @@
+{
+  "category": "fryum",
+  "collapsed_from": [],
+  "defect_types": [
+    "burnt",
+    "corner or edge breakage",
+    "different colour spot",
+    "fryum stuck together",
+    "middle breakage",
+    "similar colour spot",
+    "small scratches"
+  ],
+  "fewshot_train": 27,
+  "manifest": "/home/dell/2T/lm/new_projects/category_anomaly_diffusion/runs/v06_b/visa/fryum/splits/20260927-magic/manifest.jsonl",
+  "normal_train": 450,
+  "open_dev_report": 60,
+  "schema_version": "v06_c_visa_split_v1",
+  "source_root": "/home/dell/2T/数据集/AD/VisA",
+  "split_id": "visa_magic_single_anomaly_amazon1cls_v1"
+}

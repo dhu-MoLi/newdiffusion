@@ -1,0 +1,17 @@
+schema_version: p2_b2_type_prompt_training_v1
+category: hazelnut
+defect_types: [crack, cut, hole, print]
+prompts:
+  crack: a photo of a hazelnut with thin cracks in the shell and fractured edges
+  cut: a photo of a hazelnut with a sharp cut in the shell
+  hole: a photo of a hazelnut with a puncture hole in the shell
+  print: a photo of a hazelnut with dark printed characters and structured ink strokes on the shell surface
+steps: 400
+learning_rate: 0.0001
+type_rank: 8
+source_checkpoint_relpath: p2_a1/hazelnut/factorized/seed-20260817-attempt1/checkpoint
+source_checkpoint_hashes:
+  adapter.safetensors: 06cad68ee60e42479aa42fe2728024add0476fc3f7311c41be7904bbdd83ceb3
+  conditioner.safetensors: 0003cb5c597d8fdb35812b98e09c4c3bce26745f10424f5b636f61f3291038d8
+  metadata.json: 49d9c1c641e28e90ad3b3a28565863719be22dce3c34030985abe3c8ca8c6a67
+evaluation_mode: diagnostic_only

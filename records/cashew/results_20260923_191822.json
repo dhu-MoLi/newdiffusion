@@ -1,0 +1,43 @@
+{
+  "class_name": "cashew",
+  "image_subdir": "composed",
+  "mask_subdir": "mask_defect",
+  "generated_root": "/home/dell/2T/lm/new_projects/category_anomaly_diffusion/runs/v06_c/visa/cashew/eval/20260922-seas-500/generated_layout",
+  "mvtec_path": "/home/dell/2T/lm/new_projects/category_anomaly_diffusion/runs/v06_c/visa/cashew/mvtec_layout_seas_20260922",
+  "img_size": 256,
+  "loc_bs": 16,
+  "loc_accum": 1,
+  "loc_effective_bs": 16,
+  "IS_per_anomaly": {
+    "burnt": 1.3262116822697219,
+    "combined": 1.3613836908256063,
+    "corner_or_edge_breakage": 1.3519956483375424,
+    "different_colour_spot": 1.3363244891873296,
+    "middle_breakage": 1.3956411251694791,
+    "same_colour_spot": 1.3193823114124874,
+    "small_holes": 1.3176187124377416,
+    "small_scratches": 1.3057937047387984,
+    "stuck_together": 1.7655242049430995
+  },
+  "IS": 1.3866528410357564,
+  "IC_LPIPS_per_anomaly": {
+    "burnt": 0.3049639165401459,
+    "combined": 0.3121248185634613,
+    "corner_or_edge_breakage": 0.3066498339176178,
+    "different_colour_spot": 0.31102439761161804,
+    "middle_breakage": 0.3216954469680786,
+    "same_colour_spot": 0.30141299962997437,
+    "small_holes": 0.2998388707637787,
+    "small_scratches": 0.2943918704986572,
+    "stuck_together": 0.35451963543891907
+  },
+  "IC_LPIPS": 0.3118468655480279,
+  "loc_auroc_image": 0.966086956521739,
+  "loc_ap_image": 0.9803635208921153,
+  "loc_auroc_pixel": 0.924162654544584,
+  "loc_ap_pixel": 0.36001989812300844,
+  "loc_f1_image": 0.9264705882352942,
+  "loc_f1_pixel": 0.3866238770862752,
+  "loc_pro_pixel": 0.8753544461249093,
+  "cls_accuracy": 0.4927536231884058
+}

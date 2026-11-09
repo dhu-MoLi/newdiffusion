@@ -1,0 +1,63 @@
+category,extra_a_pilot,type,slug,extra_a_selected,extra_a_eligible,n,fewshot_n,heldout_n,fewshot_ids,heldout_ids,train_good_n,test_good_n
+candle,True,chunk of wax missing,chunk_of_wax_missing,True,True,12,4,8,000 001 002 003,004 007 008 009 015 055 087 090,667,333
+candle,True,damaged corner of packaging,damaged_corner_of_packaging,True,True,18,6,12,010 011 012 013 014 016,018 019 020 021 022 023 024 025 026 027 028 029,667,333
+candle,True,different colour spot,different_colour_spot,True,True,15,5,10,040 041 042 043 045,046 047 048 049 051 052 054 057 058 059,667,333
+candle,True,extra wax in candle,extra_wax_in_candle,True,True,9,3,6,060 061 062,063 064 065 066 067 068,667,333
+candle,True,foreign particals on candle,foreign_particals_on_candle,False,True,12,4,8,071 072 073 074,075 076 077 078 079 080 083 084,667,333
+candle,True,wax melded out of the candle,wax_melded_out_of_the_candle,False,True,12,4,8,085 086 088 089,091 093 094 095 096 097 098 099,667,333
+candle,True,weird candle wick,weird_candle_wick,False,True,9,3,6,030 031 032,033 035 036 037 038 039,667,333
+capsules,True,bubble,bubble,True,True,30,10,20,000 001 002 003 004 005 006 007 008 009,010 011 012 013 014 015 016 017 018 019 020 021 022 023 024 025 026 027 028 029,402,200
+cashew,True,burnt,burnt,True,True,10,3,7,001 003 004,005 006 007 008 010 011 052,334,166
+cashew,True,corner or edge breakage,corner_or_edge_breakage,True,True,14,4,10,012 013 014 015,016 017 018 019 020 021 022 023 024 048,334,166
+cashew,True,different colour spot,different_colour_spot,True,True,9,3,6,025 026 027,028 029 030 031 057 068,334,166
+cashew,True,middle breakage,middle_breakage,True,True,6,2,4,032 033,034 035 036 041,334,166
+cashew,True,same colour spot,same_colour_spot,False,True,10,3,7,044 045 047,049 050 051 053 054 056 059,334,166
+cashew,True,small holes,small_holes,False,True,20,6,14,038 039 040 043 061 062,063 064 065 066 067 069 070 071 072 073 074 075 076 077,334,166
+cashew,True,small scratches,small_scratches,False,True,15,5,10,078 079 080 081 082,083 084 085 086 087 088 089 090 091 093,334,166
+cashew,True,stuck together,stuck_together,False,True,6,2,4,094 095,096 097 098 099,334,166
+chewinggum,True,chunk of gum missing,chunk_of_gum_missing,True,True,16,5,11,016 017 020 023 024,040 043 047 048 049 050 052 054 056 058 062,336,167
+chewinggum,True,corner missing,corner_missing,True,True,13,4,9,005 025 026 027,028 029 031 033 034 035 036 037 039,336,167
+chewinggum,True,scratches,scratches,True,True,9,3,6,066 067 068,069 070 071 072 073 074,336,167
+chewinggum,True,similar colour spot,similar_colour_spot,True,True,19,6,13,075 076 077 078 079 082,083 084 087 088 089 090 092 094 095 096 097 098 099,336,167
+fryum,False,burnt,burnt,True,True,9,3,6,000 001 002,003 004 005 006 008 009,334,166
+fryum,False,corner or edge breakage,corner_or_edge_breakage,True,True,8,2,6,010 011,012 013 014 015 018 019,334,166
+fryum,False,different colour spot,different_colour_spot,True,True,14,4,10,020 021 023 024,025 027 029 031 032 033 034 036 038 039,334,166
+fryum,False,fryum stuck together,fryum_stuck_together,True,True,20,6,14,040 041 042 043 044 045,046 047 048 049 050 051 052 053 054 055 056 057 058 059,334,166
+fryum,False,middle breakage,middle_breakage,False,True,18,6,12,016 060 061 062 063 064,067 068 070 071 072 073 074 075 076 077 078 079,334,166
+fryum,False,similar colour spot,similar_colour_spot,False,True,12,4,8,007 022 035 037,083 084 086 088 089 096 097 099,334,166
+fryum,False,small scratches,small_scratches,False,True,6,2,4,090 091,092 093 094 095,334,166
+macaroni1,False,chip around edge and corner,chip_around_edge_and_corner,True,True,17,5,12,000 001 002 003 004,007 008 010 011 012 013 014 016 017 018 020 021,667,333
+macaroni1,False,different colour spot,different_colour_spot,True,True,15,5,10,023 024 025 026 027,028 029 030 031 032 033 034 035 036 037,667,333
+macaroni1,False,similar colour spot,similar_colour_spot,True,True,21,7,14,048 049 050 051 052 053 054,056 057 058 059 060 061 062 063 064 065 066 067 068 069,667,333
+macaroni1,False,small cracks,small_cracks,True,True,11,3,8,071 072 074,075 076 077 079 081 082 083 084,667,333
+macaroni1,False,small scratches,small_scratches,False,True,16,5,11,080 085 086 087 088,089 090 091 092 093 094 095 096 097 098 099,667,333
+macaroni2,False,breakage down the middle,breakage_down_the_middle,False,False,1,0,1,,004,667,333
+macaroni2,False,color spot similar to the object,color_spot_similar_to_the_object,True,True,23,7,16,010 011 012 013 014 015 016,017 018 019 020 021 022 023 024 025 026 027 028 029 041 042 043,667,333
+macaroni2,False,different color spot,different_color_spot,True,True,12,4,8,030 031 032 033,034 035 036 037 038 039 040 044,667,333
+macaroni2,False,small chip around edge,small_chip_around_edge,True,True,19,6,13,045 047 048 049 050 051,052 053 054 055 056 057 058 059 060 063 064 066 069,667,333
+macaroni2,False,small cracks,small_cracks,True,True,7,2,5,072 073,074 075 076 078 081,667,333
+macaroni2,False,small scratches,small_scratches,False,True,16,5,11,070 085 086 087 088,089 090 091 092 093 094 095 096 097 098 099,667,333
+pcb1,False,bent,bent,True,True,14,4,10,000 001 002 003,004 005 006 007 008 010 011 012 013 014,670,334
+pcb1,False,melt,melt,True,True,46,15,31,015 016 017 018 019 021 022 023 024 025 026 027 028 029 030,031 032 033 034 035 036 037 038 039 060 061 062 063 064 065 066 067 068 070 071 072 073 074 075 076 077 078 079 081 082 083,670,334
+pcb1,False,missing,missing,True,True,17,5,12,041 042 043 044 045,046 047 048 049 050 052 054 055 056 057 058 059,670,334
+pcb1,False,scratch,scratch,True,True,14,4,10,085 086 087 088,089 090 091 092 093 094 095 096 098 099,670,334
+pcb2,False,bent,bent,True,True,12,4,8,000 002 003 004,005 007 008 009 011 012 013 014,668,333
+pcb2,False,melt,melt,True,True,48,16,32,015 016 017 018 019 020 021 022 023 024 025 026 027 028 029 030,031 032 034 035 036 039 058 060 061 062 063 064 065 066 067 068 069 070 071 072 073 074 075 076 077 078 079 080 081 082 083 084,668,333
+pcb2,False,missing,missing,True,True,17,5,12,040 041 042 044 045,046 047 049 050 051 052 053 054 055 056 057 059,668,333
+pcb2,False,scratch,scratch,True,True,14,4,10,085 086 087 088,089 090 091 092 093 094 095 097 098 099,668,333
+pcb3,False,bent,bent,True,True,19,6,13,000 001 002 003 004 005,007 008 009 010 011 012 013 014 015 016 017 018 019,671,335
+pcb3,False,melt,melt,True,True,38,12,26,021 022 023 024 025 026 027 028 029 030 031 032,033 034 035 036 037 038 039 060 061 062 063 064 065 066 067 068 069 070 071 072 073 074 075 076 077 078,671,335
+pcb3,False,missing,missing,True,True,16,5,11,040 041 042 043 044,047 049 050 052 053 054 055 056 057 058 059,671,335
+pcb3,False,scratch,scratch,True,True,20,6,14,080 081 082 083 084 085,086 087 088 089 090 091 092 093 094 095 096 097 098 099,671,335
+pcb4,False,burnt,burnt,False,False,2,0,2,,008 027,670,335
+pcb4,False,damage,damage,True,True,7,2,5,005 011,012 015 018 020 023,670,335
+pcb4,False,extra,extra,True,True,12,4,8,025 026 028 032,038 041 044 083 091 093 094 099,670,335
+pcb4,False,missing,missing,True,True,19,6,13,046 048 049 051 052 053,055 057 059 061 062 063 065 066 067 068 069 072 073,670,335
+pcb4,False,scratch,scratch,False,False,2,0,2,,076 077,670,335
+pcb4,False,wrong place,wrong_place,False,False,2,0,2,,090 096,670,335
+pipe_fryum,False,burnt,burnt,True,True,15,5,10,000 001 002 003 004,005 006 007 008 009 010 011 012 013 014,334,166
+pipe_fryum,False,corner and edge breakage,corner_and_edge_breakage,True,True,15,5,10,015 016 017 018 019,020 021 022 023 024 025 026 027 028 029,334,166
+pipe_fryum,False,different colour spot,different_colour_spot,True,True,10,3,7,030 031 032,033 034 035 036 037 038 039,334,166
+pipe_fryum,False,similar colour spot,similar_colour_spot,True,True,20,6,14,050 051 052 053 054 055,056 057 058 059 060 061 062 063 064 065 066 067 068 069,334,166
+pipe_fryum,False,small scratches,small_scratches,False,True,18,6,12,070 071 072 073 075 076,077 078 079 080 081 082 083 084 085 086 088 089,334,166
+pipe_fryum,False,stuck together,stuck_together,False,True,10,3,7,090 091 092,093 094 095 096 097 098 099,334,166

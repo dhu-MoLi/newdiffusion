@@ -1,0 +1,5 @@
+dataset_root: /home/dell/2T/lm/new_projects/category_anomaly_diffusion/data/MVTec
+model_root: /home/dell/2T/lm/DualAnoDiff-main/stable-diffusion-v1-5-full
+runs_root: /home/dell/2T/lm/new_projects/category_anomaly_diffusion/runs
+image_size: 512
+num_inversion_steps: 50

@@ -1,0 +1,33 @@
+schema_version: p2_b3_checkpoint_paired_probe_v1
+category: hazelnut
+defect_types: [crack, cut, hole, print]
+prompts:
+  crack: a photo of a hazelnut with thin cracks in the shell and fractured edges
+  cut: a photo of a hazelnut with a sharp cut in the shell
+  hole: a photo of a hazelnut with a puncture hole in the shell
+  print: a photo of a hazelnut with dark printed characters and structured ink strokes on the shell surface
+baseline_checkpoint_relpath: p2_a1/hazelnut/factorized/seed-20260817-attempt1/checkpoint
+baseline_checkpoint_hashes:
+  adapter.safetensors: 06cad68ee60e42479aa42fe2728024add0476fc3f7311c41be7904bbdd83ceb3
+  conditioner.safetensors: 0003cb5c597d8fdb35812b98e09c4c3bce26745f10424f5b636f61f3291038d8
+  metadata.json: 49d9c1c641e28e90ad3b3a28565863719be22dce3c34030985abe3c8ca8c6a67
+candidate_checkpoint_relpath: p2_b2/hazelnut/type-prompt-training/seed-20260817-attempt1/checkpoint
+candidate_checkpoint_hashes:
+  adapter.safetensors: 520fdbd577ba6da80855ecf82b9627e53a41455bf804f0d0c713af817649af6a
+  conditioner.safetensors: 4247fed4526671e6e17da7adf78b4b15b30fd873f65be2b074c6e450e49fb073
+  metadata.json: 80f7f6e2575c827a89bbaf98a946f8668c36db9087d9bcbb9f4769ec042a5da8
+candidate_run_hashes:
+  report.json: 9c3e4badf2316cf2bf1812c149d2baa9f855462c641b893d9503f5178584e634
+  provenance.json: e03a64c37750f6491870f6b9d8e529b374057819b9182d52bc2a71c9000b2696
+reference_run_relpath: p2_b1/hazelnut/heldout-generation/seed-20260817-attempt2
+reference_git_head: 4bd6d47d83292107c9c68f99f841eb46d000789e
+reference_hashes:
+  metrics.jsonl: 5f08113369adff8597c9cc47ece8e30ae67414ce84cd16ba477dc7633267b1af
+  pairwise_metrics.jsonl: 64207a3adfd59b38b703c80c40d1a457dbd9a686dad6adc872e66a720a3052be
+  provenance.json: 3776a5d7a6bce2931db48e4b35e01859786466f24000a24c519f646acfac5a8f
+  report.json: 9cbd22cc3380b4bca97ebb1614e832a985ea74da78440d46d9335e450ece6f93
+sample_count: 16
+blind_seed: 202608179
+denoise_steps: 50
+evaluation_mode: inference_only_checkpoint_probe
+causal_difference: checkpoint_weights_only

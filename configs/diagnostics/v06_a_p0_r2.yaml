@@ -1,0 +1,15 @@
+schema_version: v06_a_p0_r2_f1
+status: awaiting_human_review
+g0_config: configs/diagnostics/v06_a_g0_rc2.yaml
+context_mode: spatial_ring_stencil
+context_version: v06_a_ctx_r2_f1
+lambda_geo: 1.0
+lambda_ctx: 2.0
+context_temperature: 0.35
+context_outer_px: 72
+context_gaps: [32, 48]
+canonical_gap_px: 32
+context_stencil_spacing_px: 8
+context_min_observable_fraction: 0.75
+formal_targets_materialized: false
+training_authorized: false

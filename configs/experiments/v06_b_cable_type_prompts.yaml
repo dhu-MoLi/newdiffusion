@@ -1,0 +1,9 @@
+schema_version: v06_b_type_prompts_v1
+category: cable
+defect_types: [bent_wire, cut_inner_insulation, cut_outer_insulation, poke_insulation]
+type_rank: 8
+prompts:
+  bent_wire: a photo of a cable with a bent conductor wire
+  cut_inner_insulation: a photo of a cable with a cut in the inner insulation
+  cut_outer_insulation: a photo of a cable with a cut in the outer insulation
+  poke_insulation: a photo of a cable with a poke puncture through the insulation

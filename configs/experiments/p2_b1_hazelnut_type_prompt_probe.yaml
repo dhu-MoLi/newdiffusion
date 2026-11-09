@@ -1,0 +1,16 @@
+schema_version: p2_b1_type_prompt_probe_v1
+category: hazelnut
+normal_prompt: a photo of a normal hazelnut
+prompts:
+  crack: a photo of a hazelnut with thin cracks in the shell and fractured edges
+  cut: a photo of a hazelnut with a sharp cut in the shell
+  hole: a photo of a hazelnut with a puncture hole in the shell
+  print: a photo of a hazelnut with a dark printed mark on the shell surface
+reference_git_head: 4bd6d47d83292107c9c68f99f841eb46d000789e
+reference_hashes:
+  metrics.jsonl: 5f08113369adff8597c9cc47ece8e30ae67414ce84cd16ba477dc7633267b1af
+  pairwise_metrics.jsonl: 64207a3adfd59b38b703c80c40d1a457dbd9a686dad6adc872e66a720a3052be
+  provenance.json: 3776a5d7a6bce2931db48e4b35e01859786466f24000a24c519f646acfac5a8f
+  report.json: 9cbd22cc3380b4bca97ebb1614e832a985ea74da78440d46d9335e450ece6f93
+sample_count: 16
+blind_seed: 202608177

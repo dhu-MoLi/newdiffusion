@@ -1,0 +1,19 @@
+{
+  "class_name": "fryum",
+  "image_subdir": "composed",
+  "mask_subdir": "mask_defect",
+  "generated_root": "/home/dell/2T/lm/new_projects/category_anomaly_diffusion/runs/v06_c/visa/fryum/eval/20260927-magic-500/generated_layout",
+  "mvtec_path": "/home/dell/2T/lm/new_projects/category_anomaly_diffusion/runs/v06_c/visa/fryum/mvtec_layout_magic_20260927",
+  "img_size": 256,
+  "loc_bs": 16,
+  "loc_accum": 1,
+  "loc_effective_bs": 16,
+  "loc_auroc_image": 0.87,
+  "loc_ap_image": 0.9077770789304586,
+  "loc_auroc_pixel": 0.9591456754102748,
+  "loc_ap_pixel": 0.5588663885858027,
+  "loc_f1_image": 0.819672131147541,
+  "loc_f1_pixel": 0.5484150892454169,
+  "loc_pro_pixel": 0.8760152083187212,
+  "cls_accuracy": 0.4166666666666667
+}

@@ -1,0 +1,10 @@
+schema_version: v06_a_diag_atlas_prop_p2
+status: isolation_p2_cascade
+category: hazelnut
+include_a0v: true
+# Identities come from the frozen Hazelnut P2 open-normal schedule.
+# Do not list rows here; that would allow post-hoc picking.
+experiment: configs/experiments/v06_a_hazelnut_rc1.yaml
+paths: configs/paths/omen-home.yaml
+b_experiment: configs/experiments/v06_b_hazelnut_mask_first.yaml
+b_freeze: configs/checkpoints/v06_b_hazelnut_mask_first_causal_renderer.yaml

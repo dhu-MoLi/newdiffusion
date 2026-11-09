@@ -1,0 +1,10 @@
+schema_version: v06_a_diag_atlas_prop_extra_a
+status: isolation_extra_a
+# Selection is computed from disk by frozen rules, then checked against these lists.
+expected_mvtec: [bottle, capsule]
+expected_visa: [candle, capsules, cashew, chewinggum]
+mvtec_rule: object_not_used_not_texture_not_transistor_lex2
+visa_rule: anno_categories_lex4_single_label_min6_lex4
+fewshot_rule: floor_n_over_3
+normal_count: 4
+panel_seeds: [2026082801, 2026082802]

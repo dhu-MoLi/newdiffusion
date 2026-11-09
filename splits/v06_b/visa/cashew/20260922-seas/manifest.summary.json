@@ -1,0 +1,22 @@
+{
+  "category": "cashew",
+  "collapsed_from": [],
+  "defect_types": [
+    "burnt",
+    "combined",
+    "corner or edge breakage",
+    "different colour spot",
+    "middle breakage",
+    "same colour spot",
+    "small holes",
+    "small scratches",
+    "stuck together"
+  ],
+  "fewshot_train": 31,
+  "manifest": "/home/dell/2T/lm/new_projects/category_anomaly_diffusion/runs/v06_b/visa/cashew/splits/20260922-seas/manifest.jsonl",
+  "normal_train": 450,
+  "open_dev_report": 69,
+  "schema_version": "v06_c_visa_split_v1",
+  "source_root": "/home/dell/2T/数据集/AD/VisA",
+  "split_id": "visa_seas_type_amazon1cls_v1"
+}

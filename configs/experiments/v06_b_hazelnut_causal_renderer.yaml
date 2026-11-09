@@ -1,0 +1,30 @@
+schema_version: v06_b_causal_renderer_v1
+category: hazelnut
+defect_types: [crack, cut, hole, print]
+source_renderer_manifest: configs/checkpoints/p2_b2_hazelnut_renderer.yaml
+source_experiment_config: configs/experiments/p2_b2_hazelnut_type_prompt_training.yaml
+source_model_config: configs/experiments/p2_a1_hazelnut_factorized.yaml
+image_size: 512
+proposal_radius: 24
+support_corner_width: 16
+rollout_steps: 20
+backprop_steps: 4
+checkpoint_tracked_steps: false
+feature_channels: 320
+head_hidden_channels: 64
+realization_threshold: 0.5
+visibility_margin: 0.05
+loss_weights:
+  diffusion: 1.0
+  visible: 1.0
+  ring: 1.0
+  mask: 1.0
+  consistency: 0.25
+training_steps: 400
+learning_rate: 0.00005
+gradient_clip: 1.0
+seed: 20260826
+checkpoint_every: 100
+panel_normal_count: 4
+panel_seeds: [2026082601, 2026082602]
+output_relpath: v06_b/hazelnut/causal-renderer/seed-20260826-attempt2

@@ -1,0 +1,19 @@
+# 数据集与生成物（体积大，不入库）
+MVTec
+eval_inputs/
+runs/
+checkpoints/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+
+# 编辑器 / 系统
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

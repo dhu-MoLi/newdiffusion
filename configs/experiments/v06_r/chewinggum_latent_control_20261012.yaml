@@ -1,0 +1,12 @@
+schema_version: v06_r_pilot_launch_v1
+inputs: /home/dell/2T/lm/new_projects/category_anomaly_diffusion/runs/v06_r/visa/chewinggum/20261012-strong-r/inputs.json
+paths_yaml: /home/dell/2T/lm/new_projects/category_anomaly_diffusion/.worktrees/visa-r-baseline-20261012/configs/paths/omen-home.yaml
+steps: 1200
+seed: 20260913
+context_fill_seed: 202609130
+noise_seed: 202609131
+minimum_snr: 0.1
+save_every: 300
+arm: latent_control
+rgb_weight: 0.0
+edge_weight: 0.0

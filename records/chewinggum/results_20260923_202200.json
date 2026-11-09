@@ -1,0 +1,35 @@
+{
+  "class_name": "chewinggum",
+  "image_subdir": "composed",
+  "mask_subdir": "mask_defect",
+  "generated_root": "/home/dell/2T/lm/new_projects/category_anomaly_diffusion/runs/v06_c/visa/chewinggum/eval/20260922-seas-500/generated_layout",
+  "mvtec_path": "/home/dell/2T/lm/new_projects/category_anomaly_diffusion/runs/v06_c/visa/chewinggum/mvtec_layout_seas_20260922",
+  "img_size": 256,
+  "loc_bs": 16,
+  "loc_accum": 1,
+  "loc_effective_bs": 16,
+  "IS_per_anomaly": {
+    "chunk_of_gum_missing": 1.2875651095772422,
+    "combined": 1.3117703728800947,
+    "corner_missing": 1.3067679765565983,
+    "scratches": 1.1949722959829248,
+    "similar_colour_spot": 1.2452777990699317
+  },
+  "IS": 1.2692707108133583,
+  "IC_LPIPS_per_anomaly": {
+    "chunk_of_gum_missing": 0.2973421514034271,
+    "combined": 0.28305721282958984,
+    "corner_missing": 0.2660500109195709,
+    "scratches": 0.2962459325790405,
+    "similar_colour_spot": 0.28832560777664185
+  },
+  "IC_LPIPS": 0.2862041831016541,
+  "loc_auroc_image": 0.9876470588235294,
+  "loc_ap_image": 0.9922639236528634,
+  "loc_auroc_pixel": 0.9915859575070062,
+  "loc_ap_pixel": 0.8307020054459944,
+  "loc_f1_image": 0.962962962962963,
+  "loc_f1_pixel": 0.7912553026841783,
+  "loc_pro_pixel": 0.9219688586329244,
+  "cls_accuracy": 0.6323529411764706
+}

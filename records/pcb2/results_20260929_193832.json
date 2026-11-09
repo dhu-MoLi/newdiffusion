@@ -1,0 +1,19 @@
+{
+  "class_name": "pcb2",
+  "image_subdir": "composed",
+  "mask_subdir": "mask_defect",
+  "generated_root": "/home/dell/2T/lm/new_projects/category_anomaly_diffusion/runs/v06_c/visa/pcb2/eval/20260927-magic-500/generated_layout",
+  "mvtec_path": "/home/dell/2T/lm/new_projects/category_anomaly_diffusion/runs/v06_c/visa/pcb2/mvtec_layout_magic_20260927",
+  "img_size": 256,
+  "loc_bs": 16,
+  "loc_accum": 1,
+  "loc_effective_bs": 16,
+  "loc_auroc_image": 0.8620967741935484,
+  "loc_ap_image": 0.8066621222307812,
+  "loc_auroc_pixel": 0.9165902310225611,
+  "loc_ap_pixel": 0.18021160366323064,
+  "loc_f1_image": 0.7419354838709677,
+  "loc_f1_pixel": 0.26890535927505005,
+  "loc_pro_pixel": 0.7452371199887985,
+  "cls_accuracy": 0.41935483870967744
+}

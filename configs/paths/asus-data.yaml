@@ -1,0 +1,5 @@
+dataset_root: /mnt/C4400D13400D0DBC/lm/code/newproject/data/VisA
+model_root: /mnt/C4400D13400D0DBC/lm/code/newproject/pretrained/stable-diffusion-v1-5-full
+runs_root: /mnt/C4400D13400D0DBC/lm/code/category_anomaly_diffusion/runs
+image_size: 512
+num_inversion_steps: 50

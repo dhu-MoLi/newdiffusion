@@ -1,0 +1,53 @@
+schema_version: v06_b_causal_renderer_v2
+category: hazelnut
+defect_types: [crack, cut, hole, print]
+source_renderer_manifest: configs/checkpoints/p2_b2_hazelnut_renderer.yaml
+source_experiment_config: configs/experiments/p2_b2_hazelnut_type_prompt_training.yaml
+source_model_config: configs/experiments/p2_a1_hazelnut_factorized.yaml
+prompts:
+  crack: a photo of a hazelnut with a narrow jagged dark crack, branching fissures, and bright fractured shell edges
+  cut: a photo of a hazelnut with a long thin sharp incision, bright scraped lips, and a dark inner line
+  hole: a photo of a hazelnut with a compact dark puncture cavity and an irregular bright chipped rim
+  print: a photo of a hazelnut with bright white printed characters and disconnected structured strokes on the shell
+parent_experiment_config: configs/experiments/v06_b_hazelnut_causal_renderer.yaml
+parent_checkpoint_relpath: v06_b/hazelnut/causal-renderer/seed-20260826-attempt2/checkpoint
+parent_checkpoint_step: 400
+image_size: 512
+proposal_radius: 24
+support_corner_width: 16
+rollout_steps: 20
+backprop_steps: 4
+checkpoint_tracked_steps: false
+feature_channels: 320
+head_hidden_channels: 64
+realization_threshold: 0.5
+visibility_margin: 0.05
+appearance_min_snr: 0.1
+ranking_target_ratio: 0.95
+amp_initial_scale: 4096.0
+loss_weights:
+  epsilon_gt: 1.0
+  x0_gt: 0.5
+  x0_ring: 0.25
+  epsilon_outside: 0.05
+  rgb_gt: 1.0
+  sobel_gt: 0.5
+  type_margin: 0.25
+  visible: 0.25
+  ring: 1.0
+  mask: 1.0
+  consistency: 0.25
+training_steps: 1200
+learning_rates:
+  shared_renderer: 0.00005
+  type_condition: 0.0001
+  realization_head: 0.00001
+gradient_clips:
+  renderer: 1.0
+  head: 1.0
+seed: 20260826
+checkpoint_every: 300
+panel_normal_count: 4
+panel_seeds: [2026082601, 2026082602]
+blind_panel_seed: 2026082603
+output_relpath: v06_b/hazelnut/causal-renderer/seed-20260826-attempt3

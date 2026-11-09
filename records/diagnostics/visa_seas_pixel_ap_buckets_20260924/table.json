@@ -1,0 +1,336 @@
+{
+  "candle": {
+    "buckets": {
+      "combined": {
+        "ap_pixel_anomalies_only": 0.3899812617110752,
+        "ap_pixel_with_goods": 0.3693335206428484,
+        "n_anomaly_images": 9,
+        "n_pos_pixels": 1127,
+        "pos_pixel_share": 0.0915441475103566,
+        "types": [
+          "combined"
+        ]
+      },
+      "extra_a": {
+        "ap_pixel_anomalies_only": 0.26755453563183335,
+        "ap_pixel_with_goods": 0.24216226743549338,
+        "n_anomaly_images": 36,
+        "n_pos_pixels": 5767,
+        "pos_pixel_share": 0.4684428559824547,
+        "types": [
+          "chunk_of_wax_missing",
+          "damaged_corner_of_packaging",
+          "different_colour_spot",
+          "extra_wax_in_candle"
+        ]
+      },
+      "new_single": {
+        "ap_pixel_anomalies_only": 0.4945439243557811,
+        "ap_pixel_with_goods": 0.4762152392544849,
+        "n_anomaly_images": 22,
+        "n_pos_pixels": 5417,
+        "pos_pixel_share": 0.44001299650718867,
+        "types": [
+          "foreign_particals_on_candle",
+          "wax_melded_out_of_the_candle",
+          "weird_candle_wick"
+        ]
+      }
+    },
+    "by_type": {
+      "chunk_of_wax_missing": {
+        "ap_pixel_with_goods": 0.720724995474081,
+        "bucket": "extra_a",
+        "n_images": 8,
+        "n_pos_pixels": 1195,
+        "pos_pixel_share": 0.09706766306555113
+      },
+      "combined": {
+        "ap_pixel_with_goods": 0.3693335206428484,
+        "bucket": "combined",
+        "n_images": 9,
+        "n_pos_pixels": 1127,
+        "pos_pixel_share": 0.0915441475103566
+      },
+      "damaged_corner_of_packaging": {
+        "ap_pixel_with_goods": 0.0926842201834162,
+        "bucket": "extra_a",
+        "n_images": 12,
+        "n_pos_pixels": 1127,
+        "pos_pixel_share": 0.0915441475103566
+      },
+      "different_colour_spot": {
+        "ap_pixel_with_goods": 0.42896109955002004,
+        "bucket": "extra_a",
+        "n_images": 10,
+        "n_pos_pixels": 33,
+        "pos_pixel_share": 0.002680529607667939
+      },
+      "extra_wax_in_candle": {
+        "ap_pixel_with_goods": 0.09038597446596927,
+        "bucket": "extra_a",
+        "n_images": 6,
+        "n_pos_pixels": 3412,
+        "pos_pixel_share": 0.27715051579887906
+      },
+      "foreign_particals_on_candle": {
+        "ap_pixel_with_goods": 0.4901249898050341,
+        "bucket": "new_single",
+        "n_images": 8,
+        "n_pos_pixels": 448,
+        "pos_pixel_share": 0.036390220128340506
+      },
+      "wax_melded_out_of_the_candle": {
+        "ap_pixel_with_goods": 0.5553247137911808,
+        "bucket": "new_single",
+        "n_images": 8,
+        "n_pos_pixels": 4362,
+        "pos_pixel_share": 0.35431727723174394
+      },
+      "weird_candle_wick": {
+        "ap_pixel_with_goods": 0.0019390734251323763,
+        "bucket": "new_single",
+        "n_images": 6,
+        "n_pos_pixels": 607,
+        "pos_pixel_share": 0.04930549914710421
+      }
+    },
+    "full_ap_pixel": 0.36766647358756566,
+    "without_combined_ap_pixel": 0.3670485622739832,
+    "without_new_single_ap_pixel": 0.2667738053666939
+  },
+  "capsules": {
+    "buckets": {
+      "combined": {
+        "ap_pixel_anomalies_only": 0.533467214315422,
+        "ap_pixel_with_goods": 0.48981419325510855,
+        "n_anomaly_images": 47,
+        "n_pos_pixels": 29853,
+        "pos_pixel_share": 0.9468425893621745,
+        "types": [
+          "combined"
+        ]
+      },
+      "extra_a": {
+        "ap_pixel_anomalies_only": 0.9102150646688231,
+        "ap_pixel_with_goods": 0.9068767486996836,
+        "n_anomaly_images": 20,
+        "n_pos_pixels": 1676,
+        "pos_pixel_share": 0.053157410637825496,
+        "types": [
+          "bubble"
+        ]
+      },
+      "new_single": {
+        "ap_pixel_anomalies_only": null,
+        "ap_pixel_with_goods": null,
+        "n_anomaly_images": 0,
+        "n_pos_pixels": 0,
+        "pos_pixel_share": 0.0,
+        "types": []
+      }
+    },
+    "by_type": {
+      "bubble": {
+        "ap_pixel_with_goods": 0.9068767486996836,
+        "bucket": "extra_a",
+        "n_images": 20,
+        "n_pos_pixels": 1676,
+        "pos_pixel_share": 0.053157410637825496
+      },
+      "combined": {
+        "ap_pixel_with_goods": 0.48981419325510855,
+        "bucket": "combined",
+        "n_images": 47,
+        "n_pos_pixels": 29853,
+        "pos_pixel_share": 0.9468425893621745
+      }
+    },
+    "full_ap_pixel": 0.4865570458375065,
+    "without_combined_ap_pixel": 0.9068767486996836,
+    "without_new_single_ap_pixel": 0.4865570458375065
+  },
+  "cashew": {
+    "buckets": {
+      "combined": {
+        "ap_pixel_anomalies_only": 0.3821864484990713,
+        "ap_pixel_with_goods": 0.35354916351476723,
+        "n_anomaly_images": 7,
+        "n_pos_pixels": 1025,
+        "pos_pixel_share": 0.014447404400467954,
+        "types": [
+          "combined"
+        ]
+      },
+      "extra_a": {
+        "ap_pixel_anomalies_only": 0.4627883980783042,
+        "ap_pixel_with_goods": 0.45190069343566963,
+        "n_anomaly_images": 27,
+        "n_pos_pixels": 4525,
+        "pos_pixel_share": 0.06378000479230975,
+        "types": [
+          "burnt",
+          "corner_or_edge_breakage",
+          "different_colour_spot",
+          "middle_breakage"
+        ]
+      },
+      "new_single": {
+        "ap_pixel_anomalies_only": 0.4497411783782509,
+        "ap_pixel_with_goods": 0.4002590465362376,
+        "n_anomaly_images": 35,
+        "n_pos_pixels": 65397,
+        "pos_pixel_share": 0.9217725908072223,
+        "types": [
+          "same_colour_spot",
+          "small_holes",
+          "small_scratches",
+          "stuck_together"
+        ]
+      }
+    },
+    "by_type": {
+      "burnt": {
+        "ap_pixel_with_goods": 0.7873324395107367,
+        "bucket": "extra_a",
+        "n_images": 7,
+        "n_pos_pixels": 815,
+        "pos_pixel_share": 0.011487448376957447
+      },
+      "combined": {
+        "ap_pixel_with_goods": 0.35354916351476723,
+        "bucket": "combined",
+        "n_images": 7,
+        "n_pos_pixels": 1025,
+        "pos_pixel_share": 0.014447404400467954
+      },
+      "corner_or_edge_breakage": {
+        "ap_pixel_with_goods": 0.34962791619812217,
+        "bucket": "extra_a",
+        "n_images": 10,
+        "n_pos_pixels": 1635,
+        "pos_pixel_share": 0.02304537189733181
+      },
+      "different_colour_spot": {
+        "ap_pixel_with_goods": 0.7592574412183384,
+        "bucket": "extra_a",
+        "n_images": 6,
+        "n_pos_pixels": 278,
+        "pos_pixel_share": 0.003918417973980577
+      },
+      "middle_breakage": {
+        "ap_pixel_with_goods": 0.42008518825506913,
+        "bucket": "extra_a",
+        "n_images": 4,
+        "n_pos_pixels": 1797,
+        "pos_pixel_share": 0.025328766544039916
+      },
+      "same_colour_spot": {
+        "ap_pixel_with_goods": 0.1508375088624998,
+        "bucket": "new_single",
+        "n_images": 7,
+        "n_pos_pixels": 424,
+        "pos_pixel_share": 0.005976292161754549
+      },
+      "small_holes": {
+        "ap_pixel_with_goods": 0.739956239041615,
+        "bucket": "new_single",
+        "n_images": 14,
+        "n_pos_pixels": 215,
+        "pos_pixel_share": 0.0030304311669274247
+      },
+      "small_scratches": {
+        "ap_pixel_with_goods": 0.044229214738494,
+        "bucket": "new_single",
+        "n_images": 10,
+        "n_pos_pixels": 1336,
+        "pos_pixel_share": 0.018830958321000183
+      },
+      "stuck_together": {
+        "ap_pixel_with_goods": 0.5678857209522488,
+        "bucket": "new_single",
+        "n_images": 4,
+        "n_pos_pixels": 63422,
+        "pos_pixel_share": 0.8939349091575401
+      }
+    },
+    "full_ap_pixel": 0.36001989812300844,
+    "without_combined_ap_pixel": 0.3661189571043114,
+    "without_new_single_ap_pixel": 0.4374532563735861
+  },
+  "chewinggum": {
+    "buckets": {
+      "combined": {
+        "ap_pixel_anomalies_only": 0.8643157443575143,
+        "ap_pixel_with_goods": 0.8632718838261397,
+        "n_anomaly_images": 29,
+        "n_pos_pixels": 22545,
+        "pos_pixel_share": 0.578121393953381,
+        "types": [
+          "combined"
+        ]
+      },
+      "extra_a": {
+        "ap_pixel_anomalies_only": 0.781327376524944,
+        "ap_pixel_with_goods": 0.779617236468465,
+        "n_anomaly_images": 39,
+        "n_pos_pixels": 16452,
+        "pos_pixel_share": 0.421878606046619,
+        "types": [
+          "chunk_of_gum_missing",
+          "corner_missing",
+          "scratches",
+          "similar_colour_spot"
+        ]
+      },
+      "new_single": {
+        "ap_pixel_anomalies_only": null,
+        "ap_pixel_with_goods": null,
+        "n_anomaly_images": 0,
+        "n_pos_pixels": 0,
+        "pos_pixel_share": 0.0,
+        "types": []
+      }
+    },
+    "by_type": {
+      "chunk_of_gum_missing": {
+        "ap_pixel_with_goods": 0.9526931886963099,
+        "bucket": "extra_a",
+        "n_images": 11,
+        "n_pos_pixels": 12104,
+        "pos_pixel_share": 0.3103828499628177
+      },
+      "combined": {
+        "ap_pixel_with_goods": 0.8632718838261397,
+        "bucket": "combined",
+        "n_images": 29,
+        "n_pos_pixels": 22545,
+        "pos_pixel_share": 0.578121393953381
+      },
+      "corner_missing": {
+        "ap_pixel_with_goods": 0.4390607284076175,
+        "bucket": "extra_a",
+        "n_images": 9,
+        "n_pos_pixels": 1426,
+        "pos_pixel_share": 0.036566915403749005
+      },
+      "scratches": {
+        "ap_pixel_with_goods": 0.4678562670779044,
+        "bucket": "extra_a",
+        "n_images": 6,
+        "n_pos_pixels": 404,
+        "pos_pixel_share": 0.01035977126445624
+      },
+      "similar_colour_spot": {
+        "ap_pixel_with_goods": 0.24866859466438856,
+        "bucket": "extra_a",
+        "n_images": 13,
+        "n_pos_pixels": 2518,
+        "pos_pixel_share": 0.06456906941559608
+      }
+    },
+    "full_ap_pixel": 0.8307020054459944,
+    "without_combined_ap_pixel": 0.779617236468465,
+    "without_new_single_ap_pixel": 0.8307020054459944
+  }
+}

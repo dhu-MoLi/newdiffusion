@@ -1,0 +1,8 @@
+schema_version: v06_a_diag_atlas_prop_cad3_a
+status: isolation_cad3_a
+expected_cad3: [Aluminum_Camera_Cover, Aluminum_Ipad, Aluminum_Middle_Frame]
+cad3_rule: folders_with_train_good_test_gt_lex3
+type_rule: exclude_good_and_Multiple-defects_lex4
+fewshot_rule: floor_n_over_3
+normal_count: 4
+panel_seeds: [2026082801, 2026082802]

@@ -1,0 +1,33 @@
+schema_version: p2_b6_texture_checkpoint_paired_probe_v1
+category: hazelnut
+defect_types: [crack, cut, hole, print]
+prompts:
+  crack: a photo of a hazelnut with thin cracks in the shell and fractured edges
+  cut: a photo of a hazelnut with a sharp cut in the shell
+  hole: a photo of a hazelnut with a puncture hole in the shell
+  print: a photo of a hazelnut with dark printed characters and structured ink strokes on the shell surface
+baseline_checkpoint_relpath: p2_b2/hazelnut/type-prompt-training/seed-20260817-attempt1/checkpoint
+baseline_checkpoint_hashes:
+  adapter.safetensors: 520fdbd577ba6da80855ecf82b9627e53a41455bf804f0d0c713af817649af6a
+  conditioner.safetensors: 4247fed4526671e6e17da7adf78b4b15b30fd873f65be2b074c6e450e49fb073
+  metadata.json: 80f7f6e2575c827a89bbaf98a946f8668c36db9087d9bcbb9f4769ec042a5da8
+candidate_checkpoint_relpath: p2_b5/hazelnut/type-selective-texture/seed-20260824-attempt2/checkpoint
+candidate_checkpoint_hashes:
+  adapter.safetensors: 0829b0aec354bc0014114bc312b32d854799070269286e68d856ece09c3dd215
+  conditioner.safetensors: 2b2017fdbc45bd03d2a5a7adb4eb6acf5f8d0350671abaef8243b36803009e5c
+  metadata.json: 52a13170d127b92f22ed92276c0bd1fd89a7f7003c3835a07de0b64f3d8d49f9
+candidate_run_hashes:
+  report.json: 69cc82f9577d4993f3fbe39123c9a031119013b6c8648cea5c2f0466d86b0deb
+  provenance.json: 3364f2901cad793ada341323fcf116a89fe9e2cdbb3687667b295e80f169799a
+reference_run_relpath: p2_b1/hazelnut/heldout-generation/seed-20260817-attempt2
+reference_git_head: 4bd6d47d83292107c9c68f99f841eb46d000789e
+reference_hashes:
+  metrics.jsonl: 5f08113369adff8597c9cc47ece8e30ae67414ce84cd16ba477dc7633267b1af
+  pairwise_metrics.jsonl: 64207a3adfd59b38b703c80c40d1a457dbd9a686dad6adc872e66a720a3052be
+  provenance.json: 3776a5d7a6bce2931db48e4b35e01859786466f24000a24c519f646acfac5a8f
+  report.json: 9cbd22cc3380b4bca97ebb1614e832a985ea74da78440d46d9335e450ece6f93
+sample_count: 16
+blind_seed: 202608241
+denoise_steps: 50
+evaluation_mode: inference_only_checkpoint_probe
+causal_difference: checkpoint_weights_only

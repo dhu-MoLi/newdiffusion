@@ -1,0 +1,10 @@
+schema_version: p2_b0_generation_probe_v1
+category: hazelnut
+defect_types: [crack, cut, hole, print]
+normal_prompt: a photo of a normal hazelnut
+image_size: 512
+dtype: float16
+seed: 20260817
+denoise_steps: 50
+normal_reference_count: 3
+sample_seeds: [202608171, 202608172, 202608173, 202608174]

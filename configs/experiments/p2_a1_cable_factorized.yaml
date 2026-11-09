@@ -1,0 +1,24 @@
+schema_version: p2_a1_factorized_v1
+category: cable
+defect_types: [bent_wire, cut_inner_insulation, cut_outer_insulation, poke_insulation]
+normal_prompt: a photo of a normal cable
+image_size: 512
+dtype: float16
+seed: 20260817
+learning_rate: 0.0001
+steps: 1200
+capacity_defect_type: bent_wire
+context_fill_seed: 202608170
+noise_seed: 202608171
+eval_timesteps: [100, 400, 700]
+inside_noise_weight: 4.0
+lambda_inside: 1.0
+lambda_outside: 0.1
+train_role: fewshot_train
+eval_role: open_dev_report
+wrong_type_policy: cyclic_next
+correct_wrong_ratio_limit: 1.0
+correct_normal_ratio_limit: 1.0
+type_rank: 8
+ranking_target_ratio: 0.95
+ranking_weight: 0.25

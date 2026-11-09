@@ -1,0 +1,19 @@
+{
+  "class_name": "pipe_fryum",
+  "image_subdir": "composed",
+  "mask_subdir": "mask_defect",
+  "generated_root": "/home/dell/2T/lm/new_projects/category_anomaly_diffusion/runs/v06_c/visa/pipe_fryum/eval/20260927-magic-500/generated_layout",
+  "mvtec_path": "/home/dell/2T/lm/new_projects/category_anomaly_diffusion/runs/v06_c/visa/pipe_fryum/mvtec_layout_magic_20260927",
+  "img_size": 256,
+  "loc_bs": 16,
+  "loc_accum": 1,
+  "loc_effective_bs": 16,
+  "loc_auroc_image": 0.9513333333333334,
+  "loc_ap_image": 0.9616619557855447,
+  "loc_auroc_pixel": 0.9677528449609977,
+  "loc_ap_pixel": 0.5808010692991206,
+  "loc_f1_image": 0.9218749999999999,
+  "loc_f1_pixel": 0.5542675695012976,
+  "loc_pro_pixel": 0.9333675230346772,
+  "cls_accuracy": 0.7666666666666667
+}

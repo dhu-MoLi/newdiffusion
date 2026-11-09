@@ -1,0 +1,16 @@
+schema_version: p2_a0_capacity_v1
+category: bottle
+defect_types: [broken_large, broken_small, contamination]
+normal_prompt: a photo of a normal bottle
+image_size: 512
+dtype: float16
+seed: 20260817
+learning_rate: 0.0001
+steps: 200
+capacity_defect_type: broken_large
+context_fill_seed: 202608170
+noise_seed: 202608171
+eval_timesteps: [100, 400, 700]
+inside_noise_weight: 4.0
+lambda_inside: 1.0
+lambda_outside: 0.1

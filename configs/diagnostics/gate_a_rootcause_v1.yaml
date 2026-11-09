@@ -1,0 +1,49 @@
+schema_version: gate_a_rootcause_v1
+frozen_metrics_sha256: 783923689c30d780db1fd7cfc1f31e6ad25cddc974117d3fa9cef6c990239005
+generic_prompt: "a photo of a normal object"
+maximum_combinations: 3
+maximum_full_candidates: 2
+bottle_regression_max: 0.005
+cases:
+  - case_id: d0_class_50_fp16_r1
+    phase: baseline_repeat
+    steps: 50
+    prompt_mode: class
+    dtype: float16
+    repeat: 1
+  - case_id: d0_class_50_fp16_r2
+    phase: baseline_repeat
+    steps: 50
+    prompt_mode: class
+    dtype: float16
+    repeat: 2
+  - case_id: d1_class_25_fp16
+    phase: single_factor
+    steps: 25
+    prompt_mode: class
+    dtype: float16
+    repeat: 1
+  - case_id: d1_class_100_fp16
+    phase: single_factor
+    steps: 100
+    prompt_mode: class
+    dtype: float16
+    repeat: 1
+  - case_id: d2_empty_50_fp16
+    phase: single_factor
+    steps: 50
+    prompt_mode: empty
+    dtype: float16
+    repeat: 1
+  - case_id: d2_generic_50_fp16
+    phase: single_factor
+    steps: 50
+    prompt_mode: generic
+    dtype: float16
+    repeat: 1
+  - case_id: d3_class_50_fp32
+    phase: single_factor
+    steps: 50
+    prompt_mode: class
+    dtype: float32
+    repeat: 1

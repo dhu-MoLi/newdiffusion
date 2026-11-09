@@ -1,0 +1,16 @@
+{
+  "category": "pcb4",
+  "collapsed_from": [],
+  "defect_types": [
+    "damage",
+    "extra",
+    "missing"
+  ],
+  "fewshot_train": 12,
+  "manifest": "/home/dell/2T/lm/new_projects/category_anomaly_diffusion/runs/v06_b/visa/pcb4/splits/20260927-magic/manifest.jsonl",
+  "normal_train": 904,
+  "open_dev_report": 26,
+  "schema_version": "v06_c_visa_split_v1",
+  "source_root": "/home/dell/2T/数据集/AD/VisA",
+  "split_id": "visa_magic_single_anomaly_amazon1cls_v1"
+}

@@ -1,0 +1,39 @@
+schema_version: v06_a_identity_manifest_rc1
+category: cable
+normal_train_universe: {start: "000", end: "223"}
+a_dev_ids: ["000", "010", "020", "030", "041", "051", "061", "071", "081", "091", "101", "112", "122", "132", "142", "152", "162", "172", "182", "193", "203", "213", "223"]
+open_normal_universe: {start: "000", end: "057"}
+defect_splits:
+  bent_wire:
+    universe: {start: "000", end: "012"}
+    fewshot_ids: ["000", "001", "002", "003"]
+    open_report_ids: ["004", "005", "006", "007", "008", "009", "010", "011", "012"]
+  cut_inner_insulation:
+    universe: {start: "000", end: "013"}
+    fewshot_ids: ["000", "001", "002", "003"]
+    open_report_ids: ["004", "005", "006", "007", "008", "009", "010", "011", "012", "013"]
+  cut_outer_insulation:
+    universe: {start: "000", end: "009"}
+    fewshot_ids: ["000", "001", "002"]
+    open_report_ids: ["003", "004", "005", "006", "007", "008", "009"]
+  poke_insulation:
+    universe: {start: "000", end: "009"}
+    fewshot_ids: ["000", "001", "002"]
+    open_report_ids: ["003", "004", "005", "006", "007", "008", "009"]
+excluded_types:
+  cable_swap: {universe: {start: "000", end: "011"}}
+  combined: {universe: {start: "000", end: "010"}}
+  missing_cable: {universe: {start: "000", end: "011"}}
+  missing_wire: {universe: {start: "000", end: "009"}}
+atlas_normal_ids: ["001", "015", "031", "045", "059", "075", "089", "104", "119", "134", "148", "164", "178", "192", "208", "222"]
+p0_pairs:
+  - {defect_type: bent_wire, source_id: "000", target_normal_id: "000", seed: 202608280200}
+  - {defect_type: bent_wire, source_id: "001", target_normal_id: "152", seed: 202608280201}
+  - {defect_type: cut_inner_insulation, source_id: "000", target_normal_id: "000", seed: 202608280210}
+  - {defect_type: cut_inner_insulation, source_id: "001", target_normal_id: "152", seed: 202608280211}
+  - {defect_type: cut_outer_insulation, source_id: "000", target_normal_id: "000", seed: 202608280220}
+  - {defect_type: cut_outer_insulation, source_id: "001", target_normal_id: "152", seed: 202608280221}
+  - {defect_type: poke_insulation, source_id: "000", target_normal_id: "000", seed: 202608280230}
+  - {defect_type: poke_insulation, source_id: "001", target_normal_id: "152", seed: 202608280231}
+p1_normal_ids: ["000", "071", "152", "223"]
+p2_open_normal_ids: []

@@ -1,0 +1,6 @@
+schema_version: v06_c_cable_generate
+category: cable
+experiment: configs/experiments/v06_a_cable_rc1.yaml
+paths: configs/paths/omen-home.yaml
+b_experiment: configs/experiments/v06_b_cable_mask_first_scheme2_a2_to_h.yaml
+manifest: /home/dell/2T/lm/new_projects/category_anomaly_diffusion/manifests/mvtec_lexicographic_floor_third_v1.jsonl

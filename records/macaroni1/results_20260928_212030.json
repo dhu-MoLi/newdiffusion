@@ -1,0 +1,19 @@
+{
+  "class_name": "macaroni1",
+  "image_subdir": "composed",
+  "mask_subdir": "mask_defect",
+  "generated_root": "/home/dell/2T/lm/new_projects/category_anomaly_diffusion/runs/v06_c/visa/macaroni1/eval/20260927-magic-500/generated_layout",
+  "mvtec_path": "/home/dell/2T/lm/new_projects/category_anomaly_diffusion/runs/v06_c/visa/macaroni1/mvtec_layout_magic_20260927",
+  "img_size": 256,
+  "loc_bs": 16,
+  "loc_accum": 1,
+  "loc_effective_bs": 16,
+  "loc_auroc_image": 0.8834545454545455,
+  "loc_ap_image": 0.7268807853962468,
+  "loc_auroc_pixel": 0.9766176035603341,
+  "loc_ap_pixel": 0.14970534426184642,
+  "loc_f1_image": 0.7894736842105264,
+  "loc_f1_pixel": 0.21646202337608558,
+  "loc_pro_pixel": 0.9300897432399312,
+  "cls_accuracy": 0.6
+}

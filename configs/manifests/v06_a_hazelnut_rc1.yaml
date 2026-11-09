@@ -1,0 +1,35 @@
+schema_version: v06_a_identity_manifest_rc1
+category: hazelnut
+normal_train_universe: {start: "000", end: "390"}
+a_dev_ids: ["000", "010", "020", "030", "040", "050", "060", "070", "080", "090", "100", "110", "120", "130", "140", "150", "160", "170", "180", "190", "200", "210", "220", "230", "240", "250", "260", "270", "280", "290", "300", "310", "320", "330", "340", "350", "360", "370", "380", "390"]
+open_normal_universe: {start: "000", end: "039"}
+defect_splits:
+  crack:
+    universe: {start: "000", end: "017"}
+    fewshot_ids: ["000", "001", "002", "003", "004", "005"]
+    open_report_ids: ["006", "007", "008", "009", "010", "011", "012", "013", "014", "015", "016", "017"]
+  cut:
+    universe: {start: "000", end: "016"}
+    fewshot_ids: ["000", "001", "002", "003", "004"]
+    open_report_ids: ["005", "006", "007", "008", "009", "010", "011", "012", "013", "014", "015", "016"]
+  hole:
+    universe: {start: "000", end: "017"}
+    fewshot_ids: ["000", "001", "002", "003", "004", "005"]
+    open_report_ids: ["006", "007", "008", "009", "010", "011", "012", "013", "014", "015", "016", "017"]
+  print:
+    universe: {start: "000", end: "016"}
+    fewshot_ids: ["000", "001", "002", "003", "004"]
+    open_report_ids: ["005", "006", "007", "008", "009", "010", "011", "012", "013", "014", "015", "016"]
+excluded_types: {}
+atlas_normal_ids: ["001", "026", "053", "078", "104", "131", "156", "182", "208", "234", "259", "286", "312", "337", "364", "389"]
+p0_pairs:
+  - {defect_type: crack, source_id: "000", target_normal_id: "000", seed: 202608280100}
+  - {defect_type: crack, source_id: "001", target_normal_id: "260", seed: 202608280101}
+  - {defect_type: cut, source_id: "000", target_normal_id: "000", seed: 202608280110}
+  - {defect_type: cut, source_id: "001", target_normal_id: "260", seed: 202608280111}
+  - {defect_type: hole, source_id: "000", target_normal_id: "000", seed: 202608280120}
+  - {defect_type: hole, source_id: "001", target_normal_id: "260", seed: 202608280121}
+  - {defect_type: print, source_id: "000", target_normal_id: "000", seed: 202608280130}
+  - {defect_type: print, source_id: "001", target_normal_id: "260", seed: 202608280131}
+p1_normal_ids: ["000", "130", "260", "390"]
+p2_open_normal_ids: ["000", "013", "026", "039"]

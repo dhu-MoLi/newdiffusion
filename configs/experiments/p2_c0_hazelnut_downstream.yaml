@@ -1,0 +1,21 @@
+schema_version: p2_c0_hazelnut_downstream_v1
+category: hazelnut
+defect_types:
+  - crack
+  - cut
+  - hole
+  - print
+renderer_manifest: configs/checkpoints/p2_b2_hazelnut_renderer.yaml
+synthetic_per_type: 64
+generation_seed: 20260824
+image_size: 512
+downstream_image_size: 256
+training_steps_per_arm: 600
+batch_size: 8
+learning_rate: 0.0001
+focal_gamma: 2.0
+max_fpr: 0.3
+promotion_pixel_ap_delta: 0.01
+promotion_au_pro_delta: 0.01
+maximum_image_auroc_drop: 0.02
+evaluation_mode: test_aware_pilot

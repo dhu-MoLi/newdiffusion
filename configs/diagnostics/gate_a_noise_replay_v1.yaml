@@ -1,0 +1,10 @@
+schema_version: gate_a_noise_replay_v1
+algorithm: trajectory_consistent_noise_replay
+case_id: d5_noise_replay_50_class_fp16
+steps: 50
+prompt_mode: class
+dtype: float16
+guidance_scale: 1.0
+eta: 0.0
+replay_strength: 1.0
+seed: 20260817

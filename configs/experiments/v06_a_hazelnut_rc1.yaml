@@ -1,0 +1,33 @@
+schema_version: v06_a_experiment_rc1
+category: hazelnut
+defect_types: [crack, cut, hole, print]
+identity_manifest: configs/manifests/v06_a_hazelnut_rc1.yaml
+output_relpath: v06_a/hazelnut/rc1/seed-20260828
+image_size: 512
+proposal_size: 128
+square_dilate_radius: 24
+a_variants: [a0_v, a1_gv, a1_sv_plain]
+training_seed: 20260828
+panel_seeds: [2026082801, 2026082802]
+p0_pairs_per_category: 8
+p1_normal_count: 4
+base_channels: 32
+type_embedding_dim: 64
+timestep_embedding_dim: 64
+normal_feature_channels: 16
+diffusion_steps: 100
+sampling_steps: 50
+training_steps: 4000
+batch_size: 4
+learning_rate: 0.0002
+gradient_clip: 1.0
+support_border_width: 16
+support_background_margin: 0.03
+atlas_reference_count: 16
+atlas_consensus: 0.5
+teacher_outer_radius: 72
+teacher_blind_gaps: [32, 48]
+teacher_candidate_stride: 16
+teacher_temperature: 0.25
+teacher_relation_weight: 2.0
+teacher_min_context_fraction: 0.75

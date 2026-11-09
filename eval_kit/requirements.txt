@@ -1,0 +1,13 @@
+# 异常生成下游评测包依赖
+# torch / torchvision 请按本机 CUDA 版本自行安装，例如：
+#   pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
+
+torch>=1.13
+torchvision>=0.14
+numpy>=1.21
+scipy>=1.7
+scikit-learn>=1.0
+Pillow>=9.0
+opencv-python-headless>=4.5,<5
+torch-fidelity>=0.3.0
+lpips>=0.1.4

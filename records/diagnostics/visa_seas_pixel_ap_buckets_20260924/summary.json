@@ -1,0 +1,1292 @@
+{
+  "arm_names": [
+    "candle",
+    "capsules",
+    "cashew",
+    "chewinggum"
+  ],
+  "arms": {
+    "candle": {
+      "buckets": {
+        "combined": {
+          "anomalies_only": {
+            "ap_pixel": 0.3899812617110752,
+            "auroc_pixel": 0.9517086747573674,
+            "n_anomaly_images": 9,
+            "n_images": 9,
+            "n_pixels": 589824,
+            "n_pos_pixels": 1127,
+            "pos_pixel_share": 0.0915441475103566
+          },
+          "types": [
+            "combined"
+          ],
+          "with_goods": {
+            "ap_pixel": 0.3693335206428484,
+            "auroc_pixel": 0.9551937334975495,
+            "n_anomaly_images": 9,
+            "n_images": 109,
+            "n_pixels": 7143424,
+            "n_pos_pixels": 1127,
+            "pos_pixel_share": 0.0915441475103566
+          }
+        },
+        "extra_a": {
+          "anomalies_only": {
+            "ap_pixel": 0.26755453563183335,
+            "auroc_pixel": 0.959043719526317,
+            "n_anomaly_images": 36,
+            "n_images": 36,
+            "n_pixels": 2359296,
+            "n_pos_pixels": 5767,
+            "pos_pixel_share": 0.4684428559824547
+          },
+          "types": [
+            "chunk_of_wax_missing",
+            "damaged_corner_of_packaging",
+            "different_colour_spot",
+            "extra_wax_in_candle"
+          ],
+          "with_goods": {
+            "ap_pixel": 0.24216226743549338,
+            "auroc_pixel": 0.962709030146689,
+            "n_anomaly_images": 36,
+            "n_images": 136,
+            "n_pixels": 8912896,
+            "n_pos_pixels": 5767,
+            "pos_pixel_share": 0.4684428559824547
+          }
+        },
+        "new_single": {
+          "anomalies_only": {
+            "ap_pixel": 0.4945439243557811,
+            "auroc_pixel": 0.9572102434204313,
+            "n_anomaly_images": 22,
+            "n_images": 22,
+            "n_pixels": 1441792,
+            "n_pos_pixels": 5417,
+            "pos_pixel_share": 0.44001299650718867
+          },
+          "types": [
+            "foreign_particals_on_candle",
+            "wax_melded_out_of_the_candle",
+            "weird_candle_wick"
+          ],
+          "with_goods": {
+            "ap_pixel": 0.4762152392544849,
+            "auroc_pixel": 0.9618609333412405,
+            "n_anomaly_images": 22,
+            "n_images": 122,
+            "n_pixels": 7995392,
+            "n_pos_pixels": 5417,
+            "pos_pixel_share": 0.44001299650718867
+          }
+        }
+      },
+      "by_type": {
+        "chunk_of_wax_missing": {
+          "anomalies_only": {
+            "ap_pixel": 0.7337985888954227,
+            "auroc_pixel": 0.9945674820081873,
+            "n_anomaly_images": 8,
+            "n_images": 8,
+            "n_pixels": 524288,
+            "n_pos_pixels": 1195,
+            "pos_pixel_share": 0.09706766306555113
+          },
+          "bucket": "extra_a",
+          "with_goods": {
+            "ap_pixel": 0.720724995474081,
+            "auroc_pixel": 0.9973760457872001,
+            "n_anomaly_images": 8,
+            "n_images": 108,
+            "n_pixels": 7077888,
+            "n_pos_pixels": 1195,
+            "pos_pixel_share": 0.09706766306555113
+          }
+        },
+        "combined": {
+          "anomalies_only": {
+            "ap_pixel": 0.3899812617110752,
+            "auroc_pixel": 0.9517086747573674,
+            "n_anomaly_images": 9,
+            "n_images": 9,
+            "n_pixels": 589824,
+            "n_pos_pixels": 1127,
+            "pos_pixel_share": 0.0915441475103566
+          },
+          "bucket": "combined",
+          "with_goods": {
+            "ap_pixel": 0.3693335206428484,
+            "auroc_pixel": 0.9551937334975495,
+            "n_anomaly_images": 9,
+            "n_images": 109,
+            "n_pixels": 7143424,
+            "n_pos_pixels": 1127,
+            "pos_pixel_share": 0.0915441475103566
+          }
+        },
+        "damaged_corner_of_packaging": {
+          "anomalies_only": {
+            "ap_pixel": 0.16724247416529842,
+            "auroc_pixel": 0.9326336276117901,
+            "n_anomaly_images": 12,
+            "n_images": 12,
+            "n_pixels": 786432,
+            "n_pos_pixels": 1127,
+            "pos_pixel_share": 0.0915441475103566
+          },
+          "bucket": "extra_a",
+          "with_goods": {
+            "ap_pixel": 0.0926842201834162,
+            "auroc_pixel": 0.9327900161156112,
+            "n_anomaly_images": 12,
+            "n_images": 112,
+            "n_pixels": 7340032,
+            "n_pos_pixels": 1127,
+            "pos_pixel_share": 0.0915441475103566
+          }
+        },
+        "different_colour_spot": {
+          "anomalies_only": {
+            "ap_pixel": 0.46241346749022333,
+            "auroc_pixel": 0.9997352235578343,
+            "n_anomaly_images": 10,
+            "n_images": 10,
+            "n_pixels": 655360,
+            "n_pos_pixels": 33,
+            "pos_pixel_share": 0.002680529607667939
+          },
+          "bucket": "extra_a",
+          "with_goods": {
+            "ap_pixel": 0.42896109955002004,
+            "auroc_pixel": 0.999940688016736,
+            "n_anomaly_images": 10,
+            "n_images": 110,
+            "n_pixels": 7208960,
+            "n_pos_pixels": 33,
+            "pos_pixel_share": 0.002680529607667939
+          }
+        },
+        "extra_wax_in_candle": {
+          "anomalies_only": {
+            "ap_pixel": 0.22802836312035418,
+            "auroc_pixel": 0.9564799657995072,
+            "n_anomaly_images": 6,
+            "n_images": 6,
+            "n_pixels": 393216,
+            "n_pos_pixels": 3412,
+            "pos_pixel_share": 0.27715051579887906
+          },
+          "bucket": "extra_a",
+          "with_goods": {
+            "ap_pixel": 0.09038597446596927,
+            "auroc_pixel": 0.9619068575067589,
+            "n_anomaly_images": 6,
+            "n_images": 106,
+            "n_pixels": 6946816,
+            "n_pos_pixels": 3412,
+            "pos_pixel_share": 0.27715051579887906
+          }
+        },
+        "foreign_particals_on_candle": {
+          "anomalies_only": {
+            "ap_pixel": 0.49763234815398105,
+            "auroc_pixel": 0.9981298985786281,
+            "n_anomaly_images": 8,
+            "n_images": 8,
+            "n_pixels": 524288,
+            "n_pos_pixels": 448,
+            "pos_pixel_share": 0.036390220128340506
+          },
+          "bucket": "new_single",
+          "with_goods": {
+            "ap_pixel": 0.4901249898050341,
+            "auroc_pixel": 0.9991361710527192,
+            "n_anomaly_images": 8,
+            "n_images": 108,
+            "n_pixels": 7077888,
+            "n_pos_pixels": 448,
+            "pos_pixel_share": 0.036390220128340506
+          }
+        },
+        "wax_melded_out_of_the_candle": {
+          "anomalies_only": {
+            "ap_pixel": 0.6015971319865197,
+            "auroc_pixel": 0.9706302643467042,
+            "n_anomaly_images": 8,
+            "n_images": 8,
+            "n_pixels": 524288,
+            "n_pos_pixels": 4362,
+            "pos_pixel_share": 0.35431727723174394
+          },
+          "bucket": "new_single",
+          "with_goods": {
+            "ap_pixel": 0.5553247137911808,
+            "auroc_pixel": 0.9741257611691239,
+            "n_anomaly_images": 8,
+            "n_images": 108,
+            "n_pixels": 7077888,
+            "n_pos_pixels": 4362,
+            "pos_pixel_share": 0.35431727723174394
+          }
+        },
+        "weird_candle_wick": {
+          "anomalies_only": {
+            "ap_pixel": 0.02473321569757727,
+            "auroc_pixel": 0.8269962977322034,
+            "n_anomaly_images": 6,
+            "n_images": 6,
+            "n_pixels": 393216,
+            "n_pos_pixels": 607,
+            "pos_pixel_share": 0.04930549914710421
+          },
+          "bucket": "new_single",
+          "with_goods": {
+            "ap_pixel": 0.0019390734251323763,
+            "auroc_pixel": 0.8517727374306222,
+            "n_anomaly_images": 6,
+            "n_images": 106,
+            "n_pixels": 6946816,
+            "n_pos_pixels": 607,
+            "pos_pixel_share": 0.04930549914710421
+          }
+        }
+      },
+      "ckpt": "/home/dell/2T/lm/new_projects/category_anomaly_diffusion/runs/v06_c/visa/candle/eval/20260922-seas-500/candle/ckpt_localization/candle.pckl",
+      "full": {
+        "ap_pixel": 0.36766647358756566,
+        "auroc_pixel": 0.9606292560071699,
+        "n_anomaly_images": 67,
+        "n_images": 167,
+        "n_pixels": 10944512,
+        "n_pos_pixels": 12311,
+        "pos_pixel_share": 1.0
+      },
+      "n_bad": 67,
+      "n_good": 100,
+      "n_scored": 167,
+      "without_combined": {
+        "ap_pixel": 0.3670485622739832,
+        "auroc_pixel": 0.961503235258285,
+        "n_anomaly_images": 58,
+        "n_images": 158,
+        "n_pixels": 10354688,
+        "n_pos_pixels": 11184,
+        "pos_pixel_share": 0.9084558524896434
+      },
+      "without_new_single": {
+        "ap_pixel": 0.2667738053666939,
+        "auroc_pixel": 0.9610496972635608,
+        "n_anomaly_images": 45,
+        "n_images": 145,
+        "n_pixels": 9502720,
+        "n_pos_pixels": 6894,
+        "pos_pixel_share": 0.5599870034928113
+      }
+    },
+    "capsules": {
+      "buckets": {
+        "combined": {
+          "anomalies_only": {
+            "ap_pixel": 0.533467214315422,
+            "auroc_pixel": 0.93712179355838,
+            "n_anomaly_images": 47,
+            "n_images": 47,
+            "n_pixels": 3080192,
+            "n_pos_pixels": 29853,
+            "pos_pixel_share": 0.9468425893621745
+          },
+          "types": [
+            "combined"
+          ],
+          "with_goods": {
+            "ap_pixel": 0.48981419325510855,
+            "auroc_pixel": 0.9395143823319915,
+            "n_anomaly_images": 47,
+            "n_images": 107,
+            "n_pixels": 7012352,
+            "n_pos_pixels": 29853,
+            "pos_pixel_share": 0.9468425893621745
+          }
+        },
+        "extra_a": {
+          "anomalies_only": {
+            "ap_pixel": 0.9102150646688231,
+            "auroc_pixel": 0.999663272913063,
+            "n_anomaly_images": 20,
+            "n_images": 20,
+            "n_pixels": 1310720,
+            "n_pos_pixels": 1676,
+            "pos_pixel_share": 0.053157410637825496
+          },
+          "types": [
+            "bubble"
+          ],
+          "with_goods": {
+            "ap_pixel": 0.9068767486996836,
+            "auroc_pixel": 0.9997938111540219,
+            "n_anomaly_images": 20,
+            "n_images": 80,
+            "n_pixels": 5242880,
+            "n_pos_pixels": 1676,
+            "pos_pixel_share": 0.053157410637825496
+          }
+        },
+        "new_single": {
+          "anomalies_only": {
+            "ap_pixel": null,
+            "auroc_pixel": null,
+            "n_anomaly_images": 0,
+            "n_images": 0,
+            "n_pixels": 0,
+            "n_pos_pixels": 0,
+            "pos_pixel_share": 0.0
+          },
+          "types": [],
+          "with_goods": {
+            "ap_pixel": null,
+            "auroc_pixel": null,
+            "n_anomaly_images": 0,
+            "n_images": 60,
+            "n_pixels": 3932160,
+            "n_pos_pixels": 0,
+            "pos_pixel_share": 0.0
+          }
+        }
+      },
+      "by_type": {
+        "bubble": {
+          "anomalies_only": {
+            "ap_pixel": 0.9102150646688231,
+            "auroc_pixel": 0.999663272913063,
+            "n_anomaly_images": 20,
+            "n_images": 20,
+            "n_pixels": 1310720,
+            "n_pos_pixels": 1676,
+            "pos_pixel_share": 0.053157410637825496
+          },
+          "bucket": "extra_a",
+          "with_goods": {
+            "ap_pixel": 0.9068767486996836,
+            "auroc_pixel": 0.9997938111540219,
+            "n_anomaly_images": 20,
+            "n_images": 80,
+            "n_pixels": 5242880,
+            "n_pos_pixels": 1676,
+            "pos_pixel_share": 0.053157410637825496
+          }
+        },
+        "combined": {
+          "anomalies_only": {
+            "ap_pixel": 0.533467214315422,
+            "auroc_pixel": 0.93712179355838,
+            "n_anomaly_images": 47,
+            "n_images": 47,
+            "n_pixels": 3080192,
+            "n_pos_pixels": 29853,
+            "pos_pixel_share": 0.9468425893621745
+          },
+          "bucket": "combined",
+          "with_goods": {
+            "ap_pixel": 0.48981419325510855,
+            "auroc_pixel": 0.9395143823319915,
+            "n_anomaly_images": 47,
+            "n_images": 107,
+            "n_pixels": 7012352,
+            "n_pos_pixels": 29853,
+            "pos_pixel_share": 0.9468425893621745
+          }
+        }
+      },
+      "ckpt": "/home/dell/2T/lm/new_projects/category_anomaly_diffusion/runs/v06_c/visa/capsules/eval/20260922-seas-500/capsules/ckpt_localization/capsules.pckl",
+      "full": {
+        "ap_pixel": 0.4865570458375065,
+        "auroc_pixel": 0.9424164863006097,
+        "n_anomaly_images": 67,
+        "n_images": 127,
+        "n_pixels": 8323072,
+        "n_pos_pixels": 31529,
+        "pos_pixel_share": 1.0
+      },
+      "n_bad": 67,
+      "n_good": 60,
+      "n_scored": 127,
+      "without_combined": {
+        "ap_pixel": 0.9068767486996836,
+        "auroc_pixel": 0.9997938111540219,
+        "n_anomaly_images": 20,
+        "n_images": 80,
+        "n_pixels": 5242880,
+        "n_pos_pixels": 1676,
+        "pos_pixel_share": 0.053157410637825496
+      },
+      "without_new_single": {
+        "ap_pixel": 0.4865570458375065,
+        "auroc_pixel": 0.9424164863006097,
+        "n_anomaly_images": 67,
+        "n_images": 127,
+        "n_pixels": 8323072,
+        "n_pos_pixels": 31529,
+        "pos_pixel_share": 1.0
+      }
+    },
+    "cashew": {
+      "buckets": {
+        "combined": {
+          "anomalies_only": {
+            "ap_pixel": 0.3821864484990713,
+            "auroc_pixel": 0.9626342232858259,
+            "n_anomaly_images": 7,
+            "n_images": 7,
+            "n_pixels": 458752,
+            "n_pos_pixels": 1025,
+            "pos_pixel_share": 0.014447404400467954
+          },
+          "types": [
+            "combined"
+          ],
+          "with_goods": {
+            "ap_pixel": 0.35354916351476723,
+            "auroc_pixel": 0.9709705444984454,
+            "n_anomaly_images": 7,
+            "n_images": 57,
+            "n_pixels": 3735552,
+            "n_pos_pixels": 1025,
+            "pos_pixel_share": 0.014447404400467954
+          }
+        },
+        "extra_a": {
+          "anomalies_only": {
+            "ap_pixel": 0.4627883980783042,
+            "auroc_pixel": 0.9513162711939951,
+            "n_anomaly_images": 27,
+            "n_images": 27,
+            "n_pixels": 1769472,
+            "n_pos_pixels": 4525,
+            "pos_pixel_share": 0.06378000479230975
+          },
+          "types": [
+            "burnt",
+            "corner_or_edge_breakage",
+            "different_colour_spot",
+            "middle_breakage"
+          ],
+          "with_goods": {
+            "ap_pixel": 0.45190069343566963,
+            "auroc_pixel": 0.9558403438485407,
+            "n_anomaly_images": 27,
+            "n_images": 77,
+            "n_pixels": 5046272,
+            "n_pos_pixels": 4525,
+            "pos_pixel_share": 0.06378000479230975
+          }
+        },
+        "new_single": {
+          "anomalies_only": {
+            "ap_pixel": 0.4497411783782509,
+            "auroc_pixel": 0.912952101647428,
+            "n_anomaly_images": 35,
+            "n_images": 35,
+            "n_pixels": 2293760,
+            "n_pos_pixels": 65397,
+            "pos_pixel_share": 0.9217725908072223
+          },
+          "types": [
+            "same_colour_spot",
+            "small_holes",
+            "small_scratches",
+            "stuck_together"
+          ],
+          "with_goods": {
+            "ap_pixel": 0.4002590465362376,
+            "auroc_pixel": 0.9227152529490028,
+            "n_anomaly_images": 35,
+            "n_images": 85,
+            "n_pixels": 5570560,
+            "n_pos_pixels": 65397,
+            "pos_pixel_share": 0.9217725908072223
+          }
+        }
+      },
+      "by_type": {
+        "burnt": {
+          "anomalies_only": {
+            "ap_pixel": 0.8006838474002438,
+            "auroc_pixel": 0.9944812029827395,
+            "n_anomaly_images": 7,
+            "n_images": 7,
+            "n_pixels": 458752,
+            "n_pos_pixels": 815,
+            "pos_pixel_share": 0.011487448376957447
+          },
+          "bucket": "extra_a",
+          "with_goods": {
+            "ap_pixel": 0.7873324395107367,
+            "auroc_pixel": 0.9961851557747441,
+            "n_anomaly_images": 7,
+            "n_images": 57,
+            "n_pixels": 3735552,
+            "n_pos_pixels": 815,
+            "pos_pixel_share": 0.011487448376957447
+          }
+        },
+        "combined": {
+          "anomalies_only": {
+            "ap_pixel": 0.3821864484990713,
+            "auroc_pixel": 0.9626342232858259,
+            "n_anomaly_images": 7,
+            "n_images": 7,
+            "n_pixels": 458752,
+            "n_pos_pixels": 1025,
+            "pos_pixel_share": 0.014447404400467954
+          },
+          "bucket": "combined",
+          "with_goods": {
+            "ap_pixel": 0.35354916351476723,
+            "auroc_pixel": 0.9709705444984454,
+            "n_anomaly_images": 7,
+            "n_images": 57,
+            "n_pixels": 3735552,
+            "n_pos_pixels": 1025,
+            "pos_pixel_share": 0.014447404400467954
+          }
+        },
+        "corner_or_edge_breakage": {
+          "anomalies_only": {
+            "ap_pixel": 0.38382929033476854,
+            "auroc_pixel": 0.9715838550728401,
+            "n_anomaly_images": 10,
+            "n_images": 10,
+            "n_pixels": 655360,
+            "n_pos_pixels": 1635,
+            "pos_pixel_share": 0.02304537189733181
+          },
+          "bucket": "extra_a",
+          "with_goods": {
+            "ap_pixel": 0.34962791619812217,
+            "auroc_pixel": 0.9759393306529481,
+            "n_anomaly_images": 10,
+            "n_images": 60,
+            "n_pixels": 3932160,
+            "n_pos_pixels": 1635,
+            "pos_pixel_share": 0.02304537189733181
+          }
+        },
+        "different_colour_spot": {
+          "anomalies_only": {
+            "ap_pixel": 0.7623354302738127,
+            "auroc_pixel": 0.9993453028322956,
+            "n_anomaly_images": 6,
+            "n_images": 6,
+            "n_pixels": 393216,
+            "n_pos_pixels": 278,
+            "pos_pixel_share": 0.003918417973980577
+          },
+          "bucket": "extra_a",
+          "with_goods": {
+            "ap_pixel": 0.7592574412183384,
+            "auroc_pixel": 0.9999220348943735,
+            "n_anomaly_images": 6,
+            "n_images": 56,
+            "n_pixels": 3670016,
+            "n_pos_pixels": 278,
+            "pos_pixel_share": 0.003918417973980577
+          }
+        },
+        "middle_breakage": {
+          "anomalies_only": {
+            "ap_pixel": 0.493894987481279,
+            "auroc_pixel": 0.9169022683926701,
+            "n_anomaly_images": 4,
+            "n_images": 4,
+            "n_pixels": 262144,
+            "n_pos_pixels": 1797,
+            "pos_pixel_share": 0.025328766544039916
+          },
+          "bucket": "extra_a",
+          "with_goods": {
+            "ap_pixel": 0.42008518825506913,
+            "auroc_pixel": 0.917606710761912,
+            "n_anomaly_images": 4,
+            "n_images": 54,
+            "n_pixels": 3538944,
+            "n_pos_pixels": 1797,
+            "pos_pixel_share": 0.025328766544039916
+          }
+        },
+        "same_colour_spot": {
+          "anomalies_only": {
+            "ap_pixel": 0.19259456682431367,
+            "auroc_pixel": 0.927656244802684,
+            "n_anomaly_images": 7,
+            "n_images": 7,
+            "n_pixels": 458752,
+            "n_pos_pixels": 424,
+            "pos_pixel_share": 0.005976292161754549
+          },
+          "bucket": "new_single",
+          "with_goods": {
+            "ap_pixel": 0.1508375088624998,
+            "auroc_pixel": 0.9352489872489733,
+            "n_anomaly_images": 7,
+            "n_images": 57,
+            "n_pixels": 3735552,
+            "n_pos_pixels": 424,
+            "pos_pixel_share": 0.005976292161754549
+          }
+        },
+        "small_holes": {
+          "anomalies_only": {
+            "ap_pixel": 0.7406254437583106,
+            "auroc_pixel": 0.9991798988460104,
+            "n_anomaly_images": 14,
+            "n_images": 14,
+            "n_pixels": 917504,
+            "n_pos_pixels": 215,
+            "pos_pixel_share": 0.0030304311669274247
+          },
+          "bucket": "new_single",
+          "with_goods": {
+            "ap_pixel": 0.739956239041615,
+            "auroc_pixel": 0.9997449838415169,
+            "n_anomaly_images": 14,
+            "n_images": 64,
+            "n_pixels": 4194304,
+            "n_pos_pixels": 215,
+            "pos_pixel_share": 0.0030304311669274247
+          }
+        },
+        "small_scratches": {
+          "anomalies_only": {
+            "ap_pixel": 0.05625782257805818,
+            "auroc_pixel": 0.6875662240617293,
+            "n_anomaly_images": 10,
+            "n_images": 10,
+            "n_pixels": 655360,
+            "n_pos_pixels": 1336,
+            "pos_pixel_share": 0.018830958321000183
+          },
+          "bucket": "new_single",
+          "with_goods": {
+            "ap_pixel": 0.044229214738494,
+            "auroc_pixel": 0.7119559633234284,
+            "n_anomaly_images": 10,
+            "n_images": 60,
+            "n_pixels": 3932160,
+            "n_pos_pixels": 1336,
+            "pos_pixel_share": 0.018830958321000183
+          }
+        },
+        "stuck_together": {
+          "anomalies_only": {
+            "ap_pixel": 0.821567792066723,
+            "auroc_pixel": 0.92384797625075,
+            "n_anomaly_images": 4,
+            "n_images": 4,
+            "n_pixels": 262144,
+            "n_pos_pixels": 63422,
+            "pos_pixel_share": 0.8939349091575401
+          },
+          "bucket": "new_single",
+          "with_goods": {
+            "ap_pixel": 0.5678857209522488,
+            "auroc_pixel": 0.9329914480173906,
+            "n_anomaly_images": 4,
+            "n_images": 54,
+            "n_pixels": 3538944,
+            "n_pos_pixels": 63422,
+            "pos_pixel_share": 0.8939349091575401
+          }
+        }
+      },
+      "ckpt": "/home/dell/2T/lm/new_projects/category_anomaly_diffusion/runs/v06_c/visa/cashew/eval/20260922-seas-500/cashew/ckpt_localization/cashew.pckl",
+      "full": {
+        "ap_pixel": 0.36001989812300844,
+        "auroc_pixel": 0.924162654544584,
+        "n_anomaly_images": 69,
+        "n_images": 119,
+        "n_pixels": 7798784,
+        "n_pos_pixels": 70947,
+        "pos_pixel_share": 1.0
+      },
+      "n_bad": 69,
+      "n_good": 50,
+      "n_scored": 119,
+      "without_combined": {
+        "ap_pixel": 0.3661189571043114,
+        "auroc_pixel": 0.9237871825988455,
+        "n_anomaly_images": 62,
+        "n_images": 112,
+        "n_pixels": 7340032,
+        "n_pos_pixels": 69922,
+        "pos_pixel_share": 0.985552595599532
+      },
+      "without_new_single": {
+        "ap_pixel": 0.4374532563735861,
+        "auroc_pixel": 0.9578019467558779,
+        "n_anomaly_images": 34,
+        "n_images": 84,
+        "n_pixels": 5505024,
+        "n_pos_pixels": 5550,
+        "pos_pixel_share": 0.07822740919277771
+      }
+    },
+    "chewinggum": {
+      "buckets": {
+        "combined": {
+          "anomalies_only": {
+            "ap_pixel": 0.8643157443575143,
+            "auroc_pixel": 0.9883688449459058,
+            "n_anomaly_images": 29,
+            "n_images": 29,
+            "n_pixels": 1900544,
+            "n_pos_pixels": 22545,
+            "pos_pixel_share": 0.578121393953381
+          },
+          "types": [
+            "combined"
+          ],
+          "with_goods": {
+            "ap_pixel": 0.8632718838261397,
+            "auroc_pixel": 0.9905649146925362,
+            "n_anomaly_images": 29,
+            "n_images": 79,
+            "n_pixels": 5177344,
+            "n_pos_pixels": 22545,
+            "pos_pixel_share": 0.578121393953381
+          }
+        },
+        "extra_a": {
+          "anomalies_only": {
+            "ap_pixel": 0.781327376524944,
+            "auroc_pixel": 0.9925339821224739,
+            "n_anomaly_images": 39,
+            "n_images": 39,
+            "n_pixels": 2555904,
+            "n_pos_pixels": 16452,
+            "pos_pixel_share": 0.421878606046619
+          },
+          "types": [
+            "chunk_of_gum_missing",
+            "corner_missing",
+            "scratches",
+            "similar_colour_spot"
+          ],
+          "with_goods": {
+            "ap_pixel": 0.779617236468465,
+            "auroc_pixel": 0.9942865282399772,
+            "n_anomaly_images": 39,
+            "n_images": 89,
+            "n_pixels": 5832704,
+            "n_pos_pixels": 16452,
+            "pos_pixel_share": 0.421878606046619
+          }
+        },
+        "new_single": {
+          "anomalies_only": {
+            "ap_pixel": null,
+            "auroc_pixel": null,
+            "n_anomaly_images": 0,
+            "n_images": 0,
+            "n_pixels": 0,
+            "n_pos_pixels": 0,
+            "pos_pixel_share": 0.0
+          },
+          "types": [],
+          "with_goods": {
+            "ap_pixel": null,
+            "auroc_pixel": null,
+            "n_anomaly_images": 0,
+            "n_images": 50,
+            "n_pixels": 3276800,
+            "n_pos_pixels": 0,
+            "pos_pixel_share": 0.0
+          }
+        }
+      },
+      "by_type": {
+        "chunk_of_gum_missing": {
+          "anomalies_only": {
+            "ap_pixel": 0.9536931129200376,
+            "auroc_pixel": 0.9990103411364759,
+            "n_anomaly_images": 11,
+            "n_images": 11,
+            "n_pixels": 720896,
+            "n_pos_pixels": 12104,
+            "pos_pixel_share": 0.3103828499628177
+          },
+          "bucket": "extra_a",
+          "with_goods": {
+            "ap_pixel": 0.9526931886963099,
+            "auroc_pixel": 0.9998125990751436,
+            "n_anomaly_images": 11,
+            "n_images": 61,
+            "n_pixels": 3997696,
+            "n_pos_pixels": 12104,
+            "pos_pixel_share": 0.3103828499628177
+          }
+        },
+        "combined": {
+          "anomalies_only": {
+            "ap_pixel": 0.8643157443575143,
+            "auroc_pixel": 0.9883688449459058,
+            "n_anomaly_images": 29,
+            "n_images": 29,
+            "n_pixels": 1900544,
+            "n_pos_pixels": 22545,
+            "pos_pixel_share": 0.578121393953381
+          },
+          "bucket": "combined",
+          "with_goods": {
+            "ap_pixel": 0.8632718838261397,
+            "auroc_pixel": 0.9905649146925362,
+            "n_anomaly_images": 29,
+            "n_images": 79,
+            "n_pixels": 5177344,
+            "n_pos_pixels": 22545,
+            "pos_pixel_share": 0.578121393953381
+          }
+        },
+        "corner_missing": {
+          "anomalies_only": {
+            "ap_pixel": 0.4752741442995513,
+            "auroc_pixel": 0.9487627355513297,
+            "n_anomaly_images": 9,
+            "n_images": 9,
+            "n_pixels": 589824,
+            "n_pos_pixels": 1426,
+            "pos_pixel_share": 0.036566915403749005
+          },
+          "bucket": "extra_a",
+          "with_goods": {
+            "ap_pixel": 0.4390607284076175,
+            "auroc_pixel": 0.9522270087777582,
+            "n_anomaly_images": 9,
+            "n_images": 59,
+            "n_pixels": 3866624,
+            "n_pos_pixels": 1426,
+            "pos_pixel_share": 0.036566915403749005
+          }
+        },
+        "scratches": {
+          "anomalies_only": {
+            "ap_pixel": 0.48797903174444357,
+            "auroc_pixel": 0.9970003663859354,
+            "n_anomaly_images": 6,
+            "n_images": 6,
+            "n_pixels": 393216,
+            "n_pos_pixels": 404,
+            "pos_pixel_share": 0.01035977126445624
+          },
+          "bucket": "extra_a",
+          "with_goods": {
+            "ap_pixel": 0.4678562670779044,
+            "auroc_pixel": 0.9984577054672938,
+            "n_anomaly_images": 6,
+            "n_images": 56,
+            "n_pixels": 3670016,
+            "n_pos_pixels": 404,
+            "pos_pixel_share": 0.01035977126445624
+          }
+        },
+        "similar_colour_spot": {
+          "anomalies_only": {
+            "ap_pixel": 0.25397898759381404,
+            "auroc_pixel": 0.9895268879536172,
+            "n_anomaly_images": 13,
+            "n_images": 13,
+            "n_pixels": 851968,
+            "n_pos_pixels": 2518,
+            "pos_pixel_share": 0.06456906941559608
+          },
+          "bucket": "extra_a",
+          "with_goods": {
+            "ap_pixel": 0.24866859466438856,
+            "auroc_pixel": 0.9966784360480938,
+            "n_anomaly_images": 13,
+            "n_images": 63,
+            "n_pixels": 4128768,
+            "n_pos_pixels": 2518,
+            "pos_pixel_share": 0.06456906941559608
+          }
+        }
+      },
+      "ckpt": "/home/dell/2T/lm/new_projects/category_anomaly_diffusion/runs/v06_c/visa/chewinggum/eval/20260922-seas-500/chewinggum/ckpt_localization/chewinggum.pckl",
+      "full": {
+        "ap_pixel": 0.8307020054459944,
+        "auroc_pixel": 0.9915859575070062,
+        "n_anomaly_images": 68,
+        "n_images": 118,
+        "n_pixels": 7733248,
+        "n_pos_pixels": 38997,
+        "pos_pixel_share": 1.0
+      },
+      "n_bad": 68,
+      "n_good": 50,
+      "n_scored": 118,
+      "without_combined": {
+        "ap_pixel": 0.779617236468465,
+        "auroc_pixel": 0.9942865282399772,
+        "n_anomaly_images": 39,
+        "n_images": 89,
+        "n_pixels": 5832704,
+        "n_pos_pixels": 16452,
+        "pos_pixel_share": 0.421878606046619
+      },
+      "without_new_single": {
+        "ap_pixel": 0.8307020054459944,
+        "auroc_pixel": 0.9915859575070062,
+        "n_anomaly_images": 68,
+        "n_images": 118,
+        "n_pixels": 7733248,
+        "n_pos_pixels": 38997,
+        "pos_pixel_share": 1.0
+      }
+    }
+  },
+  "destination": "/home/dell/2T/lm/new_projects/category_anomaly_diffusion/runs/v06_c/diagnostics/visa_seas_pixel_ap_buckets_20260924",
+  "diagnostic_only": true,
+  "eval_name": "20260922-seas-500",
+  "img_dim": 256,
+  "no_can": true,
+  "not_module_c": true,
+  "not_train_r": true,
+  "schema_version": "v06_c_seas_pixel_ap_buckets_v1",
+  "table": {
+    "candle": {
+      "buckets": {
+        "combined": {
+          "ap_pixel_anomalies_only": 0.3899812617110752,
+          "ap_pixel_with_goods": 0.3693335206428484,
+          "n_anomaly_images": 9,
+          "n_pos_pixels": 1127,
+          "pos_pixel_share": 0.0915441475103566,
+          "types": [
+            "combined"
+          ]
+        },
+        "extra_a": {
+          "ap_pixel_anomalies_only": 0.26755453563183335,
+          "ap_pixel_with_goods": 0.24216226743549338,
+          "n_anomaly_images": 36,
+          "n_pos_pixels": 5767,
+          "pos_pixel_share": 0.4684428559824547,
+          "types": [
+            "chunk_of_wax_missing",
+            "damaged_corner_of_packaging",
+            "different_colour_spot",
+            "extra_wax_in_candle"
+          ]
+        },
+        "new_single": {
+          "ap_pixel_anomalies_only": 0.4945439243557811,
+          "ap_pixel_with_goods": 0.4762152392544849,
+          "n_anomaly_images": 22,
+          "n_pos_pixels": 5417,
+          "pos_pixel_share": 0.44001299650718867,
+          "types": [
+            "foreign_particals_on_candle",
+            "wax_melded_out_of_the_candle",
+            "weird_candle_wick"
+          ]
+        }
+      },
+      "by_type": {
+        "chunk_of_wax_missing": {
+          "ap_pixel_with_goods": 0.720724995474081,
+          "bucket": "extra_a",
+          "n_images": 8,
+          "n_pos_pixels": 1195,
+          "pos_pixel_share": 0.09706766306555113
+        },
+        "combined": {
+          "ap_pixel_with_goods": 0.3693335206428484,
+          "bucket": "combined",
+          "n_images": 9,
+          "n_pos_pixels": 1127,
+          "pos_pixel_share": 0.0915441475103566
+        },
+        "damaged_corner_of_packaging": {
+          "ap_pixel_with_goods": 0.0926842201834162,
+          "bucket": "extra_a",
+          "n_images": 12,
+          "n_pos_pixels": 1127,
+          "pos_pixel_share": 0.0915441475103566
+        },
+        "different_colour_spot": {
+          "ap_pixel_with_goods": 0.42896109955002004,
+          "bucket": "extra_a",
+          "n_images": 10,
+          "n_pos_pixels": 33,
+          "pos_pixel_share": 0.002680529607667939
+        },
+        "extra_wax_in_candle": {
+          "ap_pixel_with_goods": 0.09038597446596927,
+          "bucket": "extra_a",
+          "n_images": 6,
+          "n_pos_pixels": 3412,
+          "pos_pixel_share": 0.27715051579887906
+        },
+        "foreign_particals_on_candle": {
+          "ap_pixel_with_goods": 0.4901249898050341,
+          "bucket": "new_single",
+          "n_images": 8,
+          "n_pos_pixels": 448,
+          "pos_pixel_share": 0.036390220128340506
+        },
+        "wax_melded_out_of_the_candle": {
+          "ap_pixel_with_goods": 0.5553247137911808,
+          "bucket": "new_single",
+          "n_images": 8,
+          "n_pos_pixels": 4362,
+          "pos_pixel_share": 0.35431727723174394
+        },
+        "weird_candle_wick": {
+          "ap_pixel_with_goods": 0.0019390734251323763,
+          "bucket": "new_single",
+          "n_images": 6,
+          "n_pos_pixels": 607,
+          "pos_pixel_share": 0.04930549914710421
+        }
+      },
+      "full_ap_pixel": 0.36766647358756566,
+      "without_combined_ap_pixel": 0.3670485622739832,
+      "without_new_single_ap_pixel": 0.2667738053666939
+    },
+    "capsules": {
+      "buckets": {
+        "combined": {
+          "ap_pixel_anomalies_only": 0.533467214315422,
+          "ap_pixel_with_goods": 0.48981419325510855,
+          "n_anomaly_images": 47,
+          "n_pos_pixels": 29853,
+          "pos_pixel_share": 0.9468425893621745,
+          "types": [
+            "combined"
+          ]
+        },
+        "extra_a": {
+          "ap_pixel_anomalies_only": 0.9102150646688231,
+          "ap_pixel_with_goods": 0.9068767486996836,
+          "n_anomaly_images": 20,
+          "n_pos_pixels": 1676,
+          "pos_pixel_share": 0.053157410637825496,
+          "types": [
+            "bubble"
+          ]
+        },
+        "new_single": {
+          "ap_pixel_anomalies_only": null,
+          "ap_pixel_with_goods": null,
+          "n_anomaly_images": 0,
+          "n_pos_pixels": 0,
+          "pos_pixel_share": 0.0,
+          "types": []
+        }
+      },
+      "by_type": {
+        "bubble": {
+          "ap_pixel_with_goods": 0.9068767486996836,
+          "bucket": "extra_a",
+          "n_images": 20,
+          "n_pos_pixels": 1676,
+          "pos_pixel_share": 0.053157410637825496
+        },
+        "combined": {
+          "ap_pixel_with_goods": 0.48981419325510855,
+          "bucket": "combined",
+          "n_images": 47,
+          "n_pos_pixels": 29853,
+          "pos_pixel_share": 0.9468425893621745
+        }
+      },
+      "full_ap_pixel": 0.4865570458375065,
+      "without_combined_ap_pixel": 0.9068767486996836,
+      "without_new_single_ap_pixel": 0.4865570458375065
+    },
+    "cashew": {
+      "buckets": {
+        "combined": {
+          "ap_pixel_anomalies_only": 0.3821864484990713,
+          "ap_pixel_with_goods": 0.35354916351476723,
+          "n_anomaly_images": 7,
+          "n_pos_pixels": 1025,
+          "pos_pixel_share": 0.014447404400467954,
+          "types": [
+            "combined"
+          ]
+        },
+        "extra_a": {
+          "ap_pixel_anomalies_only": 0.4627883980783042,
+          "ap_pixel_with_goods": 0.45190069343566963,
+          "n_anomaly_images": 27,
+          "n_pos_pixels": 4525,
+          "pos_pixel_share": 0.06378000479230975,
+          "types": [
+            "burnt",
+            "corner_or_edge_breakage",
+            "different_colour_spot",
+            "middle_breakage"
+          ]
+        },
+        "new_single": {
+          "ap_pixel_anomalies_only": 0.4497411783782509,
+          "ap_pixel_with_goods": 0.4002590465362376,
+          "n_anomaly_images": 35,
+          "n_pos_pixels": 65397,
+          "pos_pixel_share": 0.9217725908072223,
+          "types": [
+            "same_colour_spot",
+            "small_holes",
+            "small_scratches",
+            "stuck_together"
+          ]
+        }
+      },
+      "by_type": {
+        "burnt": {
+          "ap_pixel_with_goods": 0.7873324395107367,
+          "bucket": "extra_a",
+          "n_images": 7,
+          "n_pos_pixels": 815,
+          "pos_pixel_share": 0.011487448376957447
+        },
+        "combined": {
+          "ap_pixel_with_goods": 0.35354916351476723,
+          "bucket": "combined",
+          "n_images": 7,
+          "n_pos_pixels": 1025,
+          "pos_pixel_share": 0.014447404400467954
+        },
+        "corner_or_edge_breakage": {
+          "ap_pixel_with_goods": 0.34962791619812217,
+          "bucket": "extra_a",
+          "n_images": 10,
+          "n_pos_pixels": 1635,
+          "pos_pixel_share": 0.02304537189733181
+        },
+        "different_colour_spot": {
+          "ap_pixel_with_goods": 0.7592574412183384,
+          "bucket": "extra_a",
+          "n_images": 6,
+          "n_pos_pixels": 278,
+          "pos_pixel_share": 0.003918417973980577
+        },
+        "middle_breakage": {
+          "ap_pixel_with_goods": 0.42008518825506913,
+          "bucket": "extra_a",
+          "n_images": 4,
+          "n_pos_pixels": 1797,
+          "pos_pixel_share": 0.025328766544039916
+        },
+        "same_colour_spot": {
+          "ap_pixel_with_goods": 0.1508375088624998,
+          "bucket": "new_single",
+          "n_images": 7,
+          "n_pos_pixels": 424,
+          "pos_pixel_share": 0.005976292161754549
+        },
+        "small_holes": {
+          "ap_pixel_with_goods": 0.739956239041615,
+          "bucket": "new_single",
+          "n_images": 14,
+          "n_pos_pixels": 215,
+          "pos_pixel_share": 0.0030304311669274247
+        },
+        "small_scratches": {
+          "ap_pixel_with_goods": 0.044229214738494,
+          "bucket": "new_single",
+          "n_images": 10,
+          "n_pos_pixels": 1336,
+          "pos_pixel_share": 0.018830958321000183
+        },
+        "stuck_together": {
+          "ap_pixel_with_goods": 0.5678857209522488,
+          "bucket": "new_single",
+          "n_images": 4,
+          "n_pos_pixels": 63422,
+          "pos_pixel_share": 0.8939349091575401
+        }
+      },
+      "full_ap_pixel": 0.36001989812300844,
+      "without_combined_ap_pixel": 0.3661189571043114,
+      "without_new_single_ap_pixel": 0.4374532563735861
+    },
+    "chewinggum": {
+      "buckets": {
+        "combined": {
+          "ap_pixel_anomalies_only": 0.8643157443575143,
+          "ap_pixel_with_goods": 0.8632718838261397,
+          "n_anomaly_images": 29,
+          "n_pos_pixels": 22545,
+          "pos_pixel_share": 0.578121393953381,
+          "types": [
+            "combined"
+          ]
+        },
+        "extra_a": {
+          "ap_pixel_anomalies_only": 0.781327376524944,
+          "ap_pixel_with_goods": 0.779617236468465,
+          "n_anomaly_images": 39,
+          "n_pos_pixels": 16452,
+          "pos_pixel_share": 0.421878606046619,
+          "types": [
+            "chunk_of_gum_missing",
+            "corner_missing",
+            "scratches",
+            "similar_colour_spot"
+          ]
+        },
+        "new_single": {
+          "ap_pixel_anomalies_only": null,
+          "ap_pixel_with_goods": null,
+          "n_anomaly_images": 0,
+          "n_pos_pixels": 0,
+          "pos_pixel_share": 0.0,
+          "types": []
+        }
+      },
+      "by_type": {
+        "chunk_of_gum_missing": {
+          "ap_pixel_with_goods": 0.9526931886963099,
+          "bucket": "extra_a",
+          "n_images": 11,
+          "n_pos_pixels": 12104,
+          "pos_pixel_share": 0.3103828499628177
+        },
+        "combined": {
+          "ap_pixel_with_goods": 0.8632718838261397,
+          "bucket": "combined",
+          "n_images": 29,
+          "n_pos_pixels": 22545,
+          "pos_pixel_share": 0.578121393953381
+        },
+        "corner_missing": {
+          "ap_pixel_with_goods": 0.4390607284076175,
+          "bucket": "extra_a",
+          "n_images": 9,
+          "n_pos_pixels": 1426,
+          "pos_pixel_share": 0.036566915403749005
+        },
+        "scratches": {
+          "ap_pixel_with_goods": 0.4678562670779044,
+          "bucket": "extra_a",
+          "n_images": 6,
+          "n_pos_pixels": 404,
+          "pos_pixel_share": 0.01035977126445624
+        },
+        "similar_colour_spot": {
+          "ap_pixel_with_goods": 0.24866859466438856,
+          "bucket": "extra_a",
+          "n_images": 13,
+          "n_pos_pixels": 2518,
+          "pos_pixel_share": 0.06456906941559608
+        }
+      },
+      "full_ap_pixel": 0.8307020054459944,
+      "without_combined_ap_pixel": 0.779617236468465,
+      "without_new_single_ap_pixel": 0.8307020054459944
+    }
+  }
+}

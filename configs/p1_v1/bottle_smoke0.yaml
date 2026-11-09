@@ -1,0 +1,17 @@
+schema_version: p1_v1_smoke0_v1
+category: bottle
+defect_types:
+  - broken_large
+  - broken_small
+  - contamination
+normal_prompt: "a photo of a normal bottle"
+image_size: 512
+dtype: float16
+seed: 20260817
+learning_rate: 0.0001
+adapter:
+  type_embedding_dim: 128
+  stem_channels: 64
+  scale64_channels: 128
+  scale32_channels: 256
+  blocks_per_scale: 2
