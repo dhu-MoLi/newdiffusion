@@ -1,0 +1,15 @@
+name: smoke_shape
+paths: configs/paths/asus-mvtec.yaml
+dataset: mvtec
+split: mvtec
+backbone: sd15
+visibility: none
+shape_prior: parametric
+shape_elastic_probability: 0.5
+shape_multi_component_probability: 0.25
+shape_max_components: 3
+pairs_per_type: 1
+loc_epochs: 1
+cls_epochs: 0
+steps: 2
+seed: 20261109
