@@ -1,0 +1,14 @@
+name: backbone_sd2_inpaint
+paths: configs/paths/asus-mvtec.yaml
+dataset: mvtec
+split: mvtec
+backbone: sd2-inpaint
+sd2_inpaint_root: null
+visibility: none
+shape_prior: none
+pairs_per_type: 200
+loc_epochs: 50
+cls_epochs: 0
+img_size: 256
+loc_bs: 16
+seed: 20261109

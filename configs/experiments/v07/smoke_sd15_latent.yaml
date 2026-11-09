@@ -1,0 +1,15 @@
+name: smoke_sd15_latent
+paths: configs/paths/asus-mvtec.yaml
+dataset: mvtec
+split: mvtec
+backbone: sd15
+visibility: latent
+visibility_weight: 0.05
+visibility_factor: 2
+visibility_every: 1
+shape_prior: none
+pairs_per_type: 1
+loc_epochs: 1
+cls_epochs: 0
+steps: 2
+seed: 20261109

@@ -1,0 +1,16 @@
+name: mini_vis_rgb
+paths: configs/paths/asus-mvtec.yaml
+dataset: mvtec
+split: mvtec
+backbone: sd15
+visibility: rgb
+visibility_weight: 0.05
+visibility_size: 256
+visibility_every: 50
+shape_prior: none
+pairs_per_type: 200
+loc_epochs: 50
+cls_epochs: 0
+img_size: 256
+loc_bs: 16
+seed: 20261109

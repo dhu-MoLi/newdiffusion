@@ -120,7 +120,18 @@
 
 **实验**：E3.1 latent 起点；E3.2 参考注入；E3.3 外观损失；E3.4 +判别器。指标：IS、IC-LPIPS、分类准确率、下游检测。
 
-### 增强 D：检测感知的样本选择（可选创新）
+### 主线 D：生成骨干对比（按用户要求）
+
+**动机**：判断换生成骨干能否在下游检测上带来稳定收益。候选与详细判断见 `docs/backbone_plan.md`。
+
+- **第一优先：SD2-inpainting**（本地权重已完整）。它不是"更大的模型"，而是任务结构更匹配：9 通道 UNet 显式接收 `(带洞图像, mask)`，与 mask 条件生成天然一致，边界一致性可能更好，且 adapter 无需重写。
+- 第二优先：SD2.1 base（需下载，UNet 结构近似 drop-in）。
+- 暂缓：SDXL（UNet/CLIP 结构不同，adapter 需重写）、FLUX/SD3.5（DiT，不兼容）。
+- 判定：4 类中至少 3 类 AP-P 不降且 2 类提升 ≥2，才作为主骨干；否则只作为消融。
+
+代码支持已落地：`v07/backbones.py`、`v07/model.py`（9 通道）、`v07/render.py`、`v07/objective.py`，并已用 2 步训练在 GPU 上跑通 SD1.5 与 SD2-inpaint 两条路径。
+
+### 增强 E：检测感知的样本选择（可选创新）
 
 **动机**：最终目标是下游检测，不是生成质量本身。同样 500 对，选哪些样本对检测器更有用？
 
@@ -161,6 +172,7 @@
 | E3.1 | latent 起点 | E2.4 | 4 | 8 | W5 |
 | E3.2 | 参考注入 | E3.1 | 4 | 14 | W5 |
 | E3.3 | 外观损失 | E3.2 | 4 | 12 | W6 |
+| E4.0 | backbone：SD2-inpaint | SD1.5 | 4 | 8 | W5（可并行） |
 | E4 | 检测感知选择 | 随机 500 | 4 | 16 | W7 |
 | E5 | 全量评测 | — | 15+12 | 60+ | W8+ |
 
@@ -240,10 +252,10 @@
 
 1. **现在（无 GPU）**
    - [x] git init + `.gitignore` + init commit + tag `baseline-v1`
-   - [ ] 写 `tools/v07/` 骨架与 `run_meta.json` 规范
-   - [ ] 写 mask 真实性统计脚本
-   - [ ] 设计 `configs/experiments/v07_*.yaml` 模板
-   - [ ] 等 GitHub 链接，配置 remote（不推送直到确认）
+   - [x] `src/cadiff/v07/` 实验层：可见性损失、参数化形状先验、SD2-inpaint 骨干、生成包装
+   - [x] `tools/v07/`：实验运行器、聚合、mask 统计、冒烟测试
+   - [x] `configs/experiments/v07/` 实验模板
+   - [ ] 等 GitHub 链接/权限，配置 remote（不推送直到确认）
 2. **MVTec 跑完后（第 1 周）**
    - [ ] 用当前基线跑 3 类 mini-protocol，与全量结果做排序校验（G0）
    - [ ] 跑 E1.1、E1.2
