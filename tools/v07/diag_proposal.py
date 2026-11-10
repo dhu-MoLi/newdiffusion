@@ -250,6 +250,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--name", default=None)
     parser.add_argument("--output", type=Path, default=None)
     parser.add_argument("--sd2-root", type=Path, default=None)
+    parser.add_argument("--learned-root", type=Path, default=None)
     arguments = parser.parse_args(argv)
 
     project = load_config(ROOT / arguments.paths)
@@ -280,6 +281,19 @@ def main(argv: list[str] | None = None) -> int:
         reference_valid = tuple(
             item.valid for _, item in normals[: arguments.atlas_references]
         )
+        learned_checkpoint = None
+        if "learned" in arguments.backends:
+            if arguments.learned_root is None:
+                raise ValueError("--learned-root is required for the learned backend")
+            candidates = sorted(
+                (arguments.learned_root / category).rglob("checkpoint.pt")
+            )
+            if not candidates:
+                raise FileNotFoundError(
+                    f"no learned checkpoint under {arguments.learned_root / category}"
+                )
+            learned_checkpoint = candidates[-1]
+            print(f"[{category}] learned checkpoint: {learned_checkpoint}", flush=True)
         for backend in arguments.backends:
             prototype_mode = "ring" if backend == "ring" else "hole"
             reconstructor = None
@@ -289,6 +303,7 @@ def main(argv: list[str] | None = None) -> int:
                     references=reference_rgb,
                     reference_valids=reference_valid,
                     sd2_root=arguments.sd2_root,
+                    learned_checkpoint=learned_checkpoint,
                     device=arguments.device,
                     prompt=f"a photo of a normal {category}",
                 )

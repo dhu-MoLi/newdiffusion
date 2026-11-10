@@ -242,6 +242,7 @@ def make_reconstructor(
     references: Sequence[np.ndarray] | None = None,
     reference_valids: Sequence[np.ndarray] | None = None,
     sd2_root: Path | None = None,
+    learned_checkpoint: Path | None = None,
     device: str | None = None,
     prompt: str = "",
     steps: int = 50,
@@ -273,6 +274,14 @@ def make_reconstructor(
             prompt=prompt,
             steps=steps,
             guidance=guidance,
+        )
+    if name == "learned":
+        if learned_checkpoint is None:
+            raise ValueError("learned backend requires learned_checkpoint")
+        from cadiff.v07.reconstructor import LearnedReconstructor
+
+        return LearnedReconstructor(
+            Path(learned_checkpoint), device=device or "cuda:0"
         )
     raise ValueError(f"unknown reconstruction backend: {name}")
 
