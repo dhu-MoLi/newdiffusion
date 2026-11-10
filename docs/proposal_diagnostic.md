@@ -99,9 +99,46 @@ VisA 类别需要把 `--paths` 指向 `configs/paths/asus-data.yaml`，`--split 
 
 这提示：**重建可能影响 prototype，但位置/站点选择是更直接的瓶颈**。需要用完整的 Stage 0 在更多类别上确认。
 
-## 7. 下一步
+## 7. Stage 0 首次结果（4 类，136 probes，CPU）
 
-- 跑完整 Stage 0，得到每类/每后端的分解表；
+类别：bottle / carpet / grid / transistor；后端：neighbor / telea / ring / atlas；每类每类型 1 个源、2 个正常 target、最多 4 个 probe。
+
+| 后端 | fill_feature_cos | fill_color_l1 | proposal_sim | similarity_gap | proposal_support_ratio | site_support_ratio | site_proposal_ratio | site_count |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| neighbor(hole) | 0.9349 | 0.0289 | 0.7048 | 0.2009 | 0.4072 | 0.4072 | 1.0000 | 1.0 |
+| telea(hole) | 0.9453 | 0.0233 | 0.7276 | 0.2038 | 0.4100 | 0.4100 | 1.0000 | 1.0 |
+| atlas(hole) | 0.9475 | 0.0517 | 0.7470 | 0.2169 | 0.4101 | 0.4101 | 1.0000 | 1.0 |
+| ring(ring) | n/a | n/a | 0.7449 | 0.1842 | 0.3949 | 0.3949 | 1.0000 | 1.0 |
+
+### 结论
+
+1. **重建质量是类型相关的，不是全局瓶颈。**
+   - `bottle/broken_large`：neighbor 的 fill_feature_cos 只有 0.6998，atlas 0.9347、telea 0.8145；proposal 相似度 0.479 vs 0.818。大块缺失类明显受益于更好的填充。
+   - `carpet/*`、`grid/*` 的 fill_feature_cos 普遍 0.94–0.98，neighbor 与 atlas/telea 差距很小。纹理类换重建收益有限。
+   - 因此"训练一个统一的重建器"不是第一优先级；至少应该按缺陷类型/大小分层评估。
+
+2. **零成本的 Telea 已经优于当前 baseline。**
+   - 平均 fill_feature_cos 0.9453 vs 0.9349，颜色 L1 0.0233 vs 0.0289，proposal 相似度 0.728 vs 0.705。
+   - 仓库里本来就有 `inpaint_source`，只是 A2 没用；这是一个可以直接消融的免费 baseline。
+
+3. **H 的"站点选择"是更大的结构性问题。**
+   - 136 个 probe 里，`site_proposal_ratio = 1.0`、`site_count = 1`、`site_support_ratio ≈ 0.41`：**选中的站点就是整个 proposal**，不存在"在多个站点里选一个"。
+   - 原因在代码：`candidate_tokencut_sites` 切的是 **target support 的连通域**，再与 proposal 求交。大多数物体只有一个连通域，所以永远只有一个 site，`pick_tokencut_site` 的随机性没有意义。
+   - 这意味着：即使重建/prototype 完美，缺陷仍然会被放在约 40% 的物体区域里，位置先验缺失。
+
+4. **位置分布存在可测的偏差。**
+   - `grid/glue`、`grid/thread`：真实缺陷 SDF 中位数约 -18（靠近/越过支撑边界），proposal 约 +18（支撑内部）；`bottle/broken_large` 的 neighbor 也出现 -9 vs +85。
+   - 说明 proposal 偏向物体内部，而部分真实缺陷发生在边缘/薄结构处。
+
+### 对路线的含义
+
+- **先做**：把 `telea` 接进 A2（一行切换）作为免费 baseline；同时做"位置/站点"模块，而不是先训练大重建器。
+- **再做**：B（mask 生成）在 proposal 内生成**局部**掩码，替代"整个 support CC 当 site"；位置先验用物体坐标系的真实缺陷分布。
+- **重建器训练的位置**：作为 B 之后的增强项，优先针对大块缺失/结构化类别（bottle broken_large、pcb、transistor），用 B0/B1 mask + 正常图自监督；纹理类可以先不训。
+
+## 8. 下一步
+
+- 跑完整 Stage 0（建议在 MVTec 基线结束后用 GPU，加入 `sd2`）；
 - 若 `site_proposal_ratio` 普遍接近 1，优先做物体坐标系位置先验 + 更局部的站点/掩码生成；
 - 若 `fill_feature_cos` 与 `similarity_gap` 在 atlas/ring 上明显更好，再考虑训练重建器；
 - 训练重建器时用 `v07/shape_prior.py` 的 B0 生成洞，正常图做监督，损失加 DINOv2 特征项。
