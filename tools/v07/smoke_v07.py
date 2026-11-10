@@ -159,11 +159,35 @@ def test_probe() -> None:
     )
 
 
+def test_reconstructor_model() -> None:
+    import torch
+
+    from cadiff.v07.reconstructor import MaskedUNet, place_shape_in_support
+
+    model = MaskedUNet(base_channels=8, depth=2)
+    image = torch.randn(1, 3, 64, 64)
+    hole = torch.zeros(1, 1, 64, 64)
+    hole[:, :, 20:44, 20:44] = 1.0
+    output = model(image, hole)
+    assert output.shape == image.shape
+    loss = ((output - image).abs() * hole).mean()
+    loss.backward()
+    support = np.ones((512, 512), dtype=bool)
+    valid = np.ones((512, 512), dtype=bool)
+    shape = _synthetic_mask(radius=40)
+    placed = place_shape_in_support(
+        shape, support, valid, np.random.RandomState(0)
+    )
+    assert placed is not None and placed.any()
+    print("reconstructor model ok", float(loss), int(placed.sum()))
+
+
 def main() -> int:
     test_visibility()
     test_shape_prior()
     test_reconstruction()
     test_probe()
+    test_reconstructor_model()
     test_runmeta()
     print("v07 smoke passed")
     return 0
