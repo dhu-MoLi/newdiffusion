@@ -58,14 +58,17 @@ PY=/home/asus/anaconda3/envs/cad-v0/bin/python
 
 同一组验证洞上同时跑 `neighbor` 和 `telea` 两个零样本基线。
 
-## 6. 当前基线（bottle 验证集，21 对）
+## 6. 当前结果（bottle_v4，step 500，初步）
 
 | 方法 | masked_l1 | PSNR | feature_cos |
 |---|---:|---:|---:|
 | neighbor（A2 现状） | 0.00056 | 23.73 | 0.605 |
 | telea | 0.00058 | 24.09 | 0.689 |
+| learned（step 500） | 0.0153 | 39.46 | **0.977** |
 
-> 注意：masked_l1 在平滑区域会非常小，主要看 `feature_cos` 和后续 A2 proposal 指标。
+> 注意：`masked_l1` 不能直接横向比较。neighbor/telea 在多数洞内像素上几乎精确复制（L1 低），但在少数像素上会复制到远处边界（误差很大），PSNR 因此只有 23–24 dB；学习式重建的误差更均匀，L1 更高但 PSNR 39.5 dB、feature_cos 0.977。
+> 对 A2 来说最关键的是 `feature_cos`（洞内 DINOv2 token 与正常目标的一致性），它从 0.61/0.69 提升到 0.98。
+> 最终数字以 `model/summary.json` 为准。
 
 ## 7. 与 A2 / 诊断的衔接
 
