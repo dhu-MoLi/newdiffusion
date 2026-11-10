@@ -182,12 +182,42 @@ def test_reconstructor_model() -> None:
     print("reconstructor model ok", float(loss), int(placed.sum()))
 
 
+def test_reconstructor_dataset() -> None:
+    from cadiff.v07.reconstructor import NormalHoleDataset
+
+    masks = [_synthetic_mask(radius=radius) for radius in (20, 30, 45, 60)]
+    prior = ParametricShapePrior({"scratch": masks})
+    images = (
+        np.random.RandomState(3).randint(0, 255, (512, 512, 3), dtype=np.uint8),
+    )
+    supports = (np.ones((512, 512), dtype=bool),)
+    valids = (np.ones((512, 512), dtype=bool),)
+    dataset = NormalHoleDataset(
+        images=images,
+        supports=supports,
+        valids=valids,
+        prior=prior,
+        defect_types=("scratch",),
+        length=4,
+        seed=1,
+        real_masks=masks,
+        real_mask_fraction=1.0,
+    )
+    for index in range(4):
+        image, hole = dataset[index]
+        assert image.shape == (3, 512, 512)
+        assert hole.shape == (1, 512, 512)
+        assert float(hole.sum()) > 0
+    print("reconstructor dataset ok")
+
+
 def main() -> int:
     test_visibility()
     test_shape_prior()
     test_reconstruction()
     test_probe()
     test_reconstructor_model()
+    test_reconstructor_dataset()
     test_runmeta()
     print("v07 smoke passed")
     return 0

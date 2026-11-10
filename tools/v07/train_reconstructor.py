@@ -43,6 +43,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--gradient-weight", type=float, default=0.05)
     parser.add_argument("--val-every", type=int, default=500)
     parser.add_argument("--val-size", type=int, default=32)
+    parser.add_argument("--real-mask-fraction", type=float, default=0.5)
     parser.add_argument("--supports-cache", type=Path, default=None)
     arguments = parser.parse_args(argv)
 
@@ -68,6 +69,7 @@ def main(argv: list[str] | None = None) -> int:
         gradient_weight=arguments.gradient_weight,
         val_every=arguments.val_every,
         val_size=arguments.val_size,
+        real_mask_fraction=arguments.real_mask_fraction,
         device=arguments.device,
     )
     config_path = run_dir / "config.json"

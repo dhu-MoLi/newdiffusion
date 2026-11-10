@@ -52,6 +52,7 @@ class ReconstructorConfig:
     weight_decay: float = 1e-4
     seed: int = 20261110
     val_fraction: float = 0.1
+    real_mask_fraction: float = 0.5
     feature_every: int = 10
     feature_weight: float = 0.1
     gradient_weight: float = 0.05
@@ -224,9 +225,13 @@ class NormalHoleDataset(Dataset):
         defect_types: Sequence[str],
         length: int,
         seed: int,
+        real_masks: Sequence[np.ndarray] = (),
+        real_mask_fraction: float = 0.0,
     ) -> None:
         if not images or len(images) != len(supports) or len(images) != len(valids):
             raise ValueError("images, supports and valids must be non-empty and aligned")
+        if not 0.0 <= float(real_mask_fraction) <= 1.0:
+            raise ValueError("real_mask_fraction must be in [0, 1]")
         self.images = images
         self.supports = supports
         self.valids = valids
@@ -234,6 +239,10 @@ class NormalHoleDataset(Dataset):
         self.defect_types = tuple(defect_types)
         self.length = int(length)
         self.seed = int(seed)
+        self.real_masks = tuple(
+            np.ascontiguousarray(mask, dtype=bool) for mask in real_masks
+        )
+        self.real_mask_fraction = float(real_mask_fraction)
 
     def __len__(self) -> int:
         return self.length
@@ -242,13 +251,16 @@ class NormalHoleDataset(Dataset):
         rng = np.random.RandomState((self.seed + index) % (2**32))
         image_index = index % len(self.images)
         rgb = self.images[image_index]
-        hole = sample_hole(
-            self.prior,
-            self.defect_types,
-            self.supports[image_index],
-            self.valids[image_index],
-            rng,
-        )
+        support = self.supports[image_index]
+        valid = self.valids[image_index]
+        hole = None
+        if self.real_masks and rng.rand() < self.real_mask_fraction:
+            shape = self.real_masks[int(rng.randint(0, len(self.real_masks)))]
+            hole = place_shape_in_support(shape, support, valid, rng)
+            if hole is None or int(hole.sum()) < 64:
+                hole = None
+        if hole is None:
+            hole = sample_hole(self.prior, self.defect_types, support, valid, rng)
         if rng.rand() < 0.5:
             rgb = rgb[:, ::-1]
             hole = hole[:, ::-1]
@@ -479,11 +491,24 @@ def _build_pairs(
     *,
     count: int,
     seed: int,
+    real_masks: Sequence[np.ndarray] = (),
+    real_mask_fraction: float = 0.0,
 ) -> list[tuple[Tensor, Tensor]]:
     pairs: list[tuple[Tensor, Tensor]] = []
     for index in range(min(count, len(images))):
         rng = np.random.RandomState((seed + index) % (2**32))
-        hole = sample_hole(prior, defect_types, supports[index], valids[index], rng)
+        hole = None
+        if real_masks and rng.rand() < real_mask_fraction:
+            shape = real_masks[int(rng.randint(0, len(real_masks)))]
+            hole = place_shape_in_support(
+                shape, supports[index], valids[index], rng
+            )
+            if hole is None or int(hole.sum()) < 64:
+                hole = None
+        if hole is None:
+            hole = sample_hole(
+                prior, defect_types, supports[index], valids[index], rng
+            )
         image = (
             torch.from_numpy(np.array(images[index], copy=True))
             .permute(2, 0, 1)
@@ -535,6 +560,9 @@ def train_reconstructor(
     defect_types = tuple(sorted(masks_by_type))
     if not defect_types:
         raise ValueError("no few-shot masks for the shape prior")
+    raw_masks = tuple(
+        mask for defect_type in defect_types for mask in masks_by_type[defect_type]
+    )
     prior = ParametricShapePrior(
         masks_by_type,
         size=IMAGE_SIZE,
@@ -570,6 +598,8 @@ def train_reconstructor(
         defect_types=defect_types,
         length=config.steps * config.batch_size,
         seed=config.seed,
+        real_masks=raw_masks,
+        real_mask_fraction=config.real_mask_fraction,
     )
     loader = DataLoader(
         dataset,
@@ -598,6 +628,8 @@ def train_reconstructor(
         defect_types,
         count=min(config.val_size, len(val_images) * 4),
         seed=config.seed + 999,
+        real_masks=raw_masks,
+        real_mask_fraction=config.real_mask_fraction,
     )
     print(json.dumps({"val_pairs": len(val_pairs)}), flush=True)
     baseline_neighbor = _baseline_metrics(val_pairs, encoder, "neighbor")
