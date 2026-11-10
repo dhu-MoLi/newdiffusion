@@ -82,7 +82,16 @@ runs/v07/<实验名>/<类别>/seed-<种子>/
   --generated runs/v07/mini_shape/bottle/seed-20261109/generate/masks \
   --reference runs/v07/mini_baseline/bottle/seed-20261109/generate/masks \
   --output runs/v07/mask_stats_bottle.json
+
+# Stage-0 候选区诊断：重建后端 × proposal × 站点 × 位置
+"$PY" tools/v07/diag_proposal.py \
+  --categories bottle carpet grid transistor \
+  --backends neighbor telea ns ring atlas \
+  --normals-per-type 4 --sources-per-type 2 --max-probes-per-type 8 \
+  --device cuda:0 --name stage0_v1
 ```
+
+诊断的指标定义、使用注意事项（尤其是"不要用缺陷图当 target 算 proposal 召回"）见 `docs/proposal_diagnostic.md`。
 
 ## 5. 首次运行前的冒烟测试（不占 GPU）
 

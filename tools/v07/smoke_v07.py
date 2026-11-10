@@ -16,6 +16,14 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
+from cadiff.v06_atlas_diag.features import DinoFeatures
+from cadiff.v07.proposal_probe import (
+    fill_consistency_from_features,
+    location_stats,
+    probe_from_features,
+    site_probe,
+)
+from cadiff.v07.reconstruction import make_ns, make_reconstructor, make_telea, ring_mask
 from cadiff.v07.shape_prior import ParametricShapePrior, mask_metrics
 from cadiff.v07.visibility import latent_lowfreq_loss
 
@@ -74,9 +82,88 @@ def test_runmeta() -> None:
     print("runmeta ok", meta["git_commit"])
 
 
+def test_reconstruction() -> None:
+    rng = np.random.RandomState(0)
+    rgb = rng.randint(0, 255, (512, 512, 3), dtype=np.uint8)
+    hole = np.zeros((512, 512), dtype=bool)
+    hole[200:260, 220:280] = True
+    valid = np.ones((512, 512), dtype=bool)
+    reference = np.random.RandomState(42).randint(
+        0, 255, (512, 512, 3), dtype=np.uint8
+    )
+    backends = [
+        make_reconstructor("neighbor"),
+        make_telea(),
+        make_ns(),
+        make_reconstructor("atlas", references=(reference,)),
+    ]
+    for backend in backends:
+        output = backend(rgb, hole, valid)
+        assert output.shape == rgb.shape and output.dtype == np.uint8
+        assert np.array_equal(output[~hole], rgb[~hole])
+        assert not np.array_equal(output[hole], rgb[hole])
+    ring = ring_mask(hole, valid, radius=12)
+    assert ring.any() and not (ring & hole).any()
+    print("reconstruction ok", [item.name for item in backends])
+
+
+def test_probe() -> None:
+    rng = np.random.RandomState(1)
+    source_features = DinoFeatures(
+        tokens=rng.rand(8, 8, 16).astype(np.float32),
+        grid_height=8,
+        grid_width=8,
+    )
+    target_features = DinoFeatures(
+        tokens=rng.rand(8, 8, 16).astype(np.float32),
+        grid_height=8,
+        grid_width=8,
+    )
+    valid = np.ones((512, 512), dtype=bool)
+    support = np.ones((512, 512), dtype=bool)
+    source_mask = np.zeros((512, 512), dtype=bool)
+    source_mask[100:200, 100:200] = True
+    rgb = rng.randint(0, 255, (512, 512, 3), dtype=np.uint8)
+    filled = rgb.copy()
+    filled[source_mask] = 127
+    probe = probe_from_features(
+        source_features=source_features,
+        source_mask=source_mask,
+        source_valid=valid,
+        source_support=support,
+        target_features=target_features,
+        target_valid=valid,
+        target_support=support,
+        quantile=0.60,
+    )
+    assert probe.proposal.shape == (512, 512)
+    assert all(np.isfinite(list(probe.stats.values())))
+    site = site_probe(target_support=support, proposal=probe.proposal, seed=1)
+    assert site.pixel_count >= 0
+    location = location_stats(mask=source_mask, support=support)
+    assert np.isfinite(location["sdf_median"])
+    fill = fill_consistency_from_features(
+        source_rgb=rgb,
+        filled_rgb=filled,
+        hole=source_mask,
+        valid=valid,
+        features=source_features,
+        ring_radius=64,
+    )
+    assert np.isfinite(fill["fill_feature_cos"])
+    print(
+        "probe ok",
+        f"proposal={int(probe.proposal.sum())}",
+        f"site={site.found}",
+        f"fill_cos={fill['fill_feature_cos']:.3f}",
+    )
+
+
 def main() -> int:
     test_visibility()
     test_shape_prior()
+    test_reconstruction()
+    test_probe()
     test_runmeta()
     print("v07 smoke passed")
     return 0
