@@ -17,6 +17,8 @@ if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
 from cadiff.v06_atlas_diag.features import DinoFeatures
+from cadiff.v07.location import ObjectLocationPrior
+from cadiff.v07.placement import instantiate_site_scale_v07
 from cadiff.v07.proposal_probe import (
     fill_consistency_from_features,
     location_stats,
@@ -25,6 +27,7 @@ from cadiff.v07.proposal_probe import (
 )
 from cadiff.v07.reconstruction import make_ns, make_reconstructor, make_telea, ring_mask
 from cadiff.v07.shape_prior import ParametricShapePrior, mask_metrics
+from cadiff.v07.site_selection import proposal_sites, select_site
 from cadiff.v07.visibility import latent_lowfreq_loss
 
 
@@ -211,6 +214,57 @@ def test_reconstructor_dataset() -> None:
     print("reconstructor dataset ok")
 
 
+def test_site_and_location() -> None:
+    support = _synthetic_mask(radius=220)
+    valid = np.ones((512, 512), dtype=bool)
+    proposal = np.zeros((512, 512), dtype=bool)
+    proposal[150:250, 150:250] = True
+    proposal[300:380, 300:380] = True
+    proposal &= support
+    similarity = np.random.RandomState(5).rand(512, 512).astype(np.float32)
+    sites = proposal_sites(
+        proposal, support, valid, similarity=similarity, min_pixels=64
+    )
+    assert len(sites) >= 2
+    chosen = select_site(sites, seed=1)
+    assert 0 < chosen.index <= len(sites)
+    assert chosen.pixels < int(proposal.sum())
+
+    mask_a = _synthetic_mask(center=(256, 256), radius=40)
+    mask_b = _synthetic_mask(center=(300, 300), radius=40)
+    prior = ObjectLocationPrior.from_masks(
+        {"scratch": [mask_a, mask_b]},
+        {"scratch": [support, support]},
+        bins=32,
+        sigma=1.0,
+    )
+    score = prior.score_mask(mask_a, support, "scratch")
+    assert np.isfinite(score)
+    heat = prior.heatmap(support, "scratch")
+    assert heat.shape == (512, 512) and float(heat.max()) > 0.0
+
+    template, placement = instantiate_site_scale_v07(
+        mask_a,
+        support,
+        support,
+        proposal,
+        similarity,
+        seed=1,
+        fewshot_areas=(int(mask_a.sum()),),
+        min_shape_pixels=16,
+        site_method="proposal_cc",
+    )
+    assert template.shape == (512, 512)
+    assert placement.placed_pixels >= 16
+    assert not (placement.mask & ~proposal).any()
+    print(
+        "site/location/placement ok",
+        len(sites),
+        f"score={score:.3f}",
+        f"placed={placement.placed_pixels}",
+    )
+
+
 def main() -> int:
     test_visibility()
     test_shape_prior()
@@ -218,6 +272,7 @@ def main() -> int:
     test_probe()
     test_reconstructor_model()
     test_reconstructor_dataset()
+    test_site_and_location()
     test_runmeta()
     print("v07 smoke passed")
     return 0

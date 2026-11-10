@@ -39,13 +39,16 @@ from cadiff.v06_c.visa_pilot import (
     normal_identity_records,
     slug_type,
 )
+from cadiff.v07.location import ObjectLocationPrior
 from cadiff.v07.proposal_probe import (
+    SiteResult,
     fill_consistency_from_features,
     location_stats,
     probe_from_features,
     site_probe,
 )
 from cadiff.v07.reconstruction import make_reconstructor, ring_mask
+from cadiff.v07.site_selection import proposal_sites, select_site
 
 DEFAULTS = {
     "paths": "configs/paths/asus-mvtec.yaml",
@@ -58,6 +61,9 @@ DEFAULTS = {
     "ring_radius": 24,
     "quantile": 0.60,
     "atlas_references": 8,
+    "site_method": "support_cc",
+    "site_temperature": 1.0,
+    "site_similarity_weight": 0.3,
     "device": "cuda:0",
     "seed": 20261110,
 }
@@ -113,6 +119,71 @@ def _load_category(
     return inventory, sources, normals
 
 
+def _select_site(
+    *,
+    method: str,
+    target_support: np.ndarray,
+    target_valid: np.ndarray,
+    proposal: np.ndarray,
+    similarity: np.ndarray,
+    seed: int,
+    prior: ObjectLocationPrior | None,
+    defect_type: str,
+    temperature: float,
+    similarity_weight: float,
+) -> tuple[SiteResult, float]:
+    if method == "support_cc":
+        result = site_probe(
+            target_support=target_support, proposal=proposal, seed=seed
+        )
+        return result, float("nan")
+    sites = proposal_sites(
+        proposal,
+        target_support,
+        target_valid,
+        similarity=similarity,
+        min_pixels=64,
+    )
+    if not sites:
+        return (
+            SiteResult(
+                found=False,
+                mask=None,
+                pixel_count=0,
+                site_index=-1,
+                site_count=0,
+            ),
+            float("nan"),
+        )
+    prior_scores = None
+    prior_score = float("nan")
+    if method == "proposal_cc_prior":
+        if prior is None:
+            raise ValueError("proposal_cc_prior requires a location prior")
+        prior_scores = [
+            prior.score_site(site, target_support, defect_type) for site in sites
+        ]
+    site = select_site(
+        sites,
+        seed=seed,
+        similarity_weight=similarity_weight,
+        prior_scores=prior_scores,
+        temperature=temperature,
+    )
+    if prior is not None:
+        prior_score = prior.score_mask(site.mask, target_support, defect_type)
+    return (
+        SiteResult(
+            found=True,
+            mask=site.mask,
+            pixel_count=int(site.pixels),
+            site_index=int(site.index),
+            site_count=len(sites),
+        ),
+        prior_score,
+    )
+
+
 def _make_row(
     *,
     category: str,
@@ -127,6 +198,7 @@ def _make_row(
     proposal_location: dict[str, float],
     site: Any,
     site_location: dict[str, float],
+    site_prior_score: float = float("nan"),
 ) -> dict[str, Any]:
     return {
         "category": category,
@@ -161,6 +233,7 @@ def _make_row(
         ),
         "site_sdf_median": site_location["sdf_median"],
         "site_radial_median": site_location["radial_median"],
+        "site_prior_score": site_prior_score,
     }
 
 
@@ -210,6 +283,7 @@ def _markdown(
         "site_support_ratio",
         "site_proposal_ratio",
         "site_count",
+        "site_prior_score",
         "site_pixels",
     ]
     lines = [f"# {title}", "", "## Overall", ""]
@@ -245,6 +319,17 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--ring-radius", type=int, default=DEFAULTS["ring_radius"])
     parser.add_argument("--quantile", type=float, default=DEFAULTS["quantile"])
     parser.add_argument("--atlas-references", type=int, default=DEFAULTS["atlas_references"])
+    parser.add_argument(
+        "--site-method",
+        choices=["support_cc", "proposal_cc", "proposal_cc_prior"],
+        default=DEFAULTS["site_method"],
+    )
+    parser.add_argument("--site-temperature", type=float, default=DEFAULTS["site_temperature"])
+    parser.add_argument(
+        "--site-similarity-weight",
+        type=float,
+        default=DEFAULTS["site_similarity_weight"],
+    )
     parser.add_argument("--device", default=DEFAULTS["device"])
     parser.add_argument("--seed", type=int, default=DEFAULTS["seed"])
     parser.add_argument("--name", default=None)
@@ -294,6 +379,13 @@ def main(argv: list[str] | None = None) -> int:
                 )
             learned_checkpoint = candidates[-1]
             print(f"[{category}] learned checkpoint: {learned_checkpoint}", flush=True)
+        location_prior = None
+        if arguments.site_method == "proposal_cc_prior":
+            location_prior = ObjectLocationPrior.from_inventory(inventory, encoder)
+            print(
+                f"[{category}] location prior {location_prior.describe()}",
+                flush=True,
+            )
         for backend in arguments.backends:
             prototype_mode = "ring" if backend == "ring" else "hole"
             reconstructor = None
@@ -381,10 +473,17 @@ def main(argv: list[str] | None = None) -> int:
                                 support=target_support,
                                 sdf=cache.sdf(target_support, target_key),
                             )
-                            site = site_probe(
+                            site, site_prior_score = _select_site(
+                                method=arguments.site_method,
                                 target_support=target_support,
+                                target_valid=target.valid,
                                 proposal=probe.proposal,
+                                similarity=probe.similarity,
                                 seed=seed,
+                                prior=location_prior,
+                                defect_type=defect_type,
+                                temperature=arguments.site_temperature,
+                                similarity_weight=arguments.site_similarity_weight,
                             )
                             if site.found and site.mask is not None:
                                 site_location = location_stats(
@@ -412,6 +511,7 @@ def main(argv: list[str] | None = None) -> int:
                                     proposal_location=proposal_location,
                                     site=site,
                                     site_location=site_location,
+                                    site_prior_score=site_prior_score,
                                 )
                             )
                             probes += 1
@@ -454,6 +554,9 @@ def main(argv: list[str] | None = None) -> int:
             "max_probes_per_type": arguments.max_probes_per_type,
             "ring_radius": arguments.ring_radius,
             "quantile": arguments.quantile,
+            "site_method": arguments.site_method,
+            "site_temperature": arguments.site_temperature,
+            "site_similarity_weight": arguments.site_similarity_weight,
             "device": arguments.device,
             "seed": arguments.seed,
         },
