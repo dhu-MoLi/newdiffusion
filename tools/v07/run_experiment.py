@@ -55,6 +55,8 @@ DEFAULTS: dict[str, Any] = {
     "fill_backend": "neighbor",
     "learned_checkpoint": None,
     "location_prior": "none",
+    "learned_prior_root": None,
+    "learned_prior_weight": 0.5,
     "shape_elastic_probability": 0.5,
     "shape_multi_component_probability": 0.0,
     "shape_max_components": 3,
@@ -224,6 +226,38 @@ def _run_stage(
             if str(experiment["location_prior"]) == "histogram":
                 location_prior = build_location_prior(inventory, device=device)
                 write_json(run_dir / "location_prior.json", location_prior.describe())
+            if str(experiment["site_method"]) == "learned_prior":
+                from cadiff.v06_a.tokencut import load_official_dinov2_encoder
+                from cadiff.v07.placement_scorer import (
+                    LearnedPlacementPrior,
+                    PlacementScorer,
+                )
+
+                prior_root = experiment["learned_prior_root"]
+                root = (
+                    Path(str(prior_root))
+                    if prior_root
+                    else Path(project.runs_root) / "v07" / "placement_scorer"
+                )
+                model_path = root / category / "model.pkl"
+                if not model_path.is_file():
+                    raise FileNotFoundError(f"missing L2 scorer model: {model_path}")
+                scorer = PlacementScorer.load(model_path)
+                location_prior = LearnedPlacementPrior(
+                    scorer,
+                    load_official_dinov2_encoder(device=device),
+                    defect_types=tuple(sorted(item.name for item in inventory.types)),
+                    histogram=location_prior,
+                    learned_weight=float(experiment["learned_prior_weight"]),
+                )
+                write_json(
+                    run_dir / "learned_prior.json",
+                    {
+                        "model": str(model_path),
+                        "learned_weight": float(experiment["learned_prior_weight"]),
+                        "fused_with": "histogram" if location_prior.histogram else None,
+                    },
+                )
             _log(log_handle, f"{category}: generate")
             summary = run_visa_place_bulk_v07(
                 inventory=inventory,

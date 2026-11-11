@@ -553,7 +553,118 @@ def lomo_evaluate(
     }
 
 
+class _BoundTargetPrior:
+    """Per-target view: dense learned/fused score map for one normal image."""
+
+    def __init__(
+        self,
+        owner: "LearnedPlacementPrior",
+        rgb: np.ndarray,
+        valid: np.ndarray,
+    ) -> None:
+        self.owner = owner
+        self.rgb = np.ascontiguousarray(rgb)
+        self.valid = np.ascontiguousarray(valid, dtype=bool)
+        self._tokens: np.ndarray | None = None
+        self._blurred: list[np.ndarray] | None = None
+        self._cache: dict[str, np.ndarray] = {}
+
+    def _encode(self) -> tuple[np.ndarray, list[np.ndarray]]:
+        if self._tokens is None:
+            features = self.owner.encoder.encode(self.rgb)
+            self._tokens = features.tokens
+            self._blurred = [
+                _blur_grid(features.tokens, float(sigma))
+                for sigma in self.owner.config.context_sigmas
+            ]
+        return self._tokens, self._blurred or []
+
+    def heatmap(self, support: np.ndarray, defect_type: str | None = None) -> np.ndarray:
+        key = str(defect_type)
+        cached = self._cache.get(key)
+        if cached is not None:
+            return cached
+        tokens, blurred = self._encode()
+        grid = tokens.shape[0]
+        rows, cols = np.mgrid[0:grid, 0:grid]
+        xy = np.stack(
+            [
+                (cols.reshape(-1) + 0.5) * CANVAS / grid,
+                (rows.reshape(-1) + 0.5) * CANVAS / grid,
+            ],
+            axis=1,
+        ).astype(np.float32)
+        sdf = physical_sdf_px_512(support)
+        type_index = self.owner.type_index.get(str(defect_type), 0)
+        features = _position_features(
+            xy,
+            tokens=tokens,
+            blurred=blurred,
+            sdf=sdf,
+            support=support,
+            defect_type_index=type_index,
+            type_count=len(self.owner.type_index),
+        )
+        probability = self.owner.scorer.predict_proba(features).reshape(grid, grid)
+        learned = (probability - probability.mean()) / (probability.std() + 1e-9)
+        score = learned
+        histogram = self.owner.histogram
+        if histogram is not None and defect_type is not None:
+            density = histogram.heatmap(support, defect_type)
+            log_density = np.log(density + 1e-12)
+            import cv2
+
+            coarse = cv2.resize(
+                log_density,
+                (grid, grid),
+                interpolation=cv2.INTER_AREA,
+            )
+            coarse = (coarse - coarse.mean()) / (coarse.std() + 1e-9)
+            weight = float(self.owner.learned_weight)
+            score = weight * learned + (1.0 - weight) * coarse
+        import cv2
+
+        dense = cv2.resize(score, (CANVAS, CANVAS), interpolation=cv2.INTER_CUBIC)
+        weights = np.ascontiguousarray(np.exp(np.clip(dense, -12.0, 12.0)), dtype=np.float32)
+        self._cache[key] = weights
+        return weights
+
+    def score_mask(
+        self, mask: np.ndarray, support: np.ndarray, defect_type: str | None = None
+    ) -> float:
+        heat = self.heatmap(support, defect_type)
+        binary = np.asarray(mask, dtype=bool) & np.asarray(support, dtype=bool)
+        if not binary.any():
+            return float("nan")
+        return float(np.log(heat[binary] + 1e-12).mean())
+
+
+class LearnedPlacementPrior:
+    """L2 scorer wrapped as a location prior (fused with L1 when provided)."""
+
+    def __init__(
+        self,
+        scorer: PlacementScorer,
+        encoder: Any,
+        defect_types: Sequence[str],
+        *,
+        histogram: Any = None,
+        learned_weight: float = 0.5,
+    ) -> None:
+        self.scorer = scorer
+        self.encoder = encoder
+        self.config = scorer.cfg
+        names = tuple(sorted(defect_types))
+        self.type_index = {name: index for index, name in enumerate(names)}
+        self.histogram = histogram
+        self.learned_weight = float(learned_weight)
+
+    def bind(self, rgb: np.ndarray, valid: np.ndarray) -> _BoundTargetPrior:
+        return _BoundTargetPrior(self, rgb, valid)
+
+
 __all__ = [
+    "LearnedPlacementPrior",
     "MaskView",
     "NormalView",
     "PairSamples",
