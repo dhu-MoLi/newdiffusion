@@ -301,9 +301,11 @@ def instantiate_site_scale_location_weighted(
 
     candidate_scale = float(scale)
     last_error: Exception | None = None
+    last_scaled: np.ndarray | None = None
     for _attempt in range(7):
         try:
             scaled = _safe_scale(gt, candidate_scale, proposal_mask, canvas=canvas)
+            last_scaled = scaled
         except EmptyFeasiblePlacement as error:
             last_error = error
             candidate_scale *= 0.8
@@ -344,6 +346,35 @@ def instantiate_site_scale_location_weighted(
                 unclipped=np.ascontiguousarray(placed.mask),
             )
         candidate_scale *= 0.8
+
+    # last resort: clip placement inside the proposal (mirrors the baseline's
+    # clip fallback so a whole defect type never drops to zero samples)
+    if last_scaled is not None:
+        for angle in list(ANGLES_DEG):
+            try:
+                template = rotate_binary_mask(last_scaled, angle)
+                placed = place_shape_max_overlap_clip(
+                    template,
+                    proposal_mask,
+                    seed=seed,
+                    min_pixels=min_shape_pixels,
+                )
+            except EmptyFeasiblePlacement as error:
+                last_error = error
+                continue
+            if (placed.mask & ~proposal_mask).any():
+                raise RuntimeError("location-weighted clip escaped the proposal")
+            return template, replace(
+                placed,
+                site=proposal_mask,
+                site_index=0,
+                scale=float(candidate_scale),
+                factor=float(factor),
+                angle_deg=int(angle),
+                component_count=1,
+                used_clip=True,
+                source_gt_pixels=int(gt.sum()),
+            )
     raise EmptyFeasiblePlacement(f"location-weighted placement failed: {last_error}")
 
 
