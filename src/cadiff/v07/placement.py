@@ -3,6 +3,10 @@
 This is the L0/L1 counterpart of ``instantiate_site_scale``: the site comes
 from the proposal's connected components (not the object support's), and a
 location prior can reweight the choice.
+
+Candidate sites are tried in score order. A site that cannot host the scaled
+shape is skipped; when no proposal component fits, the whole proposal is used
+and the placement is flagged with ``used_site_fallback``.
 """
 
 from __future__ import annotations
@@ -57,6 +61,105 @@ def _safe_scale(
     raise EmptyFeasiblePlacement("scaled GT does not fit the selected site")
 
 
+def _place_in_site(
+    site_mask: np.ndarray,
+    site_index: int,
+    *,
+    gt: np.ndarray,
+    scale: float,
+    factor: float,
+    similarity: np.ndarray,
+    seed: int,
+    min_shape_pixels: int,
+    component_count: int,
+    rng: np.random.RandomState,
+    fallback: bool,
+) -> tuple[np.ndarray, ComponentPlacement] | None:
+    canvas = int(gt.shape[0])
+    try:
+        scaled = _safe_scale(gt, scale, site_mask, canvas=canvas)
+    except EmptyFeasiblePlacement:
+        return None
+
+    contained: list[tuple[int, np.ndarray, ComponentPlacement]] = []
+    for angle in ANGLES_DEG:
+        try:
+            template = rotate_binary_mask(scaled, angle)
+            placed = place_shape_inside_proposal(
+                template,
+                site_mask,
+                similarity,
+                seed=seed,
+                weight_by_similarity=False,
+            )
+        except EmptyFeasiblePlacement:
+            continue
+        extra = np.zeros_like(placed.mask)
+        contained.append(
+            (
+                int(angle),
+                np.ascontiguousarray(template),
+                ComponentPlacement(
+                    mask=np.ascontiguousarray(placed.mask),
+                    site=site_mask,
+                    site_index=site_index,
+                    scale=float(scale),
+                    angle_deg=int(angle),
+                    top=placed.top,
+                    left=placed.left,
+                    score=placed.score,
+                    feasible_count=placed.feasible_count,
+                    component_count=component_count,
+                    source_gt_pixels=int(gt.sum()),
+                    placed_pixels=int(placed.mask.sum()),
+                    used_clip=False,
+                    used_site_fallback=fallback,
+                    factor=float(factor),
+                    extra=extra,
+                    unclipped=np.ascontiguousarray(placed.mask),
+                ),
+            )
+        )
+    contained = [
+        item for item in contained if item[2].placed_pixels >= min_shape_pixels
+    ]
+    if contained:
+        _angle, template, placed = contained[int(rng.randint(0, len(contained)))]
+        if (placed.mask & ~site_mask).any():
+            raise RuntimeError("site-scale placement escaped the proposal site")
+        return template, placed
+
+    clipped_hits: list[tuple[int, np.ndarray, ComponentPlacement]] = []
+    for angle in ANGLES_DEG:
+        try:
+            template = rotate_binary_mask(scaled, angle)
+            placed = place_shape_max_overlap_clip(
+                template,
+                site_mask,
+                seed=seed,
+                min_pixels=min_shape_pixels,
+            )
+        except EmptyFeasiblePlacement:
+            continue
+        clipped_hits.append((int(angle), np.ascontiguousarray(template), placed))
+    if not clipped_hits:
+        return None
+    angle, template, placed = clipped_hits[int(rng.randint(0, len(clipped_hits)))]
+    if (placed.mask & ~site_mask).any():
+        raise RuntimeError("site-scale placement escaped the proposal site")
+    return template, replace(
+        placed,
+        site=site_mask,
+        site_index=site_index,
+        scale=float(scale),
+        factor=float(factor),
+        angle_deg=angle,
+        source_gt_pixels=int(gt.sum()),
+        component_count=component_count,
+        used_site_fallback=fallback,
+    )
+
+
 def instantiate_site_scale_v07(
     source_gt: np.ndarray,
     source_support: np.ndarray,
@@ -109,84 +212,47 @@ def instantiate_site_scale_v07(
     rng = np.random.RandomState(seed)
     factor = sample_area_factor(int(gt.sum()), fewshot_areas, seed=seed, rng=rng)
     scale = object_scale(source_support, target_support) * factor
-    canvas = int(gt.shape[0])
-    scaled = _safe_scale(gt, scale, site.mask, canvas=canvas)
 
-    contained: list[tuple[int, np.ndarray, ComponentPlacement]] = []
-    for angle in ANGLES_DEG:
-        try:
-            template = rotate_binary_mask(scaled, angle)
-            placed = place_shape_inside_proposal(
-                template,
-                site.mask,
-                similarity,
-                seed=seed,
-                weight_by_similarity=False,
-            )
-        except EmptyFeasiblePlacement:
-            continue
-        extra = np.zeros_like(placed.mask)
-        contained.append(
-            (
-                int(angle),
-                np.ascontiguousarray(template),
-                ComponentPlacement(
-                    mask=np.ascontiguousarray(placed.mask),
-                    site=site.mask,
-                    site_index=site.index,
-                    scale=float(scale),
-                    angle_deg=int(angle),
-                    top=placed.top,
-                    left=placed.left,
-                    score=placed.score,
-                    feasible_count=placed.feasible_count,
-                    component_count=len(sites),
-                    source_gt_pixels=int(gt.sum()),
-                    placed_pixels=int(placed.mask.sum()),
-                    used_clip=False,
-                    factor=float(factor),
-                    extra=extra,
-                    unclipped=np.ascontiguousarray(placed.mask),
-                ),
-            )
+    scores = [float(item.mean_similarity) * similarity_weight for item in sites]
+    if prior_scores is not None:
+        scores = [value + float(prior) for value, prior in zip(scores, prior_scores)]
+    order = sorted(range(len(sites)), key=lambda index: scores[index], reverse=True)
+    attempts = [site] + [sites[index] for index in order if sites[index] is not site]
+
+    for candidate in attempts:
+        result = _place_in_site(
+            candidate.mask,
+            candidate.index,
+            gt=gt,
+            scale=scale,
+            factor=factor,
+            similarity=similarity,
+            seed=seed,
+            min_shape_pixels=min_shape_pixels,
+            component_count=len(sites),
+            rng=rng,
+            fallback=False,
         )
-    contained = [
-        item for item in contained if item[2].placed_pixels >= min_shape_pixels
-    ]
-    if contained:
-        _angle, template, placed = contained[int(rng.randint(0, len(contained)))]
-        if (placed.mask & ~site.mask).any() or (placed.mask & ~proposal).any():
-            raise RuntimeError("site-scale placement escaped the proposal site")
-        return template, placed
+        if result is not None:
+            return result
 
-    clipped_hits: list[tuple[int, np.ndarray, ComponentPlacement]] = []
-    for angle in ANGLES_DEG:
-        try:
-            template = rotate_binary_mask(scaled, angle)
-            placed = place_shape_max_overlap_clip(
-                template,
-                site.mask,
-                seed=seed,
-                min_pixels=min_shape_pixels,
-            )
-        except EmptyFeasiblePlacement:
-            continue
-        clipped_hits.append((int(angle), np.ascontiguousarray(template), placed))
-    if not clipped_hits:
-        raise EmptyFeasiblePlacement("clip remainder is below the area floor")
-    angle, template, placed = clipped_hits[int(rng.randint(0, len(clipped_hits)))]
-    if (placed.mask & ~site.mask).any() or (placed.mask & ~proposal).any():
-        raise RuntimeError("site-scale placement escaped the proposal site")
-    return template, replace(
-        placed,
-        site=site.mask,
-        site_index=site.index,
-        scale=float(scale),
-        factor=float(factor),
-        angle_deg=angle,
-        source_gt_pixels=int(gt.sum()),
+    proposal_mask = np.ascontiguousarray(np.asarray(proposal, dtype=bool))
+    result = _place_in_site(
+        proposal_mask,
+        site.index,
+        gt=gt,
+        scale=scale,
+        factor=factor,
+        similarity=similarity,
+        seed=seed,
+        min_shape_pixels=min_shape_pixels,
         component_count=len(sites),
+        rng=rng,
+        fallback=True,
     )
+    if result is None:
+        raise EmptyFeasiblePlacement("no feasible site for the scaled shape")
+    return result
 
 
 __all__ = ["instantiate_site_scale_v07"]

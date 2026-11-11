@@ -81,7 +81,11 @@ class A2ProposalGenerator:
         config: _A2Config,
         identity_manifest: IdentityManifest | None = None,
         encoder: _Encoder,
+        fill_backend: Any | None = None,
     ) -> None:
+        """fill_backend(rgb, hole, valid) -> rgb inpaints the few-shot defect
+        hole before the material prototype is built. None keeps the official
+        nearest-neighbour fill."""
         if identity_manifest is not None and (
             identity_manifest.category != config.category
             or identity_manifest.defect_types != config.defect_types
@@ -124,6 +128,7 @@ class A2ProposalGenerator:
         self._config = config
         self._manifest = identity_manifest
         self._encoder = encoder
+        self._fill = fill_backend if fill_backend is not None else neighbor_fill_source
 
     def select_source(self, defect_type: str, seed: int) -> LoadedIdentity:
         if isinstance(seed, bool) or not isinstance(seed, int) or seed < 0:
@@ -141,7 +146,7 @@ class A2ProposalGenerator:
             raise ValueError("a2 target must be a prepared normal identity")
         if not np.array_equal(target.valid, target.normal.valid):
             raise ValueError("target structure must belong to the supplied target normal")
-        inpainted = neighbor_fill_source(source.rgb, source.anomaly_gt, source.valid)
+        inpainted = self._fill(source.rgb, source.anomaly_gt, source.valid)
         source_feat = self._encoder.encode(inpainted)
         target_feat = self._encoder.encode(target.normal.rgb)
         target_support = tokencut_object_mask(target_feat.tokens, target.valid)
@@ -198,6 +203,7 @@ def load_a2_generator(
     dataset_root: Path,
     device: str | None = None,
     encoder: _Encoder | None = None,
+    fill_backend: Any | None = None,
 ) -> A2ProposalGenerator:
     experiment = load_v06_a_experiment(experiment_path)
     repository_root = experiment_path.resolve().parents[2]
@@ -220,6 +226,7 @@ def load_a2_generator(
         config=experiment,
         identity_manifest=manifest,
         encoder=encoder,
+        fill_backend=fill_backend,
     )
 
 

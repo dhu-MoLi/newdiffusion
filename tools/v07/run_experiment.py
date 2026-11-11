@@ -29,7 +29,11 @@ from cadiff.v06_c.mvtec_pilot import load_mvtec_inventory, write_mvtec_manifest
 from cadiff.v06_c.visa_pilot import load_visa_inventory_for_split
 from cadiff.v06_c.visa_place_bulk import pack_visa_eval_generated
 from cadiff.v07.backbones import make_backbone_spec
-from cadiff.v07.generate import build_shape_prior, run_visa_place_bulk_v07
+from cadiff.v07.generate import (
+    build_location_prior,
+    build_shape_prior,
+    run_visa_place_bulk_v07,
+)
 from cadiff.v07.runmeta import collect_run_meta, write_json
 from cadiff.v07.train_r import train_exact_mask_r_v07
 
@@ -47,6 +51,10 @@ DEFAULTS: dict[str, Any] = {
     "visibility_every": 50,
     "visibility_size": 256,
     "shape_prior": "none",
+    "site_method": "baseline",
+    "fill_backend": "neighbor",
+    "learned_checkpoint": None,
+    "location_prior": "none",
     "shape_elastic_probability": 0.5,
     "shape_multi_component_probability": 0.0,
     "shape_max_components": 3,
@@ -197,6 +205,25 @@ def _run_stage(
                         for defect_type in shape_prior.stats_by_type
                     },
                 )
+            a2_fill_backend = None
+            fill_backend_name = str(experiment["fill_backend"])
+            if fill_backend_name != "neighbor":
+                from cadiff.v07.reconstruction import make_reconstructor
+
+                learned_checkpoint = experiment["learned_checkpoint"]
+                a2_fill_backend = make_reconstructor(
+                    fill_backend_name,
+                    learned_checkpoint=(
+                        None
+                        if learned_checkpoint in (None, "", "null")
+                        else Path(str(learned_checkpoint))
+                    ),
+                    device=device or "cuda:0",
+                )
+            location_prior = None
+            if str(experiment["location_prior"]) == "histogram":
+                location_prior = build_location_prior(inventory, device=device)
+                write_json(run_dir / "location_prior.json", location_prior.describe())
             _log(log_handle, f"{category}: generate")
             summary = run_visa_place_bulk_v07(
                 inventory=inventory,
@@ -207,6 +234,9 @@ def _run_stage(
                 pairs_per_type=int(experiment["pairs_per_type"]),
                 shape_prior=shape_prior,
                 backbone=backbone,
+                site_method=str(experiment["site_method"]),
+                location_prior=location_prior,
+                a2_fill_backend=a2_fill_backend,
             )
             write_json(run_dir / "generate_summary.json", summary)
 
@@ -300,6 +330,9 @@ def _run_stage(
             "backbone": backbone.name,
             "visibility": experiment["visibility"],
             "shape_prior": experiment["shape_prior"],
+            "site_method": experiment["site_method"],
+            "fill_backend": experiment["fill_backend"],
+            "location_prior": experiment["location_prior"],
             "pairs_per_type": int(experiment["pairs_per_type"]),
             "loc_epochs": int(experiment["loc_epochs"]),
             "results": str(results_path),

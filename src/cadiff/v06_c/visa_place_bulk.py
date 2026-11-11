@@ -150,6 +150,7 @@ def run_visa_place_bulk(
     combined_large_cluster_area: bool = False,
     combined_large_cluster_source: bool = False,
     combined_mix_y_stamps: bool = False,
+    a2_fill_backend: Any = None,
 ) -> dict[str, Any]:
     summary_path = output / "summary.json"
     if summary_path.is_file():
@@ -202,6 +203,7 @@ def run_visa_place_bulk(
         config=inventory.structure,
         identity_manifest=None,
         encoder=encoder,
+        fill_backend=a2_fill_backend,
     )
     r_config = visa_p2_a1_config(inventory.category, tuple(item.name for item in inventory.types))
     renderer = load_visa_renderer(
