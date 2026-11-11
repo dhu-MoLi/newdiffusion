@@ -26,10 +26,13 @@ from cadiff.v06_c.visa_pilot import (
     load_visa_identity,
 )
 from cadiff.v07.backbones import BackboneSpec
-from cadiff.v07.placement import instantiate_site_scale_v07
+from cadiff.v07.placement import (
+    instantiate_site_scale_location_weighted,
+    instantiate_site_scale_v07,
+)
 from cadiff.v07.shape_prior import ParametricShapePrior
 
-V07_SITE_METHODS = frozenset({"proposal_cc", "proposal_cc_prior"})
+V07_SITE_METHODS = frozenset({"proposal_cc", "proposal_cc_prior", "location_weighted"})
 
 
 def build_shape_prior(
@@ -112,7 +115,21 @@ def placement_from_official_a2_v07(
 
     target_valid = np.ascontiguousarray(target.valid, dtype=bool)
     target_support = np.ascontiguousarray(a2.target_support & target.valid, dtype=bool)
-    if site_method in V07_SITE_METHODS:
+    if site_method == "location_weighted":
+        template, placement = instantiate_site_scale_location_weighted(
+            source_gt,
+            a2.source_support,
+            target_support,
+            a2.proposal,
+            a2.similarity,
+            seed=seed,
+            fewshot_areas=fewshot_areas,
+            min_shape_pixels=int(place_kwargs.get("min_shape_pixels", 64)),
+            location_prior=location_prior,
+            defect_type=defect_type,
+            target_valid=target_valid,
+        )
+    elif site_method in V07_SITE_METHODS:
         template, placement = instantiate_site_scale_v07(
             source_gt,
             a2.source_support,

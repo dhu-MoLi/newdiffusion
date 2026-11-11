@@ -255,4 +255,96 @@ def instantiate_site_scale_v07(
     return result
 
 
-__all__ = ["instantiate_site_scale_v07"]
+def instantiate_site_scale_location_weighted(
+    source_gt: np.ndarray,
+    source_support: np.ndarray,
+    target_support: np.ndarray,
+    proposal: np.ndarray,
+    similarity: np.ndarray,
+    *,
+    seed: int,
+    fewshot_areas: tuple[int, ...] | list[int],
+    min_shape_pixels: int = 64,
+    location_prior: object | None = None,
+    defect_type: str | None = None,
+    target_valid: np.ndarray | None = None,
+) -> tuple[np.ndarray, ComponentPlacement]:
+    """L1: place the scaled shape inside the whole proposal, with the
+    translation distribution weighted by the object-frame defect-position
+    histogram. The shape itself keeps the few-shot size prior."""
+
+    if location_prior is None:
+        raise ValueError("location_weighted placement requires a location prior")
+    valid = (
+        np.ascontiguousarray(target_valid, dtype=bool)
+        if target_valid is not None
+        else np.ones_like(target_support, dtype=bool)
+    )
+    proposal_mask = np.ascontiguousarray(
+        np.asarray(proposal, dtype=bool) & np.asarray(target_support, dtype=bool) & valid,
+        dtype=bool,
+    )
+    if not proposal_mask.any():
+        raise EmptyFeasiblePlacement("empty proposal")
+    gt = np.asarray(source_gt, dtype=bool)
+    rng = np.random.RandomState(seed)
+    factor = sample_area_factor(int(gt.sum()), fewshot_areas, seed=seed, rng=rng)
+    scale = object_scale(source_support, target_support) * factor
+    canvas = int(gt.shape[0])
+
+    weights = np.asarray(
+        location_prior.heatmap(target_support, defect_type), dtype=np.float32
+    )
+    weights = np.maximum(weights, 0.0)
+    if not weights.any():
+        weights = np.ones_like(weights)
+
+    candidate_scale = float(scale)
+    last_error: Exception | None = None
+    for _attempt in range(7):
+        try:
+            scaled = _safe_scale(gt, candidate_scale, proposal_mask, canvas=canvas)
+        except EmptyFeasiblePlacement as error:
+            last_error = error
+            candidate_scale *= 0.8
+            continue
+        angles = list(ANGLES_DEG)
+        rng.shuffle(angles)
+        for angle in angles:
+            try:
+                template = rotate_binary_mask(scaled, angle)
+                placed = place_shape_inside_proposal(
+                    template,
+                    proposal_mask,
+                    weights,
+                    seed=seed,
+                    weight_by_similarity=True,
+                )
+            except EmptyFeasiblePlacement as error:
+                last_error = error
+                continue
+            if int(placed.mask.sum()) < min_shape_pixels:
+                continue
+            return template, ComponentPlacement(
+                mask=np.ascontiguousarray(placed.mask),
+                site=proposal_mask,
+                site_index=0,
+                scale=float(candidate_scale),
+                angle_deg=int(angle),
+                top=placed.top,
+                left=placed.left,
+                score=placed.score,
+                feasible_count=placed.feasible_count,
+                component_count=1,
+                source_gt_pixels=int(gt.sum()),
+                placed_pixels=int(placed.mask.sum()),
+                used_clip=False,
+                factor=float(factor),
+                extra=np.zeros_like(placed.mask),
+                unclipped=np.ascontiguousarray(placed.mask),
+            )
+        candidate_scale *= 0.8
+    raise EmptyFeasiblePlacement(f"location-weighted placement failed: {last_error}")
+
+
+__all__ = ["instantiate_site_scale_location_weighted", "instantiate_site_scale_v07"]
