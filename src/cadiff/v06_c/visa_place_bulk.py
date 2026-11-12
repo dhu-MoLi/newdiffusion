@@ -283,7 +283,8 @@ def run_visa_place_bulk(
                 object_support_method=a2.object_support_method,
             )
             validate_realization(placement.mask, placement.site)
-            if (placement.mask & ~proposal).any():
+            escaped_proposal = bool((placement.mask & ~proposal).any())
+            if escaped_proposal and not getattr(placement, "used_site_fallback", False):
                 raise ValueError("placed shape escaped a2")
             n_requested = 1
             n_stamps = 1
@@ -309,7 +310,9 @@ def run_visa_place_bulk(
                     if not second["failed"]:
                         union = np.ascontiguousarray(placement.mask | second["mask"], dtype=bool)
                         validate_realization(union, placement.site)
-                        if (union & ~proposal).any():
+                        if (union & ~proposal).any() and not getattr(
+                            placement, "used_site_fallback", False
+                        ):
                             raise ValueError("placed shape escaped a2")
                         placement = replace(
                             placement,

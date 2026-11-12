@@ -30,10 +30,17 @@ from cadiff.v07.placement import (
     instantiate_site_scale_location_weighted,
     instantiate_site_scale_v07,
 )
+from cadiff.v07.scale_calibration import instantiate_scale_calibrated
 from cadiff.v07.shape_prior import ParametricShapePrior
 
 V07_SITE_METHODS = frozenset(
-    {"proposal_cc", "proposal_cc_prior", "location_weighted", "learned_prior"}
+    {
+        "proposal_cc",
+        "proposal_cc_prior",
+        "location_weighted",
+        "learned_prior",
+        "scale_calibrated",
+    }
 )
 
 
@@ -117,7 +124,21 @@ def placement_from_official_a2_v07(
 
     target_valid = np.ascontiguousarray(target.valid, dtype=bool)
     target_support = np.ascontiguousarray(a2.target_support & target.valid, dtype=bool)
-    if site_method in {"location_weighted", "learned_prior"}:
+    if site_method == "scale_calibrated":
+        template, placement = instantiate_scale_calibrated(
+            source_gt,
+            a2.source_support,
+            target_support,
+            a2.proposal,
+            a2.similarity,
+            seed=seed,
+            fewshot_areas=fewshot_areas,
+            min_shape_pixels=int(place_kwargs.get("min_shape_pixels", 64)),
+            location_prior=location_prior,
+            defect_type=defect_type,
+            target_valid=target_valid,
+        )
+    elif site_method in {"location_weighted", "learned_prior"}:
         prior = location_prior
         if site_method == "learned_prior" and hasattr(prior, "bind"):
             prior = prior.bind(target.normal.rgb, target.normal.valid)
