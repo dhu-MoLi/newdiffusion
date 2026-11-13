@@ -119,49 +119,67 @@ def instantiate_scale_calibrated(
         weights = np.asarray(similarity, dtype=np.float32)
         weighted = False
 
-    regions = [("proposal", proposal_mask), ("support", support_mask)]
-    for step in range(max_shrink_steps + 1):
-        candidate_scale = scale * (0.9**step)
-        try:
-            scaled = scale_binary_mask(gt, candidate_scale, size=CANVAS)
-        except EmptyFeasiblePlacement:
-            continue
-        if scaled is None or not scaled.any():
-            continue
-        for name, region in regions:
-            if not region.any():
+    proposal_area = max(int(proposal_mask.sum()), 1)
+    # Large / structural defects legitimately cross the material proposal;
+    # small ones must stay local even if that means a modest shrink.
+    escape_from_start = target_area > 0.35 * proposal_area
+
+    def attempt(regions: list[tuple[str, np.ndarray]], steps: int):
+        for step in range(steps + 1):
+            candidate_scale = scale * (0.9**step)
+            try:
+                scaled = scale_binary_mask(gt, candidate_scale, size=CANVAS)
+            except EmptyFeasiblePlacement:
                 continue
-            hit = _place_in_region(
-                scaled,
-                region,
-                weights,
-                seed=seed,
-                min_shape_pixels=min_shape_pixels,
-                weighted=weighted,
-                rng=rng,
-            )
-            if hit is None:
+            if scaled is None or not scaled.any():
                 continue
-            angle, template, placed = hit
-            return template, ComponentPlacement(
-                mask=np.ascontiguousarray(placed.mask),
-                site=np.ascontiguousarray(region),
-                site_index=0,
-                scale=float(candidate_scale),
-                angle_deg=int(angle),
-                top=placed.top,
-                left=placed.left,
-                score=placed.score,
-                feasible_count=placed.feasible_count,
-                component_count=1,
-                source_gt_pixels=gt_area,
-                placed_pixels=int(placed.mask.sum()),
-                used_clip=False,
-                used_site_fallback=(name == "support"),
-                factor=float(ratio),
-                extra=np.zeros_like(placed.mask),
-                unclipped=np.ascontiguousarray(placed.mask),
-            )
+            for name, region in regions:
+                if not region.any():
+                    continue
+                hit = _place_in_region(
+                    scaled,
+                    region,
+                    weights,
+                    seed=seed,
+                    min_shape_pixels=min_shape_pixels,
+                    weighted=weighted,
+                    rng=rng,
+                )
+                if hit is None:
+                    continue
+                angle, template, placed = hit
+                return name, candidate_scale, angle, template, placed
+        return None
+
+    both = [("proposal", proposal_mask), ("support", support_mask)]
+    if escape_from_start:
+        found = attempt(both, max_shrink_steps)
+    else:
+        found = attempt([("proposal", proposal_mask)], max_shrink_steps)
+        if found is None:
+            found = attempt([("support", support_mask)], max_shrink_steps)
+    if found is not None:
+        name, candidate_scale, angle, template, placed = found
+        region = proposal_mask if name == "proposal" else support_mask
+        return template, ComponentPlacement(
+            mask=np.ascontiguousarray(placed.mask),
+            site=np.ascontiguousarray(region),
+            site_index=0,
+            scale=float(candidate_scale),
+            angle_deg=int(angle),
+            top=placed.top,
+            left=placed.left,
+            score=placed.score,
+            feasible_count=placed.feasible_count,
+            component_count=1,
+            source_gt_pixels=gt_area,
+            placed_pixels=int(placed.mask.sum()),
+            used_clip=False,
+            used_site_fallback=(name == "support"),
+            factor=float(ratio),
+            extra=np.zeros_like(placed.mask),
+            unclipped=np.ascontiguousarray(placed.mask),
+        )
 
     # last resort: clip inside the support
     try:
