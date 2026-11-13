@@ -24,8 +24,10 @@ from cadiff.v06_b.a2_component_place import (
     ANGLES_DEG,
     ComponentPlacement,
     EmptyFeasiblePlacement,
+    object_scale,
     place_shape_max_overlap_clip,
     rotate_binary_mask,
+    sample_area_factor,
 )
 from cadiff.v06_b.a2_shape_instantiate import (
     place_shape_inside_proposal,
@@ -79,6 +81,7 @@ def instantiate_scale_calibrated(
     defect_type: str | None = None,
     target_valid: np.ndarray | None = None,
     max_shrink_steps: int = 5,
+    policy: str = "calibrated",
 ) -> tuple[np.ndarray, ComponentPlacement]:
     valid = (
         np.ascontiguousarray(target_valid, dtype=bool)
@@ -101,13 +104,18 @@ def instantiate_scale_calibrated(
     target_support_area = max(int(support_mask.sum()), 1)
 
     rng = np.random.RandomState(seed)
-    ratios = [float(area) / float(source_support_area) for area in fewshot_areas]
-    ratios = [value for value in ratios if value > 0]
-    ratio = float(ratios[int(rng.randint(0, len(ratios)))]) if ratios else gt_area / source_support_area
-    target_area = ratio * target_support_area
-    upper = 0.92 * target_support_area
-    target_area = float(np.clip(target_area, float(min_shape_pixels), max(upper, float(min_shape_pixels))))
+    # v3: keep the baseline area model exactly; only the placement constraints
+    # below are calibrated. Re-deriving the area from support ratios changed the
+    # size distribution of small texture defects and hurt carpet/grid.
+    factor = sample_area_factor(gt_area, fewshot_areas, seed=seed, rng=rng)
+    scale = float(object_scale(source_support, target_support) * factor)
+    target_area = float(gt_area) * scale * scale
+    upper = 0.92 * float(target_support_area)
+    target_area = float(
+        np.clip(target_area, float(min_shape_pixels), max(upper, float(min_shape_pixels)))
+    )
     scale = float(np.sqrt(target_area / float(gt_area)))
+    ratio = target_area / float(target_support_area)
 
     if location_prior is not None:
         weights = np.asarray(
@@ -120,6 +128,21 @@ def instantiate_scale_calibrated(
         weighted = False
 
     proposal_area = max(int(proposal_mask.sum()), 1)
+    if policy == "baseline_small" and target_area <= 0.35 * proposal_area:
+        # small/medium defects: identical to the baseline placement (clip is
+        # preferred over shrinking, which keeps the defect area intact)
+        from cadiff.v06_b.a2_component_place import instantiate_site_scale
+
+        return instantiate_site_scale(
+            source_gt,
+            source_support,
+            target_support,
+            proposal,
+            similarity,
+            seed=seed,
+            fewshot_areas=fewshot_areas,
+            min_shape_pixels=min_shape_pixels,
+        )
     # Large / structural defects legitimately cross the material proposal;
     # small ones must stay local even if that means a modest shrink.
     escape_from_start = target_area > 0.35 * proposal_area
@@ -176,7 +199,7 @@ def instantiate_scale_calibrated(
             placed_pixels=int(placed.mask.sum()),
             used_clip=False,
             used_site_fallback=(name == "support"),
-            factor=float(ratio),
+            factor=float(factor),
             extra=np.zeros_like(placed.mask),
             unclipped=np.ascontiguousarray(placed.mask),
         )
@@ -212,7 +235,7 @@ def instantiate_scale_calibrated(
             placed_pixels=int(placed.mask.sum()),
             used_clip=True,
             used_site_fallback=True,
-            factor=float(ratio),
+            factor=float(factor),
         )
     raise EmptyFeasiblePlacement("scale-calibrated placement failed")
 

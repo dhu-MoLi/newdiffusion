@@ -40,6 +40,7 @@ V07_SITE_METHODS = frozenset(
         "location_weighted",
         "learned_prior",
         "scale_calibrated",
+        "scale_calibrated_v4",
     }
 )
 
@@ -124,7 +125,7 @@ def placement_from_official_a2_v07(
 
     target_valid = np.ascontiguousarray(target.valid, dtype=bool)
     target_support = np.ascontiguousarray(a2.target_support & target.valid, dtype=bool)
-    if site_method == "scale_calibrated":
+    if site_method in {"scale_calibrated", "scale_calibrated_v4"}:
         template, placement = instantiate_scale_calibrated(
             source_gt,
             a2.source_support,
@@ -137,6 +138,11 @@ def placement_from_official_a2_v07(
             location_prior=location_prior,
             defect_type=defect_type,
             target_valid=target_valid,
+            policy=(
+                "baseline_small"
+                if site_method == "scale_calibrated_v4"
+                else "calibrated"
+            ),
         )
     elif site_method in {"location_weighted", "learned_prior"}:
         prior = location_prior

@@ -1,0 +1,17 @@
+name: smoke_scale_cal_v4
+paths: configs/paths/asus-mvtec.yaml
+dataset: mvtec
+split: mvtec
+backbone: sd15
+visibility: none
+shape_prior: none
+site_method: scale_calibrated_v4
+fill_backend: neighbor
+location_prior: none
+pairs_per_type: 1
+loc_epochs: 1
+cls_epochs: 0
+img_size: 256
+loc_bs: 16
+steps: 2
+seed: 20261109
