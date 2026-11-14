@@ -20,7 +20,7 @@ from typing import Any, Sequence
 
 import numpy as np
 
-from cadiff.v06_b.a2_component_place import instantiate_site_scale
+from cadiff.v06_b.a2_component_place import ComponentPlacement, instantiate_site_scale
 from cadiff.v06_c.visa_pilot import (
     fewshot_identity_records,
     load_visa_identity,
@@ -41,6 +41,7 @@ V07_SITE_METHODS = frozenset(
         "learned_prior",
         "scale_calibrated",
         "scale_calibrated_v4",
+        "structural",
     }
 )
 
@@ -125,7 +126,62 @@ def placement_from_official_a2_v07(
 
     target_valid = np.ascontiguousarray(target.valid, dtype=bool)
     target_support = np.ascontiguousarray(a2.target_support & target.valid, dtype=bool)
-    if site_method in {"scale_calibrated", "scale_calibrated_v4"}:
+    if site_method == "structural":
+        from scipy.ndimage import binary_dilation
+
+        from cadiff.v07.structural import make_structural_mask, operator_for
+
+        operator = operator_for(defect_type)
+        mask = None
+        if operator is not None:
+            mask = make_structural_mask(
+                operator,
+                support=target_support,
+                valid=target_valid,
+                seed=seed,
+            )
+        if mask is not None:
+            site = binary_dilation(target_support, iterations=12) & target_valid
+            mask = np.ascontiguousarray(mask & site, dtype=bool)
+            if int(mask.sum()) >= 64:
+                placement = ComponentPlacement(
+                    mask=mask,
+                    site=np.ascontiguousarray(site),
+                    site_index=0,
+                    scale=1.0,
+                    angle_deg=0,
+                    top=0,
+                    left=0,
+                    score=0.0,
+                    feasible_count=0,
+                    component_count=1,
+                    source_gt_pixels=int(source_gt.sum()),
+                    placed_pixels=int(mask.sum()),
+                    used_clip=False,
+                    used_site_fallback=True,
+                    factor=1.0,
+                    extra=np.zeros_like(mask),
+                    unclipped=np.ascontiguousarray(mask),
+                )
+                if return_template:
+                    return a2, placement, mask
+                return a2, placement
+        # no operator for this type (or it failed): fall back to calibrated
+        template, placement = instantiate_scale_calibrated(
+            source_gt,
+            a2.source_support,
+            target_support,
+            a2.proposal,
+            a2.similarity,
+            seed=seed,
+            fewshot_areas=fewshot_areas,
+            min_shape_pixels=int(place_kwargs.get("min_shape_pixels", 64)),
+            location_prior=location_prior,
+            defect_type=defect_type,
+            target_valid=target_valid,
+            policy="baseline_small",
+        )
+    elif site_method in {"scale_calibrated", "scale_calibrated_v4"}:
         template, placement = instantiate_scale_calibrated(
             source_gt,
             a2.source_support,
