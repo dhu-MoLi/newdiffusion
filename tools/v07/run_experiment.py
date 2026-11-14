@@ -326,6 +326,8 @@ def _run_stage(
             str(int(experiment["loc_bs"])),
             "--loc_accum",
             "1",
+            "--seed",
+            str(int(experiment["seed"])),
             "--output_dir",
             str(eval_dir),
         ]

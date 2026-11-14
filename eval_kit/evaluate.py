@@ -70,10 +70,24 @@ def main(argv=None):
                         help='定位 U-Net batch size（默认 16；512 显存不够时可改小）')
     parser.add_argument('--loc_accum', type=int, default=1,
                         help='定位梯度累积步数（默认 1；与 --loc_bs 相乘等于有效 batch）')
+    parser.add_argument('--seed', type=int, default=42,
+                        help='下游训练的随机种子（默认 42；同一种子 + 同一数据应得到相同指标）')
     args = parser.parse_args(argv)
 
     if args.img_size < 32:
         raise ValueError('--img_size must be >= 32')
+
+    import random
+
+    import numpy as np
+
+    random.seed(args.seed)
+    np.random.seed(args.seed)
+    torch.manual_seed(args.seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(args.seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
 
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     out_dir = os.path.join(args.output_dir, args.class_name)
@@ -90,6 +104,7 @@ def main(argv=None):
         'loc_bs': args.loc_bs,
         'loc_accum': args.loc_accum,
         'loc_effective_bs': args.loc_bs * max(1, args.loc_accum),
+        'seed': args.seed,
     }
 
     # ---------- 生成质量 ----------
