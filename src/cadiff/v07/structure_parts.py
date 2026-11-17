@@ -35,6 +35,7 @@ class PartConfig:
     sam_inside_ratio: float = 0.5
     merge_min_ratio: float = 0.01
     assign_remainder: bool = True
+    appearance_merge_cosine: float = 0.97
 
 
 @dataclass
@@ -224,8 +225,60 @@ def _sam_masks(
     return filtered or kept
 
 
+def _mask_embedding(mask: np.ndarray, tokens: np.ndarray) -> np.ndarray | None:
+    import cv2
+
+    grid = tokens.shape[0]
+    cells = (
+        cv2.resize(mask.astype(np.uint8), (grid, grid), interpolation=cv2.INTER_AREA) > 0.5
+    )
+    if not cells.any():
+        return None
+    value = np.asarray(tokens[cells].mean(axis=0), dtype=np.float32)
+    return value / max(float(np.linalg.norm(value)), 1e-9)
+
+
+def _merge_similar_parts(
+    masks: list[np.ndarray], tokens: np.ndarray, cfg: PartConfig
+) -> list[np.ndarray]:
+    """Merge adjacent parts that look like the same surface.
+
+    SAM splits uniform surfaces (capsule body, toothbrush handle) into several
+    slices; adjacent slices with near-identical DINOv2 embeddings are one part.
+    """
+
+    import cv2
+
+    if cfg.appearance_merge_cosine >= 1.0 or len(masks) < 2:
+        return masks
+    embeddings = [_mask_embedding(mask, tokens) for mask in masks]
+    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
+    while len(masks) > 1:
+        best: tuple[float, int, int] | None = None
+        for i in range(len(masks)):
+            if embeddings[i] is None:
+                continue
+            grown = cv2.dilate(masks[i].astype(np.uint8), kernel) > 0
+            for j in range(i + 1, len(masks)):
+                if embeddings[j] is None or not (grown & masks[j]).any():
+                    continue
+                cosine = float(embeddings[i] @ embeddings[j])
+                if cosine >= cfg.appearance_merge_cosine and (
+                    best is None or cosine > best[0]
+                ):
+                    best = (cosine, i, j)
+        if best is None:
+            break
+        _cosine, i, j = best
+        masks[i] = masks[i] | masks[j]
+        masks.pop(j)
+        embeddings[i] = _mask_embedding(masks[i], tokens)
+        embeddings.pop(j)
+    return masks
+
+
 def _postprocess_masks(
-    masks: list[np.ndarray], support: np.ndarray, cfg: PartConfig
+    masks: list[np.ndarray], support: np.ndarray, cfg: PartConfig, tokens: np.ndarray
 ) -> list[np.ndarray]:
     """Merge tiny parts, cap the count, then assign uncovered support pixels.
 
@@ -241,12 +294,21 @@ def _postprocess_masks(
     if not masks:
         return []
     support_area = max(1, int(support.sum()))
+
+    union = np.zeros_like(support, dtype=bool)
+    for mask in masks:
+        union |= mask
+    uncovered = np.ascontiguousarray(support & ~union)
+    keep_remainder = bool(
+        cfg.assign_remainder
+        and int(uncovered.sum()) >= cfg.merge_min_ratio * support_area
+    )
+    target = max(1, cfg.max_parts - (1 if keep_remainder else 0))
+
     kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (7, 7))
-    while len(masks) > 1:
+
+    def merge_smallest_into_neighbor() -> bool:
         areas = np.array([int(mask.sum()) for mask in masks])
-        too_small = bool((areas < cfg.merge_min_ratio * support_area).any())
-        if not (too_small or len(masks) > cfg.max_parts):
-            break
         index = int(np.argmin(areas))
         grown = cv2.dilate(masks[index].astype(np.uint8), kernel) > 0
         best_index, best_overlap = -1, -1
@@ -257,19 +319,30 @@ def _postprocess_masks(
             if overlap > best_overlap:
                 best_overlap, best_index = overlap, other
         if best_index < 0:
-            break
+            return False
         masks[best_index] = masks[best_index] | masks[index]
         masks.pop(index)
+        return True
 
-    if cfg.assign_remainder and masks:
+    while len(masks) > 1:
+        areas = np.array([int(mask.sum()) for mask in masks])
+        too_small = bool((areas < cfg.merge_min_ratio * support_area).any())
+        if not (too_small or len(masks) > target):
+            break
+        if not merge_smallest_into_neighbor():
+            break
+
+    masks = _merge_similar_parts(masks, tokens, cfg)
+    while len(masks) > target and len(masks) > 1:
+        if not merge_smallest_into_neighbor():
+            break
+
+    if cfg.assign_remainder:
         union = np.zeros_like(support, dtype=bool)
         for mask in masks:
             union |= mask
         remainder = np.ascontiguousarray(support & ~union)
-        # Keep the uncovered region as ONE remainder part. Splitting it by
-        # nearest-part (Voronoi) produced large non-semantic slices over the
-        # object in the visual check.
-        if int(remainder.sum()) >= cfg.merge_min_ratio * max(1, int(support.sum())):
+        if int(remainder.sum()) >= cfg.merge_min_ratio * support_area:
             masks.append(remainder)
         elif int(remainder.sum()) > 0:
             masks[0] = masks[0] | remainder
@@ -381,7 +454,7 @@ def parse_structure(
     if cfg.part_source == "sam":
         masks = [] if (texture_mode or sam is None) else _sam_masks(rgb, support, sam, cfg)
 
-    masks = _postprocess_masks(masks, support, cfg)
+    masks = _postprocess_masks(masks, support, cfg, tokens)
     parts = _parts_from_masks(masks, support, tokens)
 
     adjacency = np.zeros((len(parts), len(parts)), dtype=np.float32)
