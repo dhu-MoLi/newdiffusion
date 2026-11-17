@@ -21,7 +21,7 @@ CANVAS = 512
 @dataclass(frozen=True)
 class PartConfig:
     grid: int = 37
-    max_parts: int = 8
+    max_parts: int = 12
     min_part_tokens: int = 6
     knn: int = 10
     laplacian_threshold: float = 0.030
@@ -204,7 +204,24 @@ def _sam_masks(
         kept.append(np.ascontiguousarray(segment & support))
         if len(kept) >= cfg.sam_max_parts:
             break
-    return kept
+    if not kept:
+        return []
+    import cv2
+
+    union = np.zeros_like(support, dtype=bool)
+    for segment in kept:
+        union |= segment
+    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (17, 17))
+    foreground = (cv2.dilate(union.astype(np.uint8), kernel) > 0) & support
+    if foreground.sum() < 0.5 * max(1, int(support.sum())):
+        foreground = support
+    filtered = []
+    for segment in kept:
+        area = max(1, int(segment.sum()))
+        if float((segment & foreground).sum() / area) < cfg.sam_inside_ratio:
+            continue
+        filtered.append(np.ascontiguousarray(segment & foreground))
+    return filtered or kept
 
 
 def _postprocess_masks(
@@ -244,20 +261,18 @@ def _postprocess_masks(
         masks[best_index] = masks[best_index] | masks[index]
         masks.pop(index)
 
-    if cfg.assign_remainder:
-        labels = np.full(support.shape, -1, dtype=np.int32)
-        assigned = np.zeros_like(support, dtype=bool)
-        for index, mask in enumerate(masks):
-            labels[mask] = index
-            assigned |= mask
-        fill = support & ~assigned
-        if fill.any() and assigned.any():
-            # distance to the nearest *assigned part pixel*; using the
-            # unassigned mask directly would let background (label -1) win.
-            _distance, indices = distance_transform_edt(~assigned, return_indices=True)
-            nearest = labels[indices[0], indices[1]]
-            labels[fill] = nearest[fill]
-            masks = [np.ascontiguousarray(labels == index) for index in range(len(masks))]
+    if cfg.assign_remainder and masks:
+        union = np.zeros_like(support, dtype=bool)
+        for mask in masks:
+            union |= mask
+        remainder = np.ascontiguousarray(support & ~union)
+        # Keep the uncovered region as ONE remainder part. Splitting it by
+        # nearest-part (Voronoi) produced large non-semantic slices over the
+        # object in the visual check.
+        if int(remainder.sum()) >= cfg.merge_min_ratio * max(1, int(support.sum())):
+            masks.append(remainder)
+        elif int(remainder.sum()) > 0:
+            masks[0] = masks[0] | remainder
     return masks
 
 
