@@ -60,3 +60,23 @@ v08 阶段 B 用的是 **per-class "ko"** 权重（`experiments/visa/logs/mask-c
 - `anomalydiffusion-portable` 总体约 **100 GB**
 - 其中 `visa_seas/logs/mask-checkpoints` 约 **2.2 GB**（58 份 embedding）
 - 如需迁移/备份，最小可用集合：LDM 主干 + spatial_encoder + 58 份 embeddings + `visa_seas/outputs/generated_masks`（124 MB）+ per-category 下游权重
+
+## 7. 项目内最小复现包（2026-11-17 建立）
+
+位置：`/mnt/C4400D13400D0DBC/lm/code/category_anomaly_diffusion/ad_repro/`（约 13 G）
+说明：`ad_repro/README.md`；机器可读清单：`ad_repro/manifest.json`（路径已重映射到新位置）。
+
+只包含对比需要的内容，**不包含原项目的其他实验**：
+
+| 内容 | 大小 | 校验 |
+| --- | ---: | --- |
+| `code/`（generate_mask.py、train_mask.py、ldm/、configs/ 等） | 1.9 M | 复制 |
+| `models/ldm/text2img-large/model.ckpt` | 5.8 G | 复制 |
+| `logs/anomaly-checkpoints/checkpoints/`（spatial_encoder + embeddings） | 1.4 G | 复制 |
+| `logs/mask-checkpoints/<class>-<type>/checkpoints/embeddings.pt` | ~5 M | **58/58** |
+| `outputs/generated_masks/` | 124 M | **29,000 张，与源一致** |
+| `eval/per_category/`（12 loc + 11 cls） | 2.2 G | 23 个 pckl |
+| `dataset/visa/`（MVTec 风格） | 1.9 G | **24,055 文件，与源一致** |
+| `dataset/visa_seas/`（split 数据集） | 1.8 G | **14,337 文件，与源一致**；`inventory.json`、`fewshot_train/` 58 份、类型目录链接均保留 |
+
+数据划分与原复现**完全一致**：`inventory.json`（74 对 / 58 可训练 / combined 排除 / 每对 500 mask）、`fewshot_train/*.txt`、`<type>` 与 `<type>_mask` 相对链接。
