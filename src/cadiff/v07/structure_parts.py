@@ -12,6 +12,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 import numpy as np
+from scipy.ndimage import binary_dilation, distance_transform_edt
 from scipy.sparse import csr_matrix
 
 CANVAS = 512
@@ -20,16 +21,20 @@ CANVAS = 512
 @dataclass(frozen=True)
 class PartConfig:
     grid: int = 37
-    max_parts: int = 6
+    max_parts: int = 8
     min_part_tokens: int = 6
     knn: int = 10
-    laplacian_threshold: float = 0.02
-    separability_threshold: float = 1.6
+    laplacian_threshold: float = 0.030
+    strong_texture_threshold: float = 0.033
+    separability_threshold: float = 1.7
+    support_ratio_threshold: float = 0.85
     part_source: str = "spectral"
     sam_min_ratio: float = 0.005
     sam_max_border: float = 0.15
     sam_max_parts: int = 12
     sam_inside_ratio: float = 0.5
+    merge_min_ratio: float = 0.01
+    assign_remainder: bool = True
 
 
 @dataclass
@@ -165,15 +170,12 @@ def _border_fraction(segment: np.ndarray, width: int = 3) -> float:
     return float((segment & border).sum() / max(1, int(segment.sum())))
 
 
-def _sam_parts(
+def _sam_masks(
     rgb: np.ndarray,
     support: np.ndarray,
-    tokens: np.ndarray,
     sam: Any,
     cfg: PartConfig,
-) -> list[Part]:
-    import cv2
-
+) -> list[np.ndarray]:
     raw = sam.generate(rgb)
     support_area = max(1, int(support.sum()))
     kept: list[np.ndarray] = []
@@ -202,12 +204,73 @@ def _sam_parts(
         kept.append(np.ascontiguousarray(segment & support))
         if len(kept) >= cfg.sam_max_parts:
             break
+    return kept
 
-    parts: list[Part] = []
+
+def _postprocess_masks(
+    masks: list[np.ndarray], support: np.ndarray, cfg: PartConfig
+) -> list[np.ndarray]:
+    """Merge tiny parts, cap the count, then assign uncovered support pixels.
+
+    SAM instances do not tile the object (measured union coverage 0.735), and
+    small parts (bristles, screws) explode the part count. Both are fixed here
+    with generic rules -- no per-class thresholds.
+    """
+
+    import cv2
+
+    masks = [np.ascontiguousarray(np.asarray(mask, dtype=bool) & support) for mask in masks]
+    masks = [mask for mask in masks if mask.any()]
+    if not masks:
+        return []
+    support_area = max(1, int(support.sum()))
+    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (7, 7))
+    while len(masks) > 1:
+        areas = np.array([int(mask.sum()) for mask in masks])
+        too_small = bool((areas < cfg.merge_min_ratio * support_area).any())
+        if not (too_small or len(masks) > cfg.max_parts):
+            break
+        index = int(np.argmin(areas))
+        grown = cv2.dilate(masks[index].astype(np.uint8), kernel) > 0
+        best_index, best_overlap = -1, -1
+        for other, mask in enumerate(masks):
+            if other == index:
+                continue
+            overlap = int((grown & mask).sum())
+            if overlap > best_overlap:
+                best_overlap, best_index = overlap, other
+        if best_index < 0:
+            break
+        masks[best_index] = masks[best_index] | masks[index]
+        masks.pop(index)
+
+    if cfg.assign_remainder:
+        labels = np.full(support.shape, -1, dtype=np.int32)
+        assigned = np.zeros_like(support, dtype=bool)
+        for index, mask in enumerate(masks):
+            labels[mask] = index
+            assigned |= mask
+        fill = support & ~assigned
+        if fill.any() and assigned.any():
+            # distance to the nearest *assigned part pixel*; using the
+            # unassigned mask directly would let background (label -1) win.
+            _distance, indices = distance_transform_edt(~assigned, return_indices=True)
+            nearest = labels[indices[0], indices[1]]
+            labels[fill] = nearest[fill]
+            masks = [np.ascontiguousarray(labels == index) for index in range(len(masks))]
+    return masks
+
+
+def _parts_from_masks(
+    masks: list[np.ndarray], support: np.ndarray, tokens: np.ndarray
+) -> list[Part]:
+    import cv2
+
     grid = tokens.shape[0]
-    for segment in kept:
+    parts: list[Part] = []
+    for mask in masks:
         cells = (
-            cv2.resize(segment.astype(np.uint8), (grid, grid), interpolation=cv2.INTER_AREA)
+            cv2.resize(mask.astype(np.uint8), (grid, grid), interpolation=cv2.INTER_AREA)
             > 0.5
         )
         embedding = (
@@ -215,7 +278,7 @@ def _sam_parts(
             if cells.any()
             else np.zeros(tokens.shape[-1], dtype=np.float32)
         )
-        descriptor = _descriptor(segment, support, embedding)
+        descriptor = _descriptor(mask, support, embedding)
         if descriptor is None:
             continue
         descriptor.index = len(parts)
@@ -277,34 +340,34 @@ def parse_structure(
         )
         labels_grid[grid_mask] = model.fit_predict(affinity)
 
-    parts: list[Part] = []
+    masks: list[np.ndarray] = []
     for label in range(k):
         mask = _part_mask(labels_grid, label, support)
         if int(mask.sum()) < 256:
             continue
-        cells = labels_grid == label
-        embedding = (
-            np.asarray(tokens[cells].mean(axis=0), dtype=np.float32)
-            if cells.any()
-            else np.zeros(tokens.shape[-1], dtype=np.float32)
-        )
-        descriptor = _descriptor(mask, support, embedding)
-        if descriptor is None:
-            continue
-        descriptor.index = len(parts)
-        parts.append(descriptor)
+        masks.append(mask)
 
-    texture_mode = (
-        k <= 1
-        or support_ratio > 0.85
-        or (texture > cfg.laplacian_threshold and separability < cfg.separability_threshold)
+    # Texture decision is led by the texture score, with separability / support
+    # ratio as guards. K is deliberately NOT used: single-part objects (capsule)
+    # otherwise get misclassified as texture. Thresholds are global, not per class.
+    texture_mode = bool(
+        # branch 1: textured surface with weak part structure
+        (
+            texture >= cfg.laplacian_threshold
+            and separability <= cfg.separability_threshold
+        )
+        # branch 2: strong texture covering most of the frame (grid-like)
+        or (
+            texture >= cfg.strong_texture_threshold
+            and support_ratio >= cfg.support_ratio_threshold
+        )
     )
 
     if cfg.part_source == "sam":
-        if texture_mode or sam is None:
-            parts = []
-        else:
-            parts = _sam_parts(rgb, support, tokens, sam, cfg)
+        masks = [] if (texture_mode or sam is None) else _sam_masks(rgb, support, sam, cfg)
+
+    masks = _postprocess_masks(masks, support, cfg)
+    parts = _parts_from_masks(masks, support, tokens)
 
     adjacency = np.zeros((len(parts), len(parts)), dtype=np.float32)
     for i in range(len(parts)):
@@ -318,7 +381,7 @@ def parse_structure(
     return StructureReport(
         category=category,
         image_id=image_id,
-        k=len(parts) if (parts or cfg.part_source == "sam") else k,
+        k=len(parts),
         texture_score=float(texture),
         separability=float(separability),
         texture_mode=bool(texture_mode),
