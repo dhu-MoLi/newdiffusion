@@ -35,13 +35,26 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--device", default="cuda:0")
     parser.add_argument("--samples", type=int, default=4)
     parser.add_argument("--output", type=Path, default=None)
+    parser.add_argument("--part-source", default="spectral", choices=["spectral", "sam"])
+    parser.add_argument("--sam-checkpoint", type=Path, default=Path("/home/asus/.cache/sam/sam_vit_h_4b8939.pth"))
+    parser.add_argument("--sam-type", default="vit_h", choices=["vit_b", "vit_l", "vit_h"])
     arguments = parser.parse_args(argv)
 
     project = load_config(arguments.paths)
     encoder = load_official_dinov2_encoder(device=arguments.device)
-    output = arguments.output or (project.runs_root / "v07" / "structure_parts" / "g0.json")
+    output = arguments.output or (project.runs_root / "v07" / "structure_parts" / f"g0_{arguments.part_source}.json")
     output.parent.mkdir(parents=True, exist_ok=True)
-    cfg = PartConfig()
+    cfg = PartConfig(part_source=arguments.part_source)
+    sam = None
+    if arguments.part_source == "sam":
+        from segment_anything import SamAutomaticMaskGenerator, sam_model_registry
+
+        model = sam_model_registry[arguments.sam_type](checkpoint=str(arguments.sam_checkpoint))
+        model.to(arguments.device)
+        sam = SamAutomaticMaskGenerator(
+            model, points_per_side=32, pred_iou_thresh=0.85,
+            stability_score_thresh=0.9, min_mask_region_area=100,
+        )
 
     report: dict[str, dict] = {}
     started = time.time()
@@ -69,6 +82,7 @@ def main(argv: list[str] | None = None) -> int:
                 cfg,
                 category=category,
                 image_id=record.item_id,
+                sam=sam,
             )
             rows.append(parsed)
         ks = [row.k for row in rows]
@@ -84,11 +98,21 @@ def main(argv: list[str] | None = None) -> int:
             "parts_area_ratio": [
                 [part.area_ratio for part in row.parts] for row in rows
             ],
+            "covered_ratio": [
+                float(
+                    np.logical_or.reduce([part.mask for part in row.parts]).sum()
+                    / max(1, int(row.support.sum()))
+                )
+                if row.parts
+                else 0.0
+                for row in rows
+            ],
             "expected_texture": category in TEXTURE_CLASSES,
         }
+        covered = report[category]["covered_ratio"]
         print(
-            f"{category:12s} {np.mean(ks):4.1f} {np.mean(textures):8.4f} "
-            f"{np.mean(seps):6.2f} {np.mean(modes):8.2f} {np.mean([r.support_ratio for r in rows]):5.2f}"
+            f"{category:12s} k={np.mean(ks):4.1f}±{np.std(ks):3.1f} tex={np.mean(textures):7.4f} "
+            f"sep={np.mean(seps):5.2f} texmode={np.mean(modes):4.2f} cover={np.mean(covered):4.2f}"
         )
 
     texture_hits = [

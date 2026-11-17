@@ -25,6 +25,11 @@ class PartConfig:
     knn: int = 10
     laplacian_threshold: float = 0.02
     separability_threshold: float = 1.6
+    part_source: str = "spectral"
+    sam_min_ratio: float = 0.005
+    sam_max_border: float = 0.15
+    sam_max_parts: int = 12
+    sam_inside_ratio: float = 0.5
 
 
 @dataclass
@@ -51,6 +56,7 @@ class StructureReport:
     support_ratio: float
     parts: list[Part] = field(default_factory=list)
     adjacency: np.ndarray | None = None
+    support: np.ndarray | None = None
 
 
 def _support_grid(support: np.ndarray, grid: int) -> np.ndarray:
@@ -150,6 +156,73 @@ def _texture_score(rgb: np.ndarray, support: np.ndarray) -> float:
     return float(np.abs(laplacian)[support].mean())
 
 
+def _border_fraction(segment: np.ndarray, width: int = 3) -> float:
+    border = np.zeros_like(segment)
+    border[:width, :] = True
+    border[-width:, :] = True
+    border[:, :width] = True
+    border[:, -width:] = True
+    return float((segment & border).sum() / max(1, int(segment.sum())))
+
+
+def _sam_parts(
+    rgb: np.ndarray,
+    support: np.ndarray,
+    tokens: np.ndarray,
+    sam: Any,
+    cfg: PartConfig,
+) -> list[Part]:
+    import cv2
+
+    raw = sam.generate(rgb)
+    support_area = max(1, int(support.sum()))
+    kept: list[np.ndarray] = []
+    for item in sorted(raw, key=lambda mask: int(mask["area"]), reverse=True):
+        segment = np.asarray(item["segmentation"], dtype=bool)
+        area = int(segment.sum())
+        if area < cfg.sam_min_ratio * support_area:
+            continue
+        inside = float((segment & support).sum() / max(1, area))
+        if inside < cfg.sam_inside_ratio:
+            continue
+        if _border_fraction(segment) > cfg.sam_max_border:
+            continue
+        # near-duplicate detection by IoU only: a part nested inside a larger
+        # instance is a legitimate part (bottle label inside the bottle), not a
+        # duplicate. Containment-based dedup removed exactly the parts we need.
+        duplicate = False
+        for existing in kept:
+            inter = float((segment & existing).sum())
+            union = float((segment | existing).sum())
+            if union > 0 and inter / union > 0.85:
+                duplicate = True
+                break
+        if duplicate:
+            continue
+        kept.append(np.ascontiguousarray(segment & support))
+        if len(kept) >= cfg.sam_max_parts:
+            break
+
+    parts: list[Part] = []
+    grid = tokens.shape[0]
+    for segment in kept:
+        cells = (
+            cv2.resize(segment.astype(np.uint8), (grid, grid), interpolation=cv2.INTER_AREA)
+            > 0.5
+        )
+        embedding = (
+            np.asarray(tokens[cells].mean(axis=0), dtype=np.float32)
+            if cells.any()
+            else np.zeros(tokens.shape[-1], dtype=np.float32)
+        )
+        descriptor = _descriptor(segment, support, embedding)
+        if descriptor is None:
+            continue
+        descriptor.index = len(parts)
+        parts.append(descriptor)
+    return parts
+
+
 def parse_structure(
     rgb: np.ndarray,
     support: np.ndarray,
@@ -159,6 +232,7 @@ def parse_structure(
     *,
     category: str = "",
     image_id: str = "",
+    sam: Any = None,
 ) -> StructureReport:
     support = np.ascontiguousarray(np.asarray(support, dtype=bool))
     grid_mask = _support_grid(support, cfg.grid)
@@ -226,6 +300,12 @@ def parse_structure(
         or (texture > cfg.laplacian_threshold and separability < cfg.separability_threshold)
     )
 
+    if cfg.part_source == "sam":
+        if texture_mode or sam is None:
+            parts = []
+        else:
+            parts = _sam_parts(rgb, support, tokens, sam, cfg)
+
     adjacency = np.zeros((len(parts), len(parts)), dtype=np.float32)
     for i in range(len(parts)):
         for j in range(i + 1, len(parts)):
@@ -238,13 +318,14 @@ def parse_structure(
     return StructureReport(
         category=category,
         image_id=image_id,
-        k=len(parts) if parts else k,
+        k=len(parts) if (parts or cfg.part_source == "sam") else k,
         texture_score=float(texture),
         separability=float(separability),
         texture_mode=bool(texture_mode),
         support_ratio=support_ratio,
         parts=parts,
         adjacency=adjacency,
+        support=support,
     )
 
 
